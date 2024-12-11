@@ -1,0 +1,111 @@
+---
+title: 'Prior Exposure Bayesian Data Analysis Workshops: June, 2017'
+date: June 28, 2017
+description: |
+  This three-day workshop introduces Bayesian data analysis and R programming. The course begins with a general introduction to R and data processing, followed by an overview of Bayesian data analysis and its differences from classical approaches. The final day covers the theoretical and practical details of Bayesian inference, with a focus on Bayesian linear models.
+subtitle: 28-30 June, 2017
+location: Nottingham, UK
+author:
+- name: Mark Andrews
+- name: Thom Baguley
+categories:
+- Bayesian Data Analysis
+- Statistical Inference
+- Linear Models
+- R
+
+---
+
+This three-day workshop introduces Bayesian data analysis and R programming. The course begins with a general introduction to R and data processing, followed by an overview of Bayesian data analysis and its differences from classical approaches. The final day delves into the theoretical and practical details of Bayesian inference, with a focus on Bayesian linear models.
+
+The workshops will take place in room 424 of the Chaucer building (CH424) in
+[Nottingham Trent University](https://www.ntu.ac.uk).
+
+
+# Day 1 (Wednesday, June 28, 2017)
+
+The R programming language is now one of the most widely used tools for
+data-analysis worldwide. This is arguably due to a combination of its power and
+flexibility and the fact that is entirely based on free and open-source
+software. This workshop is a general introduction to R and how it can be used
+for general data-processing, statistical modelling and data-graphics. No
+previous experience with R, or with general programming, is necessary for this
+workshop.
+
+## Schedule 
+
+* *9:30am* Introduction to R & RStudio 
+* *10:00am* The fundamentals of R: Processing data, simple statistical tests, cheap and cheerful plots
+* *12:30pm* *Lunch*
+* *1:30pm* Linear models (linear regression, Anova, et al.) and generalized linear models (e.g. logistic regression, Poisson regression etc).   
+* *3:30pm* Expert data wrangling with `dplyr`, `tidyr` and friends
+* *4:30pm* Visualizing data with `ggplot`
+* *5:30pm* Close
+
+# Day 2 (Thursday, June 29, 2017)
+
+This workshop aims to be a general introduction to Bayesian data analysis and
+how it differs from the more familiar classical approaches to data analysis. We
+will start by providing a brief historical overview of statistical inference
+and introduce Bayes’s theorem. The fundamental concepts of Bayesian statistical
+inference will follow, contrasted with frequentist methods of inference. To
+provide a bridge between Bayesian and classical methods, we will describe
+likelihood function approaches to inference and introduce both the likelihood
+principle and the law of the likelihood as the general precepts of likelihood
+based inference. During this workshop, there will also be practical exercises,
+all involving the use of R, including using Bayes’s rule to calculate posterior
+probabilities and posterior distributions, choosing priors in probabilistic
+models and illustrating their role on the posterior distributions, calculating
+likelihood ratios and Bayes factors to compare evidence for different
+parameters in a probabilistic model, and calculating marginal likelihoods for
+comparing distinct probabilistic models.
+
+## Schedule
+
+* *9.00am* Registration (including tea & coffee)
+* *9:30am* Introduction and overview of workshop 1
+* *10:00am* Introduction to likelihood
+* *11:30am* Introduction to Bayesian inference
+* *12:30pm* Lunch (Newton Arkwright cafe)
+* *1:30pm* Bayesian data analysis in action
+* *3:30pm* Break (including tea & coffee)
+* *3:45pm* Bayes factors
+* *5:00pm* Discussion
+* *5:30pm* Close
+
+# Day 3 (Friday, June 30, 2017)
+
+This workshop aims to provide a solid theoretical and practical foundation for
+real-world Bayesian data analysis in psychology and social sciences. It will
+focus primarily on the linear statistical models and so-called conjugate prior
+distributions. The reason for this focus is twofold. First, linear models ---
+which include t tests, ANOVA, and linear regression models --- are the core of
+the standard repertoire of statistical models with which our audience will be
+familiar. Studying the Bayesian counterparts of these approaches will therefore
+be a natural transition. Second, Bayesian inference in linear models with
+conjugate priors is analytically tractable, and this entails, amongst other
+things, that we can use relatively simple formulae to calculate the posterior
+distribution over the parameters and to make predictive inferences. This allows
+us to illustrate the general nature of Bayesian inference quickly and easily,
+postponing the computational and practical complications that arise as a
+consequence of performing Monte Carlo based numerical approaches to inference.
+In practical terms, this workshop will involve the use of the R statistical
+computing environment both to calculate posterior distributions in linear
+models and to graphically illustrate them. Indeed, graphically illustrating,
+for example, how the posterior distribution is a weighted average of the prior
+and likelihood functions and how the contribution of the likelihood function
+grows rapidly with increasing data, provides compelling intuitive insight into
+the nature of Bayesian inference.
+
+## Schedule 
+
+* *9.00am* Registration (including tea & coffee)
+* *9:30am* Introduction and overview of workshop 2
+* *10:00pm* Bayesian inference in binomial models
+* *11:30am* Bayes and the German Tank Problem
+* *12:30pm* Lunch (Newton Arkwright cafe)
+* *1:30pm* Bayesian inference in Normal models
+* *3:30pm* Break (including tea & coffee)
+* *3:45pm* Bayesian inference in linear regression models
+* *5:00pm* Discussion
+* *5:30pm* Close

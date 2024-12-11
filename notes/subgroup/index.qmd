@@ -1,0 +1,161 @@
+---
+title: "Statistical analysis of subgroups with nested data frames"
+author: Mark Andrews
+date: "2021, 7, 17, 12:00"
+categories: ["tidyverse", "data wrangling", "R"]
+description: |
+  Here, we will look at how to perform separate statistical analyses of each subgroup of a data set, the results of which can then be combined 
+  into a new data frame. For this, we will primarily use the `nest`, and related functions, in the `tidyr` package.
+---
+
+```{r}
+#| include = FALSE
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE)
+```
+
+```{r}
+#| echo = F
+library(tidyverse)
+theme_set(theme_classic())
+set.seed(101010101)
+```
+
+Many data sets, even relatively simple ones, can be seen as consisting of data subgroups.
+As a particularly simple example to illustrate this, consider the following data set:
+```{r}
+library(tidyverse)
+
+data_df <- tribble(
+  ~x, ~y,
+  'A', 1,
+  'A', 7,
+  'A', 11,
+  'B', 3,
+  'B', -7,
+  'B', 5
+)
+```
+The `data_df` data frame has two variables `x` and `y`.
+If we consider the values of `x` to indicate the group each observation belongs to, clearly `data_df` consists of two subgroups: those rows where `x` has the value of `A`, and those rows where `x` has the value of `B`.
+
+Statistical models of data sets of this kind are very common practice.
+They include regression analyses with categorical predictor variables, but more generally, they involve multilevel (aka, hierarchical, or mixed-effects) modelling.
+Here, we will not discuss statistical modelling using, for example, multilevel models, but simply address ways of doing essentially exploratory data analysis of data sets like this.
+Specifically, we will look at how to efficiently perform separate statistical analyses of each subgroup of the data set and then combining their results into one new data frame.
+For this, we will primarily use the `nest`, and related functions, in the `tidyr` package.
+
+The data set we will use in the examples below is named `sleepstudy` (csv file is [here](data/sleepstudy.csv)).
+```{r}
+sleepstudy <- read_csv('data/sleepstudy.csv')
+sleepstudy
+```
+It consists of the average reaction times (`rt`) on each day without sleep (`day`) of a set of subjects (`subject`) in a sleep deprivation experiment.
+This data was originally obtained from the [`lme4`](https://cran.r-project.org/package=lme4) R package.
+
+
+# From `group_by` to `group_by ... nest`.
+
+If we wanted to, for example, calculate the mean and standard deviation of the reaction time variable for each subject, the common `tidyverse` way to proceed would be to use a `group_by` operation followed by summary statistics calculation using `summarise` (or `summarize`):
+```{r}
+sleepstudy %>% 
+  group_by(subject) %>% 
+  summarise(avg = mean(rt),
+            stdev = sd(rt))
+```
+While `group_by` and `summarize` are extremely generally useful, some subgroup analyses can not be performed this way.
+For example, consider the following plot of the data:
+```{r}
+sleepstudy %>% 
+  ggplot(aes(x = day, y = rt, colour = subject)) +
+  geom_point(size = 0.5) +
+  stat_smooth(method = 'lm', se = F) +
+  facet_wrap(~subject) +
+  theme_minimal() +
+  theme(legend.position = 'none')
+```
+
+To produce this plot, `ggplot` performs a separate linear regression (using `lm`) using the data from each of the subjects.
+While it is undoubtedly useful that `ggplot` can produce this type of plot so easily, in some situations, we might wish to perform these `lm` models directly, not using `ggplot`, and save the resulting objects for further analysis.
+For example, we might wish to obtain a data frame that gives the $R^2$ or the estimate of the residual standard deviation $\hat{\sigma}$ for each subject.
+This can not be produced using `group_by` and `summarize`, but can be produced using `group_by` followed by a `tidyr::nest` operation, which produces a nested data frame on which further analyses can be performed.
+
+To understand this, let us start by producing the nested data frame:
+```{r}
+sleepstudy %>% 
+  group_by(subject) %>% 
+  nest()
+```
+As we can see, we have produced a data frame with `r length(unique(sleepstudy$subject))` rows, one for each subject, and with two columns.
+The first column indicates the `subject`'s identity.
+The second column is labelled `data` and we can see that it is list column, each element of which is a tibble data frame.
+Specifically, each element of the `data` list column is the data frame of the corresponding subject.
+For example, the first element of the `data` list column is the data frame corresponding to subject `r sleepstudy %>% group_by(subject) %>% nest() %>% ungroup() %>% slice(1) %>% magrittr::extract2('subject')`.
+
+Now, if we want to perform a separate linear regression predicting `rt` from `day` for each subject, we can use a functional like `purrr::map` (see [this blog post on functionals](/notes/functionals) for details) to iterate over each separate data frame, passing it to an `lm` model.
+Each `lm` model will return an R object, which can then be saved in a new list column, which we may name `model`.
+This is done in the following code:
+```{r}
+M_grouped <- sleepstudy %>% 
+  group_by(subject) %>% 
+  nest() %>% 
+  mutate(
+    model = map(data, ~lm(rt ~ day, data = .))
+  )
+
+M_grouped
+```
+Each element of the list column `model` is an `lm` R object where the `lm` formula was always `rt ~ day` and the data frame was the corresponding data frame in the `data` list column.
+So, for example, the first element of the `model` list column is the result of `lm(rt ~ day)` using the data of subject `r sleepstudy %>% group_by(subject) %>% nest() %>% ungroup() %>% slice(1) %>% magrittr::extract2('subject')`.
+
+# Unnesting
+
+Let's say we want to produce a new data frame that has two columns, `subject` and `rsq`, where `rsq` is the $R^2$ estimate of the `lm` model for each subject.
+Note that if we have an `lm` model named `M`, then we can obtain the $R^2$ estimate for `M` with `summary(M)$r.sq`.
+Using this, we extract the $R^2$ from each subject's `lm` model and put it in a vector column named `rsq`.
+We can do so using `map_dbl`, which returns a vector, and some standard `dplyr` operations, as follows:
+```{r}
+M_grouped %>% 
+  mutate(rsq = map_dbl(model, ~summary(.)$r.sq)) %>% 
+  ungroup() %>% 
+  select(subject, rsq)
+```
+
+
+Now, let's say we want a data frame very similar to this but instead of just one new column, we want multiple new columns.
+For example, let's say we want a column for each of $R^2$, adjusted $R^2$, the estimate of the residual standard deviation $\hat{\sigma}$, and the estimates of the intercept and slope coefficients.
+For each of these quantities, we can extract the appropriate value from the `lm` model object using a function, and so we can create a function like the following that extracts all quantities and returns them as a vector:
+```{r}
+model_summary <- function(M){
+  c(rsq = summary(M)$r.sq,
+    adj_rsq = summary(M)$adj.r.sq,
+    sigma = sigma(M),
+    intercept = unname(coef(M)[1]),
+    slope = unname(coef(M)[2])
+  )
+}
+```
+We can see what this function will return for one of the models by extracting out one model from the `model` list column and passing it to `model_summary`:
+```{r}
+M_grouped$model[[1]] %>% 
+  model_summary()
+```
+We can not use this `model_summary` as the function inside a `map_dbl`, as we did above for the case of $R^2$ alone, as `map_dbl` assumes that the value being returned by the function is a single value, rather than a vector.
+We can, however, use `map` as in the following code:
+```{r}
+M_grouped %>% 
+  mutate(summaries = map(model, model_summary))
+```
+As we can see, `summaries` is list column where each element is vector of five values.
+We can now pivot, using something like a [`pivot_wider`](https://tidyr.tidyverse.org/reference/pivot_wider.html) operation, these vectors to produce five new columns.
+We do this with an `unnest_wider` operation as follows:
+```{r}
+M_grouped %>% 
+  mutate(summaries = map(model, model_summary)) %>% 
+  unnest_wider(col = summaries) %>% 
+  ungroup() %>% 
+  select(-c(data, model))
+```
+
+This procedure using `nest` and `unnest_wider` can therefore generally be used to produce data frames whose rows correspond to subgroups of the original data frame, and whose columns are the results of various statistical analyses performed separately on each subgroup.

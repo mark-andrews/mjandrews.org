@@ -1,0 +1,47 @@
+---
+title: Introduction to Bayesian Data Analysis
+date: May 28, 2021
+description: |
+  This seminar provides a comprehensive introduction to Bayesian methods, highlighting their conceptual and theoretical differences from classical statistical methods. The course offers an overview of the fundamental concepts of Bayesian inference and modelling, and practical application of Bayesian data analysis in R.
+subtitle: May 28, 2021
+location: Online course
+author: Mark Andrews
+categories:
+- Bayesian Data Analysis
+- Statistical Inference
+- R
+
+---
+
+Bayesian methods are now increasingly widely in data analysis across most
+scientific research fields.  Given that Bayesian methods differ conceptually
+and theoretically from their classical statistical counterparts that are
+traditionally taught in statistics courses, many researchers do not have
+opportunities to learn the fundamentals of Bayesian methods, which makes using
+Bayesian data analysis in practice more challenging. This seminar provides an
+introduction to Bayesian methods, both theoretically and practically.  We will
+overview the fundamental concepts of Bayesian inference and Bayesian modelling,
+including how Bayesian methods differ from their classical statistics
+counterparts, and show how to do Bayesian data analysis in practice in R.
+
+## Slides
+
+The slides for this seminar are [here](https://github.com/mark-andrews/intro_bda_qub/blob/master/bayesian_data_analysis.pdf). These slides contain links to the following online demos:
+
+1. [Binomial test for coin toss data](https://lawsofthought.shinyapps.io/binomial_test).
+2. [Binomial likelihood for coin toss data](https://lawsofthought.shinyapps.io/binomial_likelihood).
+3. [Bayesian inference for coin toss data](https://lawsofthought.shinyapps.io/bayesian_coin_inference).
+
+## Binder RStudio Server
+
+An RStudio server session with Stan and `brms` installed and ready to use is available by clicking this button.
+[![Binder](https://notebooks.gesis.org/binder/badge_logo.svg)](https://notebooks.gesis.org/binder/v2/gh/mark-andrews/intro_bda_qub/HEAD?urlpath=rstudio)
+In there, you will find all the scripts in this repository, including an [example `brms` script](https://github.com/mark-andrews/intro_bda_qub/blob/master/brm_script.R).
+
+## Installing Stan and `brms`
+
+Instructions on how to install Stan and `brms` on your machine is [here](https://github.com/mark-andrews/intro_bda_qub/blob/master/software.md).
+
+# GitHub resources
+
+Further resources for this training course can be found on Github at [mark-andrews/intro_bda_qub](https://github.com/mark-andrews/intro_bda_qub).

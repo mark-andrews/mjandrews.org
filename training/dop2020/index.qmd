@@ -1,0 +1,45 @@
+---
+title: Introduction to R and RStudio
+date: January 8, 2020
+description: |
+  This workshop offers a comprehensive introduction to R, a powerful tool for data analysis widely used in psychology. It is designed for beginners, requiring no prior experience with R, but assumes familiarity with statistics. 
+subtitle: January 8, 2020
+location: Stratford upon Avon, England
+author: Mark Andrews
+categories:
+- Psychology
+- R
+- RStudio
+---
+
+R is a very powerful free and open source software package for doing data analysis. It is increasingly widely used in psychology, both for research and for statistics teaching.
+In this workshop, you will be provided with a friendly introduction to R. It is intended to provide people who are new to R with all the basics and fundamentals that they need to get up and running with R so that they can use it on a regular basis.
+No prior experience with R is necessary. All we will assume is a familiarity with statistics typical of someone with a undergrad, or higher, degree in psychology or related discipline.
+You will be required to bring your own laptop with R, RStudio, and some R packages installed, and instructions on how to install these (free) software packages will be provided in advance of the workshop.
+
+# Schedule
+
+* What is R and why should we care?
+* A guided tour of RStudio
+* First steps with R commands
+* Reading in and summarizing data
+* Visualizing data
+* t-tests, correlation, regression, anova
+
+# Software
+
+The required software for this workshop is all free and open source
+and will run identically on Windows, Mac OS X, and Linux platforms.
+
+There are three main pieces of software to install:
+
+-   [R](https://www.r-project.org/): An environment for statistical
+    computing.
+-   [Rstudio](https://www.rstudio.com/): An integrated development
+    environment for using R.
+-   [tidyverse](https://www.tidyverse.org/): A bundle of R packages to
+    use R the modern way.
+
+# GitHub resources
+
+Further resources for this training course can be found on GitHub at [mark-andrews/dop2020-intro-to-R](https://github.com/mark-andrews/dop2020-intro-to-R).

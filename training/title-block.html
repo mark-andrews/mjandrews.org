@@ -1,0 +1,27 @@
+<header id="title-block-header">
+$if(title)$<h1 class="title">$title$</h1>$endif$
+
+
+$if(author)$
+<ul class=inline-author-list>
+$for(author)$
+<li class="author">$author$</li>
+$endfor$
+</ul>
+$endif$
+
+$if(subtitle)$
+<p class="course-info">Date: $subtitle$</p>
+$endif$
+
+$if(location)$
+<p class="course-info">Location: $location$</p>
+$endif$
+
+$if(abstract)$
+<div class="abstract">
+<div class="abstract-title">$abstract-title$</div>
+$abstract$
+</div>
+$endif$
+</header>

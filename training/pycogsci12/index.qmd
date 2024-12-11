@@ -1,0 +1,26 @@
+---
+title: Python for Cognitive Science
+date: August 1, 2012
+description: |-
+  This workshop introduces Python programming for cognitive science research. Over the past decade, Python's scientific and numerical libraries have developed to rival products like Matlab. The tutorial advocates Python as the principal programming language in cognitive science research.
+subtitle: August 1, 2012
+location: Sapporo, Japan
+author:
+- name: Mark Andrews
+- name: Jessica A. Diaz
+categories:
+- Python
+- Cognitive Science
+- Numerical Computing
+- Scientific Computing
+
+---
+
+The objective of this workshop is to introduce the Python programming
+language for use in cognitive science research. Within the last 10
+years, the development of scientific and numerical libraries in Python
+has grown to the point where Python can now be used as a scientific and
+numerical computing environment comparable to products like Matlab. The
+aim of this tutorial is to describe these areas of
+application and to advocate the advantages and appeals of using Python
+as the principal programming language in cognitive science research.

@@ -1,0 +1,16 @@
+---
+title: "Why we don't teach, and why we should and could teach, Bayesian methods"
+subtitle: "TALMO Symposium on *Teaching Bayesian Methods*."
+author: "Mark Andrews"
+date: "27 March, 2024"
+author-title: 'Presenter'
+published-title: 'Date'
+---
+
+For the past few decades, there has been a continual rise in the use of Bayesian methods in statistical data analysis, so much so that Bayesian methods are now essentially mainstream methods in most scientific fields. Despite this, the statistics teaching curriculum in most fields remains largely, or even entirely, based on frequentist statistical inference. In this talk, I will review the rise of Bayesian methods in statistics over the last few decades, and also review the typical statistics teaching curricula across fields. I then turn to the main question of why we have not been incorporating Bayesian methods into statistics teaching and will discuss a number of major potential reasons for this. Finally, I discuss whether we should be teaching Bayesian methods as a standard or core method in all statistics teaching, and if so, how could or should this be done in practice. 
+
+RMarkdown source code for the slides are available on [GitHub](https://github.com/mark-andrews/teaching-bayes-talmo24). The pdf of the slides are available [here](andrews2024talmo_slides.pdf).
+
+<p style="text-align: center;">
+ <iframe style='width: 100%;   aspect-ratio: 16 / 9;' src="https://www.youtube.com/embed/PtLGnNvMC2o?si=HDIaI76UVBo68Cpd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</p>

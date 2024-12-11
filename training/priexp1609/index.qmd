@@ -1,0 +1,22 @@
+---
+title: 'Prior Exposure Bayesian Data Analysis Workshops: September, 2016'
+date: September 14, 2016
+description: |
+  This three-day workshop covers advanced topics in Bayesian data analysis. The first day focuses on linear mixed effects modelling using R. The second day explores Bayesian approaches to multilevel models using the `MCMCglmm` R package and JAGS. The third day delves into Bayesian approaches to probabilistic mixture models and nonlinear regression, with a deeper look into the theoretical basis of MCMC samplers.
+subtitle: 14-16 September, 2016
+location: Nottingham, UK
+author:
+- name: Mark Andrews
+- name: Thom Baguley
+categories:
+- Bayesian Data Analysis
+- Multilevel Models
+- Mixed Effects
+- Probabilistic Mixture Models
+- Nonlinear Regression
+- JAGS
+- R
+
+---
+
+This three-day workshop covers advanced topics in Bayesian data analysis. The first day focuses on linear mixed effects modelling using R. The second day explores Bayesian approaches to multilevel models using the `MCMCglmm` R package and Jags. The third day delves into Bayesian approaches to probabilistic mixture models and nonlinear regression, with a deeper look into the theoretical basis of MCMC samplers.

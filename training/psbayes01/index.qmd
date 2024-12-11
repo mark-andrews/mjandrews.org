@@ -1,0 +1,96 @@
+---
+title: Introduction to Bayesian data analysis for social and behavioural sciences
+  using R and Stan
+date: December 3, 2018
+description: |
+  This five-day workshop offers an introduction to Bayesian data analysis using R and Stan. The course covers fundamental principles of Bayesian data analysis, practical Bayesian analyses using general linear models, and advanced topics like Markov Chain Monte Carlo. Real world datasets are used for hands-on learning.
+subtitle: 3-7 December, 2018
+location: Glasgow, Scotland
+author: Mark Andrews
+categories:
+- Bayesian Data Analysis
+- Statistical Inference
+- Linear Models
+- brms
+- Stan
+- R
+
+---
+
+In this five day long workshop, we provide a general introduction to Bayesian
+data analysis using R and the Bayesian probabilistic programming language Stan.
+We begin with a gentle introduction to all the fundamental principles and
+concepts of Bayesian data analysis, and then proceed to more practically useful
+Bayesian analyses using general linear models, generalized linear models, and
+their multilevel counterparts.  For these analyses, we will use real world data
+sets, and carry out the analysis with Stan using the brms interface to Stan in
+R. We will explore general concepts such as model checking and improvement
+using posterior predictive checks, and model evaluation using cross-validation,
+WAIC, and Bayes factors. In the final part of the course, we will delve into
+some more advanced topics including understanding Markov Chain Monte Carlo in
+depth, general probabilistic programming with Stan, Gaussian process
+regression, probabilistic mixture models.
+
+## Intended Audience
+
+This course is aimed at anyone who is interested to learn and apply Bayesian data analysis in any area of science, including the social sciences, life sciences, physical sciences. No prior experience or familiarity with Bayesian statistics is required.
+
+## Teaching Format
+
+This course will be hands-on and workshop based. Throughout each day, there will be some lecture style presentation, i.e., using slides, introducing and explaining key concepts. However, even in these cases, the topics being covered will include practical worked examples that will work through together.
+
+## Assumed quantitative knowledge
+
+We assume familiarity with inferential statistics concepts like hypothesis testing and statistical significance, and some practical experience with commonly used methods like linear regression, correlation, or t-tests. Most or all of these concepts and methods are covered in a typical undergraduate statistics courses in any of the sciences and related fields.
+
+## Assumed computer background
+
+R experience is desirable but not essential. Although we will be using R extensively, all the code that we use will be made available, and so attendees will just need to copy and paste and add minor modifications to this code. Attendees should install R and RStudio on their own computers before the workshops, and have some minimal familiarity with the R environment. If some additional familiarity with R is required, countless short video introductions to R and RStudio are available online (e.g., https://youtu.be/lVKMsaWju8w).
+
+## Equipment and software requirements
+
+A laptop computer with a working version of R or RStudio is required. R and RStudio are both available as free and open source software for PCs, Macs, and Linux computers. R may be downloaded by following the links here https://www.r-project.org/. RStudio may be downloaded by following the links here: https://www.rstudio.com/.
+In addition to R and RStudio, Stan for R should also be installed. Stan is also free and open source software and is available for PCs, Macs, and Linux computers. More information about Stan is available here http://mc-stan.org/, and Stan for R (i.e., RStan) can be installed from here https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started. 
+Many supplementary R packages will be required. The list of necessary packages will be made available to all attendees prior to the course. These can all be installed from within RStudio will one click. It is highly recommended that all attendees come with all the necessary software and packages installed in advance. This will minimize troubleshooting during the workshop that might delay our progress.
+
+
+# Course programme 
+
+## Monday
+
+* Topic 1: We will begin with a overview of what Bayesian data analysis is in essence and how it fits into statistics as it practiced generally. Our main point here will be that Bayesian data analysis is effectively an alternative school of statistics to the traditional approach, which is referred to variously as the *classical*, or *sampling theory based*, or *frequentist* based approach, rather than being a specialized or advanced statistics topic. However, there is no real necessity to see these two general approaches as being mutually exclusive and in direct competition, and a pragmatic blend of both approaches is entirely possible.
+
+* Topic 2: Introducing Bayes' rule. Bayes' rule can be described as a means to calculate the probability of causes from some known effects. As such, it can be used as a means for performing statistical inference. In this section of the course, we will work through some simple and intuitive calculations using Bayes' rule. Ultimately, all of Bayesian data analysis is based on an application of these methods to more complex statistical models, and so understanding these simple cases of the application of Bayes' rule can help provide a foundation for the more complex cases.
+
+* Topic 3: Bayesian inference in a simple statistical model. In this section, we will work through a classic statistical inference problem, namely inferring the number of red marbles in an urn of red and black marbles. This problem is easy to analyse completely with just the use of R, but yet allows us to delve into all the key concepts of all Bayesian statistics including the likelihood function, prior distributions, posterior distributions, maximum a posteriori estimation, high posterior density intervals, posterior predictive intervals, marginal likelihoods, Bayes factors, model evaluation of out-of-sample generalization.
+
+
+## Tuesday
+
+* Topic 4: Bayesian analysis of linear and normal models. Statistical models based on linear relationships and normal distribution are a mainstay of statistical analyses in general. They encompass models such as linear regression, Pearson's correlation, t-tests, ANOVA, ANCOVA, and so on. In this section, we will describe how to do Bayesian analysis of linear and normal models, paying particular attention to Bayesian linear regression. One of the aims of this section is to identify some important and interesting parallels between Bayesian and classical or frequentist analyses. This shows how Bayesian and classical analyses can be seen as ultimately providing two different perspectives on the same problem.
+
+* Topic 5: The previous section provides a so-called analytical approach to linear and normal models. This is where we can calculate desired quantities and distributions by way of simple formulae. However, analytical approaches to Bayesian analyses are only possible in a relatively restricted set of cases. However, numerical methods, specifically Markov Chain Monte Carlo (MCMC) methods can be applied to virtually any Bayesian model. In this section, we will re-perform the analysis presented in the previous section but using MCMC methods. For this, we will use the *brms* package in R that provides an exceptionally easy to use interface to Stan. 
+
+* Topic 6: This section continues the previous one, but explores a wider range of linear and normal models, namely the *general linear models*. These include models with multiple predictors, some or all of which may be categorical, and interactions between these predictors. We will use brms for all of these analyses. For all the examples covered here, we will use real world data-sets taken from a variety of different fields.
+
+## Wednesday
+
+* Topic 7: Bayesian generalized linear models. Generalized linear models include models such as logistic regression, including multinomial and ordinal logistic regression, Poisson regression, negative binomial regression, and other models. Again, for these analyses we will use the brms package and explore this wide range of models using real world data-sets.
+
+* Topic 8: Model evaluation and checking. A general topic in any analysis is to evaluate the suitability of the chosen or assumed statistical models in the analysis. This general topic incorporates hypothesis testing. In this section, we will discuss this topic in depth, paying particular attention to posterior predictive checks, cross-validation, information criteria, and Bayes factors. We will revisit many of the examples covered so far, and perform model checking and evaluation and hypothesis testing with the models that we used.
+
+## Thursday
+
+* <p>Topic 8: Multilevel general and generalized linear models. In this section, we will cover the multilevel variants of the regression models, i.e. linear, logistic, Poisson etc, that we have covered so far. The topic of multilevel (or hierarchical) models is a major one, and multilevel models are widely used throughout the sciences. In general, multilevel models arise whenever data are correlated due to membership of a group (or group of groups, and so on). For example, if we have data concerning how socioeconomic status relates to educational achievement, the data might come from individual children. But these children are in separate schools, the schools are in separate cities, and the cities are in separate countries. Thus, the entire data-sets comprises groups (of groups etc) of data subsets, and there may be important variation across these subsets. 
+The entire day is devoted to multilevel regression models. We will, as before, use a wide range of real-world data-sets, and move between linear, logistic, etc., models are we explore these analyses. We will pay particular attention to considering when and how to use varying slope and varying intercept models, and how to choose between maximal and minimal models. Here, we will cover model checking and evaluation in the same depth as with the previous models. </p>
+
+## Friday
+
+* Topic 9: MCMC in depth. Although we will used MCMC methods extensively thus far, we will have hidden some of their technical details. As one approaches more advanced Bayesian topics, a deeper understanding of MCMC methods is required. In this section, we will begin by discussing simple Monte Carlo (MC) approaches like rejection sampling and importance sampling, and then proceed to Markov Chain Monte Carlo (MCMC) such as Gibbs sampling, Metropolis Hastings sampling, slice sampling, and Hamiltonian Monte Carlo. 
+
+* Topic 10: Customized and bespoke statistical models. Thus far, we have use the brms package for almost all of our analyses. While brms is an excellent tool, in some cases, especially in more advanced analyses, it is not possible to use a pre-defined statistical model, e.g. a linear or logistic regression model, and it is necessary to develop customized and bespoke probabilistic models directly in the Stan language itself. In this final section of the course, we will delve into how to write Stan code directly. We'll first explore the Stan code that brms creates, and we'll learn how to modify this code. We will then write customized models that perform nonlinear regression using Gaussian processes and radial basis functions, and also finite mixture models. Through these examples, we will learn how to write and analyse any type of custom statistical model and thus produce models that are well suited to whatever specialized problem we are working on.
+
+# GitHub resources
+
+Further resources for this training course can be found on Github at [mark-andrews/psbayes](https://github.com/mark-andrews/psbayes).
+

@@ -1,0 +1,14 @@
+<!--My fontawesome kit: Begin-->
+<script src="https://kit.fontawesome.com/a3b06f1214.js" crossorigin="anonymous"></script>
+<!--My fontawesome kit: End-->
+
+<script>
+  //get the path of the page to dynamically create links to GitHub
+  // e.g. "The full path of this page is: <span class="page-url"></span>"
+  document.addEventListener("DOMContentLoaded", function () {
+    const pageUrl = window.location.pathname;
+    document.querySelectorAll('.page-url').forEach(el => {
+      el.textContent = pageUrl;
+    });
+  });
+</script>

@@ -1,0 +1,116 @@
+/*Style sheet for training course listing page and each course's own pages*/
+
+/* The sidebar "On this page" navigation menu. */
+.sidebar nav[role="doc-toc"] ul>li>a.active {
+  color: black !important;
+  border: 0px !important;
+}
+
+/* The style for the header, i.e. the abstract/description and author/data */
+#title-block-header.quarto-title-block.default .description>p {
+  font-family: "EB Garamond", serif;
+  max-width: 66%;
+  font-size: 14pt;
+  margin-top: 20px;
+  /*margin: 20px auto 0 auto;*/
+}
+
+.quarto-title-meta {
+  max-width: 66%;
+  /*margin: 0 auto;*/
+}
+
+main .quarto-title-meta-contents p {
+  font-family: "EB Garamond", serif;
+  font-size: 14pt;
+  font-style: italic;
+}
+
+.inline-author-list {
+  list-style-type: none;
+  /* Remove bullets */
+  font-family: "EB Garamond", serif;
+  font-style: italic;
+  padding: 0;
+  margin: 0;
+  font-weight: 400;
+  color: #000;
+  font-size: 20px;
+  display: flex;
+  /* Display items in a row */
+}
+
+.inline-author-list li {
+  margin-right: 5px;
+  /* Add space between items */
+}
+
+.inline-author-list li::after {
+  content: ",";
+  /* Add a comma after each item */
+}
+
+.inline-author-list li:last-child::after {
+  content: "";
+  /* Remove the comma after the last item */
+}
+
+.course-info {
+  font-family: "EB Garamond", serif;
+  font-style: italic;
+  font-weight: 400;
+  color: #000;
+  font-size: 20px;
+  padding: 0;
+  margin: 0;
+}
+
+/* ----------------------------------------------------------------------------------*/
+
+/* ------------------- */
+/* course listing page */
+/* ------------------- */
+
+/* the blurb at the top of the page */
+#course-listings-head {
+  margin-bottom: 2em;
+}
+
+/* control the amount of space either side of each course's description */
+.quarto-listing-container-default {
+  margin-right: 0em;
+  margin-left: 0em;
+}
+
+/* this controls the amount of space to the left of the brief
+description of each courses */
+div.quarto-post>.metadata {
+  font-family: "EB Garamond", serif;
+  /*flex-basis: auto;*/
+  flex-basis: 0%;
+}
+
+#listing-course-listings {
+  font-family: "EB Garamond", serif;
+}
+
+/* the title of each course on the listing page */
+#listing-course-listings h3 {
+  font-family: "EB Garamond", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: italic;
+  text-align: left;
+  font-size: 24pt;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin-bottom: 8px;
+}
+
+/* Course category lists in sidebar */
+#quarto-margin-sidebar .quarto-listing-category {
+  font-family: "Work Sans", sans-serif;
+  font-size: 10pt; 
+}
+
+/* ----------------------------------------------------------------------------------*/

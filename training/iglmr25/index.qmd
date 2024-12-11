@@ -1,0 +1,59 @@
+---
+title: "Introduction to Generalized Linear Models using R"
+author: "Mark Andrews"
+subtitle: '3-4 June, 2025'
+date: '3 June, 2025'
+location: Online (Zoom)
+description: |
+  This two-day course introduces you to generalized linear models (GLMs) in R,
+  moving beyond the standard linear model to handle binary, ordinal, categorical,
+  and count-based outcomes. By exploring a variety of models —-- from logistic and
+  ordinal regressions to Poisson, negative binomial, and zero-inflated
+  models --- you’ll learn how to choose, implement, and interpret the right approach
+  for your data. 
+categories: ["Generalized linear models", "R"]
+---
+
+
+This two-day course provides a thorough, hands-on introduction to the theory and practice of generalized linear models (GLMs) using R.
+Moving beyond the basic assumptions of ordinary linear regression, GLMs allow us to model a wide range of data types, including binary, ordinal, categorical, and count-based outcomes. 
+By the end of the course, you will understand the core principles behind these models and know how to implement, interpret, and critically evaluate them.
+
+We will begin by reviewing the standard linear model as a conceptual foundation, ensuring that you can see clearly how GLMs extend from familiar territory. 
+From there, we will introduce binary logistic regression and then broaden the scope to ordinal and categorical outcomes. 
+On the second day, the focus shifts to count data models, including Poisson, binomial, and negative binomial regression, as well as zero-inflated variations that address excessive observations of zeros. 
+Throughout, we will demonstrate how to fit these models in R, assess their suitability, interpret their parameters, and compare competing models.
+
+This course is designed for those who already possess a basic understanding of linear modeling and are ready to take the next step in their statistical toolkit. Our approach emphasizes clarity, careful reasoning, and practical skills over unnecessary complexity, ensuring that you can confidently apply these techniques to your own research questions.
+
+## Course Programme
+
+### Day 1
+
+*Topic 1: The General Linear Model*  
+We start by reviewing the ordinary linear model, grounding ourselves in a framework you may already know. This foundation helps clarify the conceptual leaps involved in moving to generalized models.
+
+*Topic 2: Binary Logistic Regression*  
+Binary logistic regression is our first step into GLMs. We will derive the model, implement it in R using `glm()`, interpret parameter estimates, generate predictions, and perform nested model comparisons.
+
+*Topic 3: Ordinal Logistic Regression*  
+Extending the binary case, we introduce the cumulative logit ordinal model for outcomes that have a natural order but are not strictly numeric. We will use the `ordinal` package’s `clm()` function and discuss interpretation and model fit.
+
+*Topic 4: Categorical (Multinomial) Logistic Regression*  
+For categorical outcomes with more than two distinct levels, we turn to multinomial logistic regression. By building on concepts from the binary and ordinal cases, we show how to handle more complex outcome structures while still keeping the model’s interpretation manageable.
+
+### Day 2
+
+*Topic 5: Poisson Regression*  
+We begin Day 2 by focusing on models for count data, starting with the Poisson model. This model is widely used in various fields whenever the outcome represents the count of events.
+
+*Topic 6: Binomial Logistic Regression*  
+When counts have a fixed upper limit (such as the number of correct answers out of a known total), the binomial model is more appropriate than Poisson. We will show how to fit and interpret these models in R.
+
+*Topic 7: Negative Binomial Regression*  
+Next, we consider negative binomial models, which relax some of the restrictive assumptions of Poisson regression. These models handle overdispersion and often better fit real-world count data.
+
+*Topic 8: Zero-Inflated Models*  
+Finally, we address zero-inflated models for situations where counts of zero occur more often than a standard Poisson or negative binomial distribution would predict. We will discuss the latent variable framework and demonstrate how to implement these models in R.
+
+By the end of the course, you will have a solid grasp of the major GLMs used in modern statistical analysis. You will be able to identify when a particular model is appropriate, fit it using R, interpret the results responsibly, and critically evaluate its assumptions—skills that will serve you well in any field where data are more complex than a simple linear trend.

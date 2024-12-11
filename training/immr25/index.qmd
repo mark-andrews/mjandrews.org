@@ -1,0 +1,58 @@
+---
+title: "Introduction to Multilevel and Mixed Effects Models using R"
+author: "Mark Andrews"
+subtitle: '5-6 June, 2025'
+date: '5 June, 2025'
+location: "Online (Zoom)"
+description: |
+  This two-day course provides a theoretical and practical introduction to multilevel
+  and mixed effects models, including linear and generalized linear variants.
+  It covers how to understand, fit, and interpret these models in R, explore
+  both nested and crossed data structures, incorporate group-level predictors,
+  quantify explained variance, and perform power analyses. 
+categories: ["Multilevel models", "Mixed Effects", "R"]
+---
+
+
+This two-day course offers a thorough, hands-on introduction to multilevel and mixed effects models. We focus on the conceptual foundations and practical applications of these models, helping you understand not only how to fit multilevel and mixed effects models in R but also why and when they are appropriate to use. Although the primary emphasis is on multilevel and mixed effects linear models, we will also discuss multilevel and mixed effects generalized linear models.
+
+We start by examining *random effects* models, which show how multilevel approaches essentially model variation across groups, treating each group’s parameters as coming from a larger population distribution. Understanding random effects provides an essential framework for interpreting more general mixed effects models that include both fixed and random terms. We will also cover key concepts such as statistical shrinkage and intraclass correlation.
+
+We then build on this foundation by covering models for both hierarchically nested and crossed data, group-level predictors, how to quantify explained variance (R-squared), and how to perform power analysis.
+
+This course is suitable for researchers who are familiar with basic regression and are ready to extend their skills. 
+By the end, you will be able to apply multilevel modeling techniques to your own data with greater confidence and a clear understanding of the underlying principles.
+
+
+## Course Programme
+
+### Day 1
+
+*Topic 1: Random Effects Models*  
+We begin with a binomial random effects model to illustrate how multilevel models handle variability in group-level parameters. This lays the groundwork for understanding the logic behind modeling variability across clusters or groups.
+
+*Topic 2: Normal Random Effects Models*  
+Next, we consider normal random effects models. These models form the conceptual bridge to linear mixed effects models. Along the way, we cover statistical shrinkage and intraclass correlation, which quantifies the similarity of observations within groups.
+
+*Topic 3: Linear Mixed Effects Models*  
+With the fundamentals in place, we turn to linear mixed effects models themselves. We focus on varying intercept and varying slope regression models, discussing how to implement and interpret their parameters.
+
+### Day 2
+
+*Topic 4: Multilevel Models for Nested Data*  
+Many studies involve multiple levels of grouping (e.g., individuals within families within locations). We show how to specify and interpret models that account for these nested structures, using realistic examples to clarify the logic of adding layers of hierarchy.
+
+*Topic 5: Multilevel Models for Crossed Data*  
+Not all data fit neatly into nested hierarchies. Sometimes, groups overlap in more complex ways. We introduce methods for modeling these “crossed” data structures, highlighting what differs from the nested case.
+
+*Topic 6: Group-Level Predictors*  
+We then consider situations where some predictors vary at the group level rather than the individual level. We discuss how to include and interpret these predictors in a multilevel framework.
+
+*Topic 7: Explained Variance in Multilevel Models*  
+We introduce straightforward methods to quantify explained variance in multilevel models, providing insight into model fit and the practical significance of predictors at different levels.
+
+*Topic 8: Power Analysis and Sample Size Determination*  
+We demonstrate how to perform power analysis and determine optimal sample sizes for multilevel studies, taking into account hierarchical structures and the number of units at each level.
+
+
+By the end of this course, you will have the knowledge and tools to confidently apply multilevel models in your research, moving beyond basic regression toward more nuanced analyses that better capture the complexities of real-world data.

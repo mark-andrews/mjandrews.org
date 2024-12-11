@@ -1,0 +1,31 @@
+---
+toc: false
+title-block-banner: false
+citation: false
+license: ''
+listing:
+    - id: upcoming-training
+      contents:
+       - "../training/ibdar25/index.qmd"
+       - "../training/immr25/index.qmd"
+       - "../training/iglmr25/index.qmd"
+       - "../training/isurr25/index.qmd"
+      fields: [title, description]
+      sort: "date"
+      type: default
+      categories: false
+      sort-ui: false
+      filter-ui: false 
+---
+
+I am an associate professor in the Department of Psychology in Nottingham Trent University, where I teach statistics. 
+I also teach [training courses](/training) in advanced statistics and data science. 
+I have a [textbook](/book/ddsr) on data science. 
+My academic background is in computational cognitive science.
+
+
+## Upcoming training courses
+
+
+::: {#upcoming-training}
+:::

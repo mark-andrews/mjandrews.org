@@ -1,0 +1,49 @@
+project:
+  type: website
+  title: "mjandrews.org"
+  output-dir: "../build"
+
+execute:
+  freeze: true
+
+website:
+  search: false
+  back-to-top-navigation: true
+  title: "Mark Andrews"
+  favicon: assets/academic.png
+  site-url: https://www.mjandrews.org
+  repo-url: "https://github.com/mark-andrews/mjandrews.org"
+  repo-branch: "main"
+  repo-actions: 'none'
+  navbar:
+    # left:
+    #   - href: index.qmd
+    #     text: Home
+    right:
+      - href: training/index.qmd
+        text: "training courses"
+      - href: book/ddsr/index.qmd
+        text: book
+      - href: publications/index.qmd
+        text: publications
+      - href: presentations/index.qmd
+        text: presentations
+      - href: notes/index.qmd
+        text: notes
+      - href: about.qmd
+        text: about
+  page-footer:
+    left: |
+      © Mark Andrews 2021-{{< meta build_year >}}. [{{< var licence.short >}}]({{< var licence.url >}}). 
+
+format:
+  html:
+    copy-code: true
+    page-layout: full
+    theme: [litera, assets/main.scss]
+    css: 
+      - assets/main.css
+    toc: true
+    include-in-header: includes/header.html
+    filters:
+      - utils/footer-date.lua

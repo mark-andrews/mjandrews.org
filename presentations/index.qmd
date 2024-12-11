@@ -1,0 +1,210 @@
+---
+title: 'Presentations'
+---
+
+The presentations listed below are from academic conferences or
+symposia.
+
+::: {.publications-list}
+-   Diaz, J. A., Andrews, M., Delis, I. (2024). The Neural Signatures of the
+    Approximate Number System: An EEG Analysis. British Association for Cognitive
+    Neuroscience conference. City, University of London. 
+-   Andrews, M. (2024).  [Why we don't teach, and why we should and could teach,
+    Bayesian methods](talmo2024/). TALMO Symposium on *Teaching Bayesian Methods*.
+    \[[Event website](http://talmo.uk/2024/teachingbayesian.html)\]
+-   Andrews, M., Turk, R. (2023). Transitioning from SPSS to R teaching in a
+    large psychology department. TALMO Symposium on *Teaching (with) R*. \[[Event
+    website](http://talmo.uk/2023/rss.html)\]
+-   Andrews, M. (2021). [Using a custom R package to facilitate
+    teaching](lancaster2021). [Teaching R in
+    Psychology]{.journal_title}. Department of Psychology, Lancaster
+    University. Online Symposium. July 19, 2021.
+-   Andrews, M. (2020). Introduction to Bayesian Data Analysis.
+    [Quantitative and Qualitative Research Methods MSc in Health
+    Psychology Module]{.journal_title}. Institute of Epidemiology and
+    Health Care, University College London. London, United Kingdom.
+    February 11, 2020.
+-   Andrews, M. (2019). Doing open, transparent and reproducible
+    research. [Implications of Open Science for Quantitative and
+    Qualitative Methods]{.journal_title}. British Psychological Society
+    Mathematical, Statistics, and Computing Psychology Section.
+    Leicester, United Kingdom. December 10, 2019.
+-   Diaz, J. A., Andrews, M. (2019). Approximate Number System and
+    Mathematical Achievement: A Drift Diffusion Model Analysis. [British
+    Psychological Society Cognitive and Developmental Psychology Annual
+    Conference]{.journal_title}. Cognitive Psychology and Developmental
+    Psychology sections of the British Psychological Society.
+    Stoke-on-Trent, United Kingdom. September 4, 2019.
+-   Andrews, M., Baguley, T. (2018). Bayesian Data Analysis for Social
+    Scientists. [LMU Workshop on Bayesian Analysis]{.journal_title}.
+    University of Munich. Munich, Germany. September 24, 2018.
+-   Andrews, M. (2018). A Bayesian Model of Memory for Text. [British
+    Psychological Society Cognitive Psychology Section Annual
+    Conference]{.journal_title}. British Psychological Society.
+    Liverpool, United Kingdom. August 30, 2018.
+-   Andrews, M. (2018). Open, transparent and reproducible research with
+    RMarkdown, Jupyter Notebooks, and Git. [British Psychological
+    Society Cognitive and Developmental Psychology Annual
+    Conference]{.journal_title}. British Psychological Society.
+    Nottingham, United Kingdom. May 2, 2018.
+-   Andrews, M. (2017). Open, transparent, and reproducible research
+    with RMarkdown, Jupyter notebooks, and Git. [Symposium on Improving
+    Research Integrity and Reproducibility through Openness and
+    Transparency]{.journal_title}. University College Cork. Cork,
+    Ireland. October 23, 2017.
+-   Andrews, M., Baguley, T. (2017). Teaching Bayesian Data Analysis to
+    Social Scientists. [ESRC Conference on Bayesian Data Analysis in the
+    Social Sciences Curriculum]{.journal_title}. Nottingham Trent
+    University. Nottingham, United Kingdom. September 29, 2017.
+-   Andrews, M. (2017). Introduction to Bayesian Inference. [British
+    Psychological Society West Midlands Branch
+    Workshop]{.journal_title}. Coventry University. Coventry, United
+    Kingdom. September 8, 2017.
+-   Andrews, M. (2017). The Art and Science of P-value Hacking.
+    [Statistical Methods for Linguistics and Psychology Summer
+    School]{.journal_title}. University of Potsdam. Potsdam, Germany.
+    August 31, 2017.
+-   Andrews, M. (2017). A Bayesian Model of Memory for Text. [39th
+    Annual Meeting of the Cognitive Science Society]{.journal_title}.
+    London, United Kingdom. July 28, 2017.
+-   Andrews, M., Wider, C. (2017). A Hierarchical Diffusion Model
+    Analysis of the Approximate Number System. [50th Annual Meeting of
+    the Society for Mathematical Psychology]{.journal_title}. University
+    of Warwick. Coventry, United Kingdom. July 25, 2017.
+-   Andrews, M. (2017). Introduction to Likelihood and Bayesian
+    Inference. [Workshop on Bayesian Analysis in Social Science
+    Research]{.journal_title}. University of Kent. Kent, United Kingdom.
+    July 6, 2017.
+-   Andrews, M. (2013). Probabilistic Language Modeling with Hidden
+    Stochastic Automata. [35th Annual Conference of the Cognitive
+    Science Society]{.journal_title}. Berlin, Germany. August 3, 2013.
+-   Andrews, M. (2017). Psychology and scientific method: Replication
+    crisis or revolution?. [British Psychological Society Annual
+    Conference 2017]{.journal_title}. Brighton, United Kingdom. May 4,
+    2017.
+-   Andrews, M., Baguley, T. (2017). Teaching Bayesian Data Analysis to
+    Social Scientists. [Bayes@Lund 2017]{.journal_title}. Lund
+    University. Lund, Sweden. April 20, 2017.
+-   Andrews, M. (2017). Introduction to Bayesian Data Analysis.
+    [Quantitative and Qualitative Research Methods MSc in Health
+    Psychology Module]{.journal_title}. Institute of Epidemiology and
+    Health Care, University College London. London, United Kingdom.
+    January 24, 2017.
+-   Andrews, M., Baguley, T. (2016). What is the replication crisis and
+    why does it matter? A Bayesian perspective. [7th ESRC Research
+    Methods Festival]{.journal_title}. University of Bath. Bath, United
+    Kingdom. July 7, 2016.
+-   Andrews, M. (2016). A GNU Kind of Psychological Science: Open and
+    reproducible research with Wilhelm and www.cognitionexperiments.org.
+    [Department of Psychology Seminar Series]{.journal_title}.
+    Department of Psychology, Nottingham Trent University. Nottingham,
+    United Kingdom. February 24, 2016.
+-   Andrews, M. (2014). Probabilistic Modeling of Memory for Texts.
+    [British Psychological Society Cognitive Psychology Section Annual
+    Conference]{.journal_title}. Nottingham Trent University.
+    Nottingham, United Kingdom. September 3, 2014.
+-   Andrews, M. (2013). Probabilistic Modeling of Semantic
+    Representation. [Department of Psychology Seminar
+    Series]{.journal_title}. Department of Psychology, Warwick
+    University. Coventry, United Kingdom. April 25, 2013.
+-   Andrews, M. (2012). Inferring a Probabilistic Model of Semantic
+    Memory from Word Association Norms. [Workshop on Semantic Networks
+    and Word Associations]{.journal_title}. Faculty of Psychology and
+    Educational Science, KU Leuven. Leuven, Belgium. October 11, 2012.
+-   Andrews, M., Diaz, J. A. (2012). Modeling the role of background
+    knowledge in memory for texts. [18th Annual Conference on
+    Architectures and Mechanisms for Language
+    Processing]{.journal_title}. Riva del Garda, Italy. September 8,
+    2012.
+-   Andrews, M., Vigliocco, G. (2009). Learning Semantic Representations
+    with Hidden Markov Topic Models. [31st Annual Meeting of the
+    Cognitive Science Society]{.journal_title}. Amsterdam, Netherlands.
+    July 30, 2009.
+-   Andrews, M. (2012). Probabilistic Modeling of Semantic
+    Representation. [Center for Mind/Brain Sciences Seminar
+    Series]{.journal_title}. Center for Mind/Brain Sciences, University
+    of Trento. Rovereto, Italy. April 12, 2012.
+-   Andrews, M., Vinson, D. P., Vigliocco, G. (2008). Inferring a
+    Probabilistic Model of Semantic Memory from Word Association Norms.
+    [The 30th Annual Conference of the Cognitive Science
+    Society]{.journal_title}. Washington, DC, USA. July 25, 2008.
+-   Andrews, M., Vigliocco, G. (2011). Learning semantic representations
+    from sequential and syntactic statistics. [17th Meeting of the
+    European Society for Cognitive Psychology]{.journal_title}. San
+    Sebastian, Spain. September 30, 2011.
+-   Andrews, M., Vigliocco, G., Vinson, D. P. (2007). Evaluating the
+    Contribution of Intra-Linguistic and Extra-Linguistic Data to the
+    Structure of Human Semantic Representations. [The 29th Annual
+    Conference of the Cognitive Science Society]{.journal_title}.
+    Nashville, Tennessee, USA. August 3, 2007.
+-   Andrews, M., Webb, J. (2010). A Hierarchical Logistic-Wald Model for
+    the Analysis of Lexical-Decision Data. [43rd Annual Meeting of the
+    Society for Mathematical Psychology]{.journal_title}. Portland,
+    Oregon, USA. August 8, 2010.
+-   Andrews, M., Vigliocco, G., Vinson, D. P. (2005). The Role of
+    Attributional and Distributional Information in Semantic
+    Representation. [27th Annual Conference of the Cognitive Science
+    Society]{.journal_title}. Stresa, Italy. July 22, 2005.
+-   Vigliocco, G., Andrews, M. (2009). Learning Semantic Representation
+    from Experience and Language. [Cambridge Institute for Language
+    Research Seminar Series]{.journal_title}. University of Cambridge.
+    Cambridge, UK. March 2, 2009.
+-   Andrews, M., Vigliocco, G., Vinson, D. P. (2008). Integrating
+    Statistics from the World and from Language to Learn Semantic
+    Representations. [Workshop on Machine Learning Meets Human
+    Learning]{.journal_title}. Whistler, British Columbia, Canada.
+    December 12, 2008.
+-   Andrews, M., Vigliocco, G., Vinson, D. P. (2008). Integrating
+    statistics from the world and from language to learn semantic
+    representations. [14th Annual Conference on Architectures and
+    Mechanisms for Language Processing]{.journal_title}. Queen\'s
+    College, Cambridge. Cambridge, United Kingdom. September 5, 2008.
+-   Andrews, M. (2001). Language Learning by Vector Field Estimation.
+    [23rd Annual Conference of the Cognitive Science
+    Society]{.journal_title}. Edinburgh, United Kingdom. August 3, 2001.
+-   Andrews, M. (2008). The Joint Contribution of Experience and
+    Language in Shaping Meaning Representations. [XXIX International
+    Congress of Psychology]{.journal_title}. Berlin, Germany. July 23,
+    2008.
+-   Andrews, M. (2006). A Unified Account of Population-Based Stochastic
+    Optimization Methods. [Workshop on Towards a New Reinforcement
+    Learning]{.journal_title}. Whistler, British Columbia, Canada.
+    December 8, 2006.
+-   Andrews, M. (2006). The Role of Attributional and Distributional
+    Information in Semantic Representation. [School of Informatics
+    Seminar Series]{.journal_title}. School of Informatics, University
+    of Edinburgh. Edinburgh, United Kingdom. March 24, 2006.
+-   Andrews, M. (2004). Advanced probabilistic models for speech and
+    language. [Foresight Cognitive Systems Initiative Workshop on
+    Speech, Language and Human Computer Interaction]{.journal_title}.
+    Robinson College, University of Cambridge. Cambridge, United
+    Kingdom. June 28, 2004.
+-   Andrews, M. (2001). Language Learning by State-Space Reconstruction.
+    [5th International Conference on Cognitive and Neural
+    Systems]{.journal_title}. Department of Cognitive and Neural
+    Systems, Boston University. Boston, Massachusetts, USA. May 31,
+    2001.
+-   Andrews, M. (2001). Language Learning by Vector Field estimation.
+    [7th Annual Conference of the Cognitive Neuroscience
+    Society]{.journal_title}. New York, New York, USA. April 15, 2001.
+-   Andrews, M. (2001). Language Learning and Language Learnability.
+    [14th CUNY Sentence Processing Conference]{.journal_title}.
+    University of Pennsylvania. Philadelphia, Pennsylvania, USA. March
+    16, 2001.
+-   Andrews, M. (2000). Nonlinear Dynamics of Sentence Comprehension.
+    [6th Annual Conference on Architectures and Mechanisms for Language
+    Processing]{.journal_title}. Leiden, Netherlands. September 22,
+    2000.
+-   Andrews, M. (2000). Semantic Processing in Neural Systems. [7th
+    Annual Meeting of the Cognitive Neuroscience
+    Society]{.journal_title}. San Francisco, California, USA. April 15,
+    2000.
+-   Andrews, M., Keil, F. C. (1998). Conceptual organization and
+    discourse processing. [8th Annual Meeting of the Society for Text &
+    Discourse]{.journal_title}. Madison, Wisconson, USA. July 30, 1998.
+-   Andrews, M., Levin, D., Field, D. J. (1996). Face Space: Vectors of
+    Emotional Expression. [Annual Conference of Association for Research
+    in Vision and Opthalmology]{.journal_title}. Fort Lauderdale,
+    Florida, USA. April 23, 1996.
+
+:::

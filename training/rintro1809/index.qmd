@@ -1,0 +1,60 @@
+---
+title: Introduction to R
+date: September 19, 2018
+description: |
+  This one-day workshop offers a comprehensive introduction to R, aimed at beginners. The course covers R fundamentals, including RStudio, R commands, data structures, functions, and data visualization using ggplot2. Participants will also learn how to perform statistical data analysis in R, focusing on linear regression and Anova models.
+subtitle: September 19, 2018
+location: Nottingham, UK
+author: Mark Andrews
+categories:
+- R 
+- RStudio
+
+---
+
+In this one day workshop, we will provide a friendly but comprehensive
+introduction to R. It is intended to provide people who are new to R with all
+the basics and fundamentals that they need to get up and running with R so that
+they can use it on a regular basis.  We will provide an introduction to R
+fundamentals such as an overview of RStudio, R commands and operations,
+assignment, data structures, functions, scripts, packages, reading in data
+files, viewing and summarizing data, and data visualization using ggplot2. We
+will also cover how to do statistical data analysis in R, particularly linear
+regression and Anova models.
+
+# Schedule
+
+- 09:30-09:50 What is R, and why should we care?
+- 09:50-10:10 Installation and setup 
+- 10:10-10:30 Guided tour of RStudio 
+- 10:30-11:00 Basic R commands and workflow 
+- 11:00-11:15 Break
+- 11:15-11:30 Working with data (reading-in, viewing, summarizing data)
+- 11:30-11:45 Basic plotting and visualization
+- 11:45-12:30 Basic statistical analyses (linear regression, anova, t-tests, correlations)
+- 12:30-13:30 Break
+- 13:30-14:30 More working with data (the tidyverse way, i.e. using https://dplyr.tidyverse.org/ and https://tidyr.tidyverse.org/) 
+- 14:30-15:30 More data visualization (learning to love ggplot)
+- 15:30-16:30 More statistical analyses (including logistic regression, multilevel models)
+
+
+# Installing the necessary software
+
+The required software for these workshops are all free and open source
+and will run identically on Windows, Mac OS X, and Linux platforms.
+
+There are four main pieces of software to install:
+
+-   [R](https://www.r-project.org/): An environment for statistical
+    computing.
+-   [Rstudio](https://www.rstudio.com/): An integrated development
+    environment for using R.
+-   [tidyverse](https://www.tidyverse.org/): A bundle of R packages to
+    use R the modern way.
+-   Miscellaneous R packages: Other vital, or just handy, R packages.
+
+
+# GitHub resources
+
+Further resources for this training course can be found on Github at [mark-andrews/introduction-to-R](https://github.com/mark-andrews/introduction-to-R).
+

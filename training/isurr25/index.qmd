@@ -1,0 +1,51 @@
+---
+title: "Introduction to Statistics using R and RStudio"
+author: "Mark Andrews"
+location: Online (Zoom)
+subtitle: '29-30 May, 2025'
+date: '29 May, 2025'
+description: |
+  This two-day course offers a comprehensive introduction to R and RStudio for
+  data science and statistical analysis in both academic and professional
+  contexts. Participants will learn how to set up and efficiently work with
+  RStudio, learn the fundamentals of the R language and environment, learn how
+  to use R for data cleaning and data visualization, learn how to create reproducible
+  reports with RMarkdown and Quarto, and how to conduct a a wide range of
+  commonly used statistical analyses.
+categories: ["R", "RStudio", "Data Wrangling", "Data Visualization", "Linear Regression", "ANOVA"]
+---
+
+R is a major tool in modern data analysis and statistics, used extensively in academic research as well as by data analysts in the public and private sectors. 
+Its flexibility, comprehensive ecosystem of packages, and active community have made it highly suited for all aspects of data analysis.
+
+This two-day online course offers a thorough, hands-on introduction to working with R and RStudio, which is the most widely used integrated development environment for R. 
+By participating, you’ll gain the foundational skills needed to handle real-world datasets, develop reproducible analytical workflows, create effective data visualizations, and conduct a wide range of common statistical techniques. 
+Whether you’re an early-career researcher, an academic looking to broaden your methods, or a professional data analyst interested in robust statistical tooling, this course equips you to move confidently toward more advanced analysis.
+
+
+## Course Programme
+
+### Day 1
+
+*Topic 1: Guided Tour of RStudio*  
+Learn how to set up and navigate RStudio’s key features. We’ll discuss best practices for organizing your workspace, working with scripts, and using the console efficiently.
+
+*Topic 2: Fundamentals of Coding in R*  
+Get comfortable with R’s core concepts. You’ll learn how to install and manage packages, create and manipulate variables, write and run R scripts, and import and summarize datasets.
+
+*Topic 3: Data Cleaning and Preprocessing*  
+Discover how to prepare real-world data for analysis. Using tools like `dplyr`, you’ll learn techniques for filtering, selecting, reshaping, and summarizing data, ensuring it’s ready for meaningful interpretation.
+
+### Day 2
+
+*Topic 4: Data Visualization*  
+Explore `ggplot2` to create clear, informative plots. We’ll cover scatterplots, boxplots, histograms, and introduce the principles of effective visual communication.
+
+*Topic 5: RMarkdown & Quarto*  
+Learn to combine analysis and documentation in a single, reproducible document. We’ll show you how to generate reports, presentations, and more, seamlessly integrating code, text, figures, and tables.
+
+*Topic 6: Introduction to Statistics using R*  
+Gain familiarity with basic statistical methods in R. We’ll cover widely used techniques such as t-tests, correlations, linear regression, and ANOVA, giving you a taste of R’s extensive statistical capabilities.
+
+
+By the end of the course, you’ll have the tools and understanding needed to work effectively in R, from initial data exploration through producing compelling analyses and reports. This foundation sets the stage for more advanced techniques and methods as your needs evolve.

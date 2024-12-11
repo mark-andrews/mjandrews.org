@@ -1,0 +1,953 @@
+---
+title: "How to Make an R package"
+author: Mark Andrews
+date: "2021, 12, 3, 08:40"
+description: |
+  This post provides a guide to making R packages.
+  The example R package that we make is small and simple, but one that has all, or almost all, of the main and general R package features.
+  The guide is broken down into a series of steps beginning with creating a bare bones R package skeleton, and ending with pushing the completed package to GitHub.
+  It covers how to add code and data to a package, how to write code tests, how to create documentation, including vignettes, how to make a `pkgdown` website, and other key features of R packages.
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+```{r, echo=F}
+library(tidyverse)
+
+set.seed(101010101)
+
+all_packages <- available.packages(repos = "https://www.stats.bris.ac.uk/R/") %>%
+  as_tibble()
+
+gpl_licences <- all_packages %>%
+  filter(str_detect(License, pattern = regex("gpl", ignore_case = TRUE)))
+
+mit_licences <- all_packages %>%
+  filter(str_detect(License, pattern = regex("mit", ignore_case = TRUE)))
+
+cat_file <- function(filename) {
+  readLines(filename) %>%
+    cat(sep = "\n")
+}
+```
+
+Creating an R package is the best way to organize, document, and distribute your R code and its accompanying data.
+The key steps involved in creating an R package are not difficult to learn, and they are often made even easier with tools provided by packages like [`usethis`](https://cran.r-project.org/package=usethis) or [`devtools`](https://cran.r-project.org/package=devtools), and by tools in the RStudio IDE.
+
+This post provides a guide to building a small R package, but one with almost all the key features of any R package.
+I've broken this guide into a series of 11 consecutive steps (from step 0 to step 10), beginning with the creation of a bare-bones R package skeleton, and ending with publicly hosting the package on GitHub, from which it can then be installed by anyone.
+The demo R package that is made here is now available [on GitHub](https://github.com/mark-andrews/rdemopkg), and its `pkgdown` website is available [on github.io](https://mark-andrews.github.io/rdemopkg/).
+
+The only packages that are required to follow this guide step by step are [`usethis`](https://cran.r-project.org/package=usethis), [`fs`](https://cran.r-project.org/package=fs) (for viewing the file tree in the package), and [`pkgdown`](https://cran.r-project.org/package=pkgdown).
+Some [`tidyverse`](https://cran.r-project.org/package=tidyverse) code is used in some examples, but using `tidyverse` is optional.
+
+
+# Step 0: Create an R package skeleton
+
+An R package is essentially just a directory (folder) with some meta information files, sub-directories with specific names like `R/` and `data/` etc, and inside these sub-directories, there are files with R code or data files.
+It is not always quite as simple as that, but that is the basic general structure.
+We could therefore create an R package initially by manually creating a directory, adding sub-directories of particular names, adding blank files for the meta information files, adding blank R code files, etc.
+However, instead of doing this manually, we can use the function named `create_package` in the `usethis` package to do these routine steps for us.
+
+For example, to create an R package called `rdemopkg` inside your current R working directory, you would do the following:
+```{r, eval=FALSE}
+usethis::create_package("rdemopkg")
+```
+Alternatively, if you want to put the `rdemopkg` directory in an already existing directory named `code/` inside your home directory, you would do the following:
+```{r, eval=FALSE}
+usethis::create_package("~/code/rdemopkg")
+```
+
+By default, when working in RStudio, `create_package` will create the R package skeleton and also make that directory an RStudio project, and also open up the RStudio project in a new RStudio session.
+If you issue the `create_package` command when already working in an RStudio project and ask it to create the directory in your working directory, you will therefore by default be asking it to put an RStudio project inside another RStudio project.
+It can do this, but it will warn you that it is a bad idea.
+Normally, therefore, we would run the `create_package` command outside on an RStudio project, and make sure to choose a directory location for the R package that is not inside another RStudio project.
+
+```{r, echo=F, results='hide'}
+if (fs::dir_exists("~/code/rdemopkg")) fs::dir_delete("~/code/rdemopkg")
+
+usethis::create_package("~/code/rdemopkg", rstudio = TRUE)
+```
+
+Assuming that we chose to create the bare-bones R package inside `~/code/rdemopkg`, what files and directories are created can be seen with `dir_tree` function from the `fs` package, where we use `all = TRUE` to list hidden files too:
+```{r, comment=''}
+library(fs)
+dir_tree("~/code/rdemopkg", all = TRUE)
+```
+As we can see, it has created 6 files or directories.
+
+* The `demopkg.Rproj` and `.gitignore` files are the two files routinely created when a directory is turned into an RStudio project. 
+* The `.Rbuildignore` is file not unlike `.gitignore`.
+  While `.gitignore` tells Git to ignore certain files if we eventually turn our project into a Git repository, `.Rbuildignore` tells the R to ignore certain files when it builds our R package into a bundled R package.
+* The `R/` directory is an empty directory where we will eventually put our R code files.
+* `NAMESPACE` is one of the R package meta information files mentioned above. It primarily governs which functions or other pieces of code are exported from the package, but also which functions from other packages are imported for use within the package.
+  While `NAMESPACE` is very important, we don't need to add anything to it ourselves.
+  All the necessary code will get added automatically by reading the `roxygen2` code that we write for the documentation of our code, as we will see below.
+* Finally, the `DESCRIPTION` is another meta information file that contains important details about the R package, such as the name, title, description, authors, packages dependencies, and so on.
+  As we will see, we will partly edit this file manually, and partly edit it via tools from the `usethis` package. 
+
+
+Assuming, we issued the command `usethis::create_package('~/code/rdemopkg')` inside of RStudio, we will have created an RStudio project for our bare-bones package and opened this project in a new RStudio session, and `code/rdemopkg` will now be our working directory.
+We can now begin our fleshing out the R package. 
+To do this, we will make a lot of use of `usethis`, and so we should import this package with the `library` command.
+```{r}
+library(usethis)
+```
+
+```{r, echo=F}
+knitr::opts_knit$set(root.dir = "~/code/rdemopkg")
+```
+
+# Step 1: Set our package software licence
+
+It is a good habit to always create a licence for our package.
+It is very likely that you will want to share your code with others, and the licence sets the terms and conditions of how this is done.
+Almost all R code is distributed using free and open source (FOSS) software licences.
+For example, as of `r format(Sys.Date(), format = '%B %-d, %Y')`, of the `r nrow(all_packages)` packages on [CRAN](https://cran.r-project.org/web/packages/available_packages_by_name.html), all but `r all_packages %>% filter(License_restricts_use == 'yes') %>% nrow()` of them are listed as restricting the end users usage in some way.
+All other licences are kinds of free and open source licences.
+For example, there are `r nrow(gpl_licences)` packages (`r round(100*nrow(gpl_licences)/nrow(all_packages))`%) licensed using some variant of the [GNU public licence (GPL)](https://en.wikipedia.org/wiki/GNU_General_Public_License), which is the major [copyleft](https://en.wikipedia.org/wiki/Copyleft) intellectual property licence.
+Other very popular licences for R packages include the [MIT license](https://en.wikipedia.org/wiki/MIT_License), with `r nrow(mit_licences)` CRAN packages (`r round(100*nrow(mit_licences)/nrow(all_packages))`%) licensed using some variant of this licence, or the [Apache licence](https://en.wikipedia.org/wiki/Apache_License).
+Thus, the GPL and MIT licences together account for about `r round(100*(nrow(mit_licences) + nrow(gpl_licences))/nrow(all_packages))`% of all packages on CRAN.
+
+Choosing a software licence can in principle be a complicated matter, but in practice for R packages, it is usually a very simple matter or choosing one of the popular choices like GPL or MIT.
+If we, for example, decide to go with a GPL licence, such as the latest version (Version 3) of the full GPL licence, we can use the following command from `usethis` to do the necessary setup.
+```{r}
+use_gpl3_license()
+```
+This adds a line specifying the use of the GPL licence to `DESCRIPTION`, which we will see in the next step in this guide, and also adds a copy of the GPL v3 licence, named `LICENSE.md` to the R package.
+
+By contrast, were we to choose the MIT licence, we could do the following:
+```{r, eval=F}
+use_mit_license()
+```
+This will also add a line about the chosen licence to `DESCRIPTION`, and also add a copy of the licence as `LICENCE.md`, as well as an extra licence file named `LICENCE`, to the package.
+
+For the purposes of this present guide, I will assume we are using the GPL v3 licence. 
+
+# Step 2: Edit DESCRIPTION
+
+As mentioned, the previous step applied a minor edit to `DESCRIPTION`.
+Let us now complete the necessary other kinds of edits that we generally need to make to `DESCRIPTION`.
+First, let us look at the file.
+Having chosen the GPL v3 licence, the `DESCRIPTION` file looks like this:
+```{r, echo=FALSE, comment=''}
+cat_file("./DESCRIPTION")
+```
+
+For now, we will change the `title`, `Authors@R`, and `Description` fields.
+The fields `Encoding`, `Roxygen`, `RoxygenNote` can be left as they are.
+The only remaining field is `Version`.
+We can leave this as it is `0.0.0.9000` for now, but we will return to this matter below.
+
+
+## Title 
+
+The title should be a short informative title about what the package does.
+It should be written in title case.
+It should be no more than 65 characters.
+It should not end with a full stop (aka, period).
+It should also not include the package name.
+In this guide, the R functions we will make, solely to keep things simple, will be for calculating logarithms of odds and some related functions, and so therefore a suitable title might be something like *Functions for Calculating Log Odds and Related Quantities*.
+
+## Authors
+
+The `Authors@R` is where we specify they package authors.
+This field requires us to write R code (hence the `@R` in the field name), specifically using the `utils::person` function.
+This function takes input arguments specifying a person's details, such as their given and family names, email, etc.
+Here is an example of it in action:
+```{r}
+person(given = "Mark", family = "Andrews", email = "mark.andrews@ntu.ac.uk")
+```
+The help page for `utils::person` provides all the possible input arguments and what they specify.
+For now, we will use just four: `given`, `family`, `email`, `role`.
+We can also use `middle` to specify a middle name.
+What the `given`, `family`, `email`, and `middle` fields represent is obvious.
+On the other hand, the `role` field should specify the person's role in the package development.
+We see that in the relevant placeholder text in `DESCRIPTION`, the roles are `aut` and `cre`, for author and creator, respectively.
+Mostly, any person listed here will be listed as having the role of `aut`.
+Usually, there is just one creator, and that is usually the person who creates and initializes the project.
+There is a remarkably long list of [possible roles](https://www.loc.gov/marc/relators/relaterm.html) to choose from.
+However, the help page for `utils::person` specifies around 10 roles as the common roles for persons involved in R package development.
+
+In the placeholder text for `person` in the `DESCRIPTION`, we see that the [ORCID](https://en.wikipedia.org/wiki/ORCID) ID is specified using the `comment` argument.
+The `comment` argument allows for arbitrary information to be included.
+There is no necessity to provide an ORCID ID, but if it is provided, some package listings will provide a link to the ORCID account.
+
+For present purposes, I will just use the following:
+```{r, results='hide'}
+person(
+  given = "Mark", family = "Andrews",
+  email = "mark.andrews@ntu.ac.uk",
+  role = c("aut", "cre")
+)
+```
+
+If there are multiple authors, these can be added by providing a vector of `person` statements using the usual `c()` function, e.g.
+```{r, results='hide'}
+c(
+  person(
+    given = "Mark", family = "Andrews",
+    email = "mark.andrews@ntu.ac.uk",
+    role = c("aut", "cre")
+  ),
+  person(
+    given = "Jane", family = "Doe",
+    email = "jane.doe@ntu.ac.uk",
+    role = c("aut")
+  )
+)
+```
+
+## Description
+
+In the [official guide to writing R packages](https://cran.r-project.org/doc/manuals/r-release/R-exts.html), it specifies that the `Description` field of `DESCRIPTION` should give *a comprehensive description of what the package does....intelligible to all the intended readership*.
+It also specifies that it should be only one paragraph, but will usually be made of several complete sentences.
+It recommends against starting with the name of the package, as in *Foobar is a package for ...*, or even starting with *This package* as in *This package provides functions ...*.
+
+When writing the paragraph for `Description`, it will almost always be necessary to write over multiple lines.
+It is recommended that each line not exceed 80 characters, and that subsequent lines after the first be indented by four spaces.
+
+For present purposes, I will use the following very simple paragraph: *Functions for calculating the odds, logarithm of odds, and their inverses. Logarithms of odds are also known as logits.*
+
+
+```{bash,echo=F}
+sed 's/^Title: .*$/Title: Functions for Calculating Log Odds and Related Quantities/' DESCRIPTION |
+  sed '/Authors/{n;s/.*/    person(given="Mark", family="Andrews",\n           email="mark.andrews@ntu.ac.uk",\n           role = c("aut", "cre"))/}' |
+  grep -v 'comment = c' |
+  sed 's/^Description: .*/Description: Functions for calculating the odds, logarithm of odds, and their\n    inverses. Logarithms of odds are also known as logits./' > tmpfile
+  
+mv tmpfile DESCRIPTION
+```
+
+Having made this changes, our `DESCRIPTION` is now as follows:
+```{r, echo = FALSE, comment = ''}
+cat_file("DESCRIPTION")
+```
+
+## Version numbering
+
+In the [official guide to writing R packages](https://cran.r-project.org/doc/manuals/r-release/R-exts.html), it specifies that the `Version` field of `DESCRIPTION` should be *a sequence of at least two (and usually three) non-negative integers separated by single ‘.’ or ‘-’ characters*.
+Beyond these minimial requirements, it is widely recommended that [semantic versioning](https://semver.org/) be used.
+This uses the form `<major>.<minor>.<patch>`, where `<major>` and `<minor>` and `<patch>` are non-negative integers.
+Without going into details, `<major>` indicates major, often backwards incompatible, changes.
+The `<minor>` number indicates added functionality that is backwards compatible.
+The `<patch>` number indicates a fix of improvement of existing functionality.
+
+Arguably, in its near barebones state, an R package's version should be `0.0.0`.
+The `.9000` appended to the end of this is a convention recommended by the developers of R's `devtools` package, see [here](https://github.com/r-lib/devtools/issues/632) and [here](https://r-pkgs.org/description.html#version), and elsewhere.
+According to this, `0.0.0.9000` indicates that the package is under development and has not be released yet.
+We will therefore leave the `Version` in `DESCRIPTION` at `0.0.0.9000`, but as soon as we have added our intended functionality and are ready to make our package public, see below, we will use `0.1.0` as per [this semantic version guideline](https://semver.org/#how-should-i-deal-with-revisions-in-the-0yz-initial-development-phase).
+
+# Step 3: Add package dependencies
+
+Usually, the functions and other pieces of code that our R package provides will depend on functions and other code from other packages.
+We need to explicitly specify these dependencies in the `DESCRIPTION`.
+There are two principal types of dependencies: those listed using the `Imports` field, and those listed under `Suggests` field.
+Those listed using `Imports`, will be installed by anyone who installs our package and are required for end users to be able to use the package.
+On the other hand, the packages listed by `Suggests` are not strictly required and will not necessarily be installed when a user installs our package.
+The `Suggests` field can be used to provided optional extra functionality by the package, or list packages that are required for use by the package developers, examples of which we will in fact see below.
+
+Although we can manually edit `DESCRIPTION` to add our `Imports` or `Suggests` dependencies, we can instead use the `use_package` command from `usethis` to help us do this.
+For example, if we want to state an `Imports` dependency on the package `dplyr`, we would do the following:
+```{r}
+use_package("dplyr")
+```
+If we now look at `DESCRIPTION` again, we see that `dplyr` has been added under the `Imports` field at the end of the file:
+```{r, echo = FALSE, comment = ''}
+cat_file("DESCRIPTION")
+```
+By default, `use_package` will list the dependent package under `Imports` given that by default the `type` argument of `use_package` takes the value of `Imports`.
+Therefore, to list the package under `Suggests`, we would use `type = 'Suggests'` inside `use_package`.
+For present purposes, we just need to specify `Imports`, and so we will leave `type` at its default value of `"Imports"`.
+
+We can, and should, specify minimum version numbers for the package we are dependent upon.
+For example, if we needed at least `dplyr` version `1.0.0`, we could do the following:
+```{r}
+use_package("dplyr", min_version = "1.0.0")
+```
+The relevant lines in `DESCRIPTION` are now changed to the following:
+```{bash, echo=FALSE, comment=''}
+grep -A1 '^Imports:' DESCRIPTION
+```
+We can also ask for whatever version we are currently using on our system, by specifying `min_version = TRUE`.
+For example, I am currently using `dplyr` version `r packageVersion('dplyr')`, and so doing
+```{r}
+use_package("dplyr", min_version = TRUE)
+```
+leads to the following relevant lines in `DESCRIPTION`:
+```{bash, echo=FALSE, comment=''}
+grep -A1 '^Imports:' DESCRIPTION
+```
+
+Although for this present guide, no dependencies are in fact required, I will nonetheless ask for `dplyr`, `tidyr` and `tibble`, and require the current versions on my system be used as the minimum versions.
+Having just asked for the current version of `dplyr` as a dependency, I can now add a similar line for `tidyr` and another for `tibble`:
+```{r}
+use_package("tidyr", min_version = TRUE)
+use_package("tibble", min_version = TRUE)
+```
+Note that we must use separate `use_package` command for each package.
+We can not provide a vector of package names to `use_this`.
+
+The relevant lines of `DESCRIPTION` are now:
+```{bash, echo=FALSE, comment=''}
+grep -A3 '^Imports:' DESCRIPTION
+```
+Note the required commas after the lines specifying `dplyr` and `tidyr`.
+The `use_package` will take care of this for us, but as we are always free to manually edit `DESCRIPTION`, we must separate our package dependencies with commas when editing manually.
+It actually not necessary that each package dependency be specified on its own line, as is the case here, but there must be commas separating them.
+
+## `tidyverse` dependencies
+
+For [`tidyverse`](https://cran.r-project.org/package=tidyverse) users who use `tidyverse` tools in the code in their R package, it may seem like a good idea to specify `tidyverse` itself as a dependency.
+This is not recommended, and the command `use_package("tidyverse")` will raise an error message if you attempt to do this.
+This is because `tidyverse` is a package of packages.
+It is therefore recommended that the specific `tidyverse` packages that are required be listed individually.
+
+On the other hand, there are two extra things that should be done in R packages that are based on `tidyverse` tools.
+The first is to have the pipe operator `%>%` be imported and exported.
+By importing `%>%`, it can then be used in code in the package.
+By exporting it, then whenever this package is loaded, the `%>%` is available for users to use.
+These two steps can be arranged by using the following `usethis` command:
+```{r}
+use_pipe()
+```
+The `Imports` field in `DESCRIPTION` has now changed as follows by including `magrittr`:
+```{bash, echo=FALSE, comment=''}
+grep -A4 '^Imports:' DESCRIPTION
+```
+In addition, however, a new file, `utils-pipe.R`, has been added to the package directory, as can be seen by `dir_tree`:
+```{r, comment=''}
+dir_tree("~/code/rdemopkg", all = TRUE)
+```
+The contents of this file is as follows:
+```{r, echo=FALSE, comment=''}
+cat_file("~/code/rdemopkg/R/utils-pipe.R")
+```
+This is primarily [`roxygen2`](https://cran.r-project.org/package=roxygen2) documentation markup, which we will describe in more detail below.
+This code includes the lines:
+```
+#' @export
+#' @importFrom magrittr %>%
+```
+These lines, when we run the code to document our package, as explained below, will include lines in the `NAMESPACE` file that basically tell R to export the `%>%` from this package and also to import it for use in the package.
+
+
+```{r, echo=FALSE, warning=FALSE}
+use_package_doc()
+```
+
+If our R package also uses tibbles, which are `tidyverse`'s re-styling of ordinary R data-frames, see [here](https://r4ds.had.co.nz/tibbles.html) for details, then presumably we will want any tibbles returned by our functions to be treated as such in R, and not treated like ordinary R data-frames.
+In order to arrange this, we can do the following `usethis` command:
+```{r}
+use_tibble()
+```
+The `DESCRIPTION` file now includes `tibble` as an `Imports` dependency, if it had not been listed as such already.
+In addition, a new file `rdemopkg-package.R` is added to the `R`, as we can see from the directory file tree:
+```{r, comment=''}
+dir_tree("~/code/rdemopkg", all = TRUE)
+```
+The contents of this file are as follows:
+```{r, echo=F, comment=''}
+cat_file("R/rdemopkg-package.R")
+```
+This `roxygen2` code will be used to write `NAMESPACE` when package documentation occurs.
+In fact, this process of automatically editing `NAMESPACE` has already happened with the invocation of `use_tibble`, as we can see from the current state of the `NAMESPACE` file:
+```{r, comment='', echo=FALSE}
+cat_file("NAMESPACE")
+```
+Here, we see that the `tibble` command from the `tibble` package has been imported by the package, which entails that it will also be available to any end-user who imports this package.
+
+# Step 4: Write your package's code
+
+We write the functions and other code, such as R classes, in ordinary text files with the extension `.R`, which are placed in the `R/` sub-directory of the package directory.
+For all practical purposes, we can call these files R scripts, though perhaps using the term *script* is a misnomer in this context.
+In any case, they are just ordinary R code files.
+
+For present purposes, we will just provide four very simple functions.
+One converts probabilities to odds.
+Another provide the inverse function, converting odds to probabilities.
+A third function converts probabilities to log odds.
+The fourth function is the inverse of the third, converting log odds to probabilities.
+
+We will include these functions in a file named `logitfunctions.R` in the `R` directory of our package.
+To create a blank R file of this name and open it in RStudio, we can do the following:
+```{r}
+use_r("logitfunctions")
+```
+We can see that a new file has been created by examining the state of the file tree.
+```{r, comment=''}
+dir_tree("~/code/rdemopkg")
+```
+
+Now, we can add in the following functions to `logitfunctions.R`.
+```{r, eval=F}
+probs_to_odds <- function(p) {
+  p / (1 - p)
+}
+
+odds_to_probs <- function(odds) {
+  odds / (1 + odds)
+}
+
+logit <- function(p) {
+  log(p / (1 - p))
+}
+
+ilogit <- function(log_odds) {
+  1 / (1 + exp(-log_odds))
+}
+```
+We could have written these functions multiple alternative ways.
+For example, our `logit` and `ilogit` functions could have called the `probs_to_odds` and `odds_to_probs` functions, respectively.
+Likewise, there are algebraically equivalent versions of these functions.
+However, for the purposes for the present demonstration, how exactly we implement these functions is of no real consequence.
+
+*Aside*: For those not used to writing R functions, a useful helper function provided by RStudio is the *Extract Function* command in the *Code* menu.
+If we wrote the following code in an R script:
+```{r, eval=F}
+y + log(p, base = x)
+```
+If we highlight this code, and then select *Extract Function* command in the *Code* menu, whose keyboard shortcut is *Ctrl + Alt + X*, and provide the function name `my_function` in the pop-up window, we get the following:
+```{r}
+my_function <- function(y, p, x) {
+  y + log(p, base = x)
+}
+```
+This helper command is very simple, of course, but it is useful for people who are new to function writing, as it saves them having to look up what the basic structure of a function should be.
+Eventually, having written a few functions, writing this basic form of a function becomes second nature.
+
+
+## Add documentation markup
+
+We do not want to leave the functions above in their present state.
+As simple as they are, we still want to write documentation that explains to the user what these functions do and how to use them.
+We write this documentation by adding `roxygen2` comments above each function.
+These comments then get converted into R help pages.
+
+Another very useful tool provided by the *Code* menu in RStudio is the *Insert Roxygen Skeleton*, whose keyboard shortcut is *Ctrl + Shift + Alt + R*.
+If we select the `probs_to_odds` function above, for example, and then choose *Insert Roxygen Skeleton*, or type *Ctrl + Shift+ Alt + R*, it adds in the following `roxygen2` code above the function:
+```{r, eval=F}
+#' Title
+#'
+#' @param p
+#'
+#' @return
+#' @export
+#'
+#' @examples
+probs_to_odds <- function(p) {
+  p / (1 - p)
+}
+```
+Note that `roxygen2` code is designated by the comment symbol followed by a `'`, i.e. `#'`.
+
+```{cat, engine.opts=list(file = 'foo.R')}
+#' Convert probabilities to odds
+#'
+#' Odds are an alternative means to quantify probabilities of events.
+#' If the probability of an event has a value `p`, the odds corresponding
+#' to `p` is `p/(1-p)`.
+#'
+#' @param p A numeric vector of probabilities, which are values between 0.0 
+#'  and 1.0.
+#'
+#' @return A numeric vector of odds, which are values between zero and infinity.
+#' @export
+#'
+#' @examples
+#' p <- c(0.25, 0.5, 0.75)
+#' probs_to_odds(p)
+probs_to_odds <- function(p) {
+  p/(1-p)
+}
+```
+
+We will now edit this code to write our documentation.
+Although there is a lot that we can do with `roxygen2`, see [the `roxygen2` package vignettes](https://roxygen2.r-lib.org/articles/), we will keep things minimal.
+We will add a title, a description of what the function does, explain the input arguments, explain what the function returns, and provide examples of how to use the function.
+How to do this is best seen through an example, such as the following:
+```{r,echo=FALSE, results='asis'}
+cat('```r\n')
+cat_file('foo.R')
+cat('```')
+```
+As we can see, we write the title is the first line.
+There is a blank line after that, and then there is a paragraph.
+This paragraph is the function's description.
+We then explain the meaning of the function's input arguments.
+In this case, there is just one such argument.
+We then explain what type of object is returned by the function.
+The `@export` statement states that we want this `probs_to_odds` function to be exported by our package.
+When creating the documentation, `roxygen2` will use this statement to edit the `NAMESPACE` file to state that `probs_to_odds` function is exported.
+Finally, we provide some examples of how this function should be used.
+
+```{r, echo=FALSE, comment='', results='hide'}
+# So much work just to show the rendered help page
+source_env <- roxygen2::env_file("foo.R")
+roxygen2::parse_file("foo.R", source_env)
+rd_blocks <- roxygen2::parse_file("foo.R", source_env)
+help_topics <- roxygen2::roclet_process(roxygen2::rd_roclet(), rd_blocks, source_env, dirname("foo.R"))
+rd_code <- lapply(help_topics, format)
+rd_code$probs_to_odds.Rd %>% writeLines("foo.Rd")
+writeLines(capture.output(tools::Rd2txt("foo.Rd")), "foo.txt")
+```
+
+```{bash, comment='', echo=F}
+sed -i 's/_[^[:print:]]//g' foo.txt 
+```
+
+When this `roxygen2` code is processed by the documentation commands, which we will describe momentarily, it produces a help page for `probs_to_odds` that looks essentially like this:
+```{r, comment='', echo=F}
+cat_file("foo.txt")
+```
+
+```{bash, echo=FALSE}
+rm foo.*
+```
+
+
+```{cat, engine.opts=list(file = 'R/logitfunctions.R')}
+#' Convert probabilities to odds
+#'
+#' Odds are an alternative means to quantify probabilities of events.
+#' If the probability of an event has a value `p`, the odds corresponding
+#' to `p` is `p/(1-p)`.
+#'
+#' @param p A numeric vector of probabilities, which are values between 0.0 
+#'  and 1.0.
+#'
+#' @return A numeric vector of odds, which are values between zero and infinity.
+#' @export
+#'
+#' @examples
+#' p <- c(0.25, 0.5, 0.75)
+#' probs_to_odds(q)
+probs_to_odds <- function(p) {
+  p/(1-p)
+}
+
+#' Convert odds to probabilities
+#' 
+#' This is the inverse of the function that calculates odds from probabilities.
+#' For any given value of odds, the corresponding probability `p` where 
+#' `odds = p/(1-p)` is returned.
+#'
+#' @param odds A numeric vector of non-negative values, representing odds.
+#'
+#' @return A numeric vector of probabilities.
+#' @export
+#'
+#' @examples
+#' odds <- c(1, 3, 9)
+#' odds_to_probs(odds)
+odds_to_probs <- function(odds){
+  odds/(1 + odds)
+}
+
+#' Convert probabilities to log odds
+#'
+#' Log odds, also known as logits, are the logarithms, 
+#' usually to the base of the natural logarithms, of odds.
+#'
+#' @param p A numeric vector of probabilities, which are values between 0.0 
+#'  and 1.0.
+#'
+#' @return A numeric vector of logits, which are positive or negative real numbers.
+#' @export
+#'
+#' @examples
+#' p <- c(0.1, 0.25, 0.5, 0.9)
+#' logit(p)
+logit <- function(p) {
+  log(p / (1 - p))
+}
+
+#' Convert logits to probabilities
+#' 
+#' This implements the inverse logit function. This function is also the 
+#' cumulative distribution function of the logistic distributions, and so is 
+#' available using the [stats::plogis()] function.
+#'
+#' @param log_odds A numeric vector of positive or negative real numbers that 
+#'  represent log odds, also known as logits.
+#'
+#' @return A vector of probabilities, which are values between 0.0 and 1.0.
+#' @export
+#'
+#' @examples
+#' x <- rnorm(5)
+#' ilogit(x)
+ilogit <- function(log_odds) {
+  1 / (1 + exp(- log_odds))
+}
+```
+
+
+We can now write the `roxygen2` documentation markup for all our functions.
+As before, in each case, we first highlight the function, choose *Insert Roxygen Skeleton* from the *Code* menu in RStudio, or press *Ctrl + Alt + Shift + R*, and this adds `roxygen2` skeleton that we then edit.
+Having made all these edits, the `logitfunctions.R` now looks as follows:
+```{r,echo=FALSE, results='asis'}
+cat('```r\n')
+cat_file('R/logitfunctions.R')
+cat('```')
+```
+Note that in the documentation markup for `ilogit`, we have a reference to a function in another package, i.e. `stats::plogis`.
+This will create a hyperlink in to the help page for `plogis` in the help page for `ilogit`.
+
+# Step 5: Document & Load
+
+We now can build all the documentation files, which also write necessary meta information to `NAMESPACE`.
+After that, we are ready to load the package into R, similarly to how we would load an installed package with the `library()` command.
+
+To create the documentations files and write the meta information to `NAMESPACE`, we can choose the *Document* command from the *Build* menu.
+The keyboard shortcut for this is *Ctrl + Shift + D*.
+This will run a the following `devtools` command (the output of which we will see in RStudio's *Build* window, which is usually positioned in the upper right corner):
+```{r}
+devtools::document(roclets = c("rd", "collate", "namespace"))
+```
+Notice how this command is writing multiple `.Rd` files, which are placed in a newly created `man` (for manual) sub-directory, as we can see from the current state of the file tree.
+```{r, comment=''}
+dir_tree("~/code/rdemopkg")
+```
+
+The output from the documentation command also shows that `NAMESPACE` is being written.
+Here is its current state:
+```{r, echo = F, comment=''}
+cat_file("NAMESPACE")
+```
+Here, we see that all four of our package's functions are being exported.
+
+We may now load the package.
+We can do this using the *Load All* command from the *Build* menu.
+The keyboard shortcut for this is *Ctrl + Shift + L*.
+This command runs the following code in the normal R console.
+```{r}
+devtools::load_all(".") # The '.' indicates the current working directory
+```
+
+```{r, echo=F}
+writeLines(capture.output(tools::Rd2txt("man/ilogit.Rd")), "foo.txt")
+```
+
+```{bash, comment='', echo=F}
+sed -i 's/_[^[:print:]]//g' foo.txt 
+```
+
+
+
+We now can use our package's code.
+For example, we can do the following:
+```{r}
+x <- rnorm(10)
+p <- ilogit(x)
+logit(p)
+```
+We can request the help page for `ilogit` as usual as follows:
+```{r, eval=F}
+?ilogit
+```
+A help page with the following information will then appear in the RStudio help window.
+```{r, comment='', echo=F}
+cat_file("foo.txt")
+```
+
+At this point, we have essentially made a full R package and successfully loaded it into R.
+Usually, our packages will not be as simple as the present one, and so at this point, we would usually continue editing and adding to our package's code.
+As we do so, we repeatedly do the *Document ... Load All* steps, which are probably most easily accomplished with *Ctrl + Alt + D* followed by *Ctrl + Alt + L*.
+
+# Step 6: Add some tests
+
+Writing code tests is always a good idea.
+They help us to verify that our code is working as expected, and are especially useful in identifying if new code breaks or interferes with old code.
+Writing good and comprehensive tests takes time and effort, but it is always good to at least take a small step in this direction at the beginning of a package's development, and then add to the test suite as development continues.
+
+We can use the `use_test` command from `usethis` to set up some tests.
+For example, to set up some test for our `logitfunctions` functions, we can do the following:
+```{r}
+use_test("logitfunctions")
+```
+To see what this command did, we can again look at the directory tree:
+```{r, comment=''}
+dir_tree("~/code/rdemopkg", all = TRUE)
+```
+We see that it has created some files and sub-directories inside a new sub-directory named `tests`.
+The content of `tests/testthat.R` is as follows:
+```{r, comment='', echo=FALSE}
+cat_file("tests/testthat.R")
+```
+This is code to load the `rdemopkg` function and then run all its tests, doing so with the `test_check` command from the `testthat` package.
+
+
+The content of `tests/testthat/test-logitfunctions.R` is as follows:
+```{r, comment='', echo=FALSE}
+cat_file("tests/testthat/test-logitfunctions.R")
+```
+```{cat, engine.opts=list(file = 'tests/testthat/test-logitfunctions.R')}
+test_that("logits & ilogits etc work", {
+  expect_equal(logit(0.5), 0.0)
+  expect_equal(ilogit(0.0), 0.5)
+  expect_equal(probs_to_odds(0.5), 1)
+  expect_equal(odds_to_probs(1), 0.5)
+})
+```
+This is just placeholder code. We should modify this code.
+For example, the following code provides a few simple tests of our four functions.
+```{r,echo=F,results='asis'}
+cat('```r\n')
+cat_file('tests/testthat/test-logitfunctions.R')
+cat('```')
+```
+We can now run all our package's tests by using the *Test Package* command from the the *Build* menu, whose keyboard shortcut is *Ctrl + Shift + T*.
+This runs the following `devtools` command, and the output will appear in the *Build* window (upper right)
+```{r, comment=''}
+devtools::test(".")
+```
+As we can see, all 4 of our tests have passed.
+
+# Step 7: Add data 
+
+Very often we want to include data-sets in our R package.
+We can easily add any R data to our package using the `use_data` command from `usethis`.
+However, it is better if possible to use the `use_data_raw` command instead.
+This will create an R script that produces the final data set that we want to include in the package.
+Often this script will use some raw data files, which can also be included in the package.
+Using this approach is to be preferred if possible because it shows where our included data sets came from, or how they were produced from the raw data origins.
+
+For present purposes, we will keep matters simple.
+We will include a data frame called `probabilities` in our package.
+A script will show how this data frame was produced, and then this script will call `usethis::use_data`.
+We create this script as follows:
+```{r}
+use_data_raw("probabilities")
+```
+If we now look at the file tree, we see that a new file named `probabilites.R` has been added to a new sub-directory named `data-raw`.
+```{r, comment=''}
+dir_tree("~/code/rdemopkg", all = TRUE)
+```
+This file has the following contents:
+```{r, comment='', echo=FALSE}
+cat_file("data-raw/probabilities.R")
+```
+
+```{cat, engine.opts=list(file = 'data-raw/probabilities.R')}
+# create a data-frame of probabilities
+probabilities <- tibble::tibble(p = c(0.1, 0.25, 0.5, 0.75, 0.9))
+
+usethis::use_data(probabilities, overwrite = TRUE)
+```
+
+We now modify this script, adding the code that produces our data, and then calling `usethis::use_data`.
+Here is a very simple example as a demonstration.
+```{r, comment='', echo=FALSE}
+cat_file("data-raw/probabilities.R")
+```
+
+We now run this R script as normal, e.g. using `source('data-raw/probabilities.R')`.
+This will add a file named `probabilities.rda`, which contains the `probabilities` data-frame, to a new sub-directory named `data`.
+When we load our package, this `probabilities` data frame will be loaded.
+```{r,echo=F}
+source("data-raw/probabilities.R")
+```
+
+We can verify that the new `data/probabilities.rda` file has been created with the `dir_tree`.
+```{r, comment=''}
+dir_tree("~/code/rdemopkg", all = TRUE)
+```
+
+```{r, echo=F}
+devtools::load_all(".")
+```
+
+If we do the usual *Load All* (or *Ctrl + Alt + L*), we can access the `probabilites` data frame.
+```{r}
+probabilities
+```
+
+If we do include data-sets in our package, however, we should also provide documentation for them.
+In fact, one of the primary reasons for including data-sets in an R package is so that we can provide documentation for it that is readily available for any user of the data.
+How we provide this documentation is similar to what we did using `roxygen2` for the functions.
+However, there are two differences.
+First, we don't, or can't, add the `roxygen2` code in the file with the data.
+Instead, we must create essentially a dummy R code file named `data.R` (though any other names are possible too).
+The second difference is that, unfortunately, there is no equivalent of the RStudio *Code* menu *Insert Royxgen Skeleton* for creating an `roxygen2` code skeleton to data.
+Some tools like this do exist, such as, for example, in the [`sinew`](https://cran.r-project.org/package=sinew) package, which also provides RStudio addins.
+For present purposes, we will just add all the `roxygen2` code manually.
+
+```{cat, engine.opts=list(file = 'R/data.R')}
+#' A tibble of probabilities
+#'
+#' A tibble data frame of very important probabilities.
+#'
+#' @format A data frame with 5 rows and 1 variable:
+#' \describe{
+#' \item{p}{Important probabilities, each being a number between 0.0 and 1.0.}
+#' }
+#' @name probabilities
+NULL
+```
+
+To create the dummy R code file, we use `use_r` as we did above.
+```{r, eval=F}
+use_r("data")
+```
+This creates a blank file named `data.R` in the `R` sub-directory.
+To this file, we can add the following code.
+```{r, echo=F,results='asis'}
+cat('```r\n')
+cat_file('R/data.R')
+cat('```')
+```
+
+As was the case with functions, the first line will be the title of the help page.
+The paragraph (in this case, just a single sentence) after the first blank line is the data's description.
+Next, there is a `@format` directive.
+This is where we describe the format of the data.
+Next, we describe the individual variables in the data frame, of which there is just one in this case.
+At the end, using `@name`, we provide the name of the data that we are documenting.
+As we have to provide some R object to which the `roxygen2` code corresponds, we provide the `NULL` object.
+
+```{r, echo=F, results='hide'}
+devtools::document(roclets = c("rd", "collate", "namespace"))
+writeLines(capture.output(tools::Rd2txt("man/probabilities.Rd")), "foo.txt")
+```
+
+```{bash, comment='', echo=F}
+sed -i 's/_[^[:print:]]//g' foo.txt 
+```
+
+
+Now, if we do the usual *Document* (*Ctrl + Shift + D*), followed by a *Load All* (*Ctrl + Shift + L*), we will now be able to see the documentation by doing the following:
+```{r, eval=FALSE}
+?probabilities
+```
+The help page that is shown will the following information.
+```{r, comment='', echo=F}
+cat_file("foo.txt")
+```
+
+
+
+# Step 8: Make a vignette
+
+R package vignettes are an excellent way to provide guides or tutorials about how to use the code or data provided by the package.
+While help pages are essential, they are intended as technical references, and not as guides or tutorials.
+Vignettes are essentially just RMarkdown scripts that are then rendered into (primarily) html documents.
+To create a vignette, we use the `use_vignette` command from `usethis`.
+```{r}
+use_vignette(name = "demo", title = "How to Calculate Logits and Inverse Logits")
+```
+As we can see from the file tree, a new file named `demo.Rmd` has been added to the newly created `vignettes` sub-directory:
+```{r, comments=''}
+dir_tree("~/code/rdemopkg")
+```
+
+<!-- Thanks to https://rstats-tips.net/2020/06/29/how-to-show-rmarkdown-code-in-rmarkdown-file/ -->
+The contents of `demo.Rmd` are as follows:
+````
+`r paste(readLines('vignettes/demo.Rmd'), collapse = '\n')`
+````
+
+
+```{bash, echo=F}
+cat <<EOF>> vignettes/demo.Rmd
+
+We can use the \`logit\` command to calculate the log odds of a vector of probabilities.
+For example,
+\`\`\`{r}
+logit(probabilities\$p)
+\`\`\`
+
+EOF
+```
+
+We can modify this Rmd code by adding some lines involving code from the package, such as in the following minimal example.
+````
+`r paste(readLines('vignettes/demo.Rmd'), collapse = '\n')`
+````
+
+The easiest way to view our vignette is to build it as follows:
+```{r}
+devtools::build_vignettes()
+```
+Then, in RStudio file browser click on the rendered html file, which will be in the `doc/` directory, and named `demo.html` in this case, and select *View in Web Browser*.
+The vignette can in principle also be "knitted" like any other Rmarkdown file.
+However, it order to ensure that the package code that it is uses is being loaded properly, it is better to use `build_vignettes()` from `devtools`.
+
+
+# Step 9: Make a pkgdown website
+
+The [`pkgdown`](https://pkgdown.r-lib.org/) package creates websites for R packages.
+They are countless examples on websites made with `pkgdown` on the web, including the [`pkgdown` website](https://pkgdown.r-lib.org/) itself.
+
+It is remarkably easy to create a bare-bones `pkgdown` site for an R package.
+First, we run the `use_pkgdown` command from `usethis`.
+```{r}
+use_pkgdown()
+```
+This creates a file named `_pkgdown.yml`.
+In general, this is edited to modify what is included in the `pkgdown` website, but we can leave it as is for present purposes.
+Then, we simply run the `build_site` from the `pkgdown` package.
+```{r, eval=FALSE, results='hide'}
+pkgdown::build_site()
+```
+
+\@ref(#step_10)
+
+We can view the website locally by, in the RStudio file browser, clicking the `index.html` file in the newly created `docs` (not `doc`) directory, and selecting *View in Web Browser*.
+In the website, at the top menu, *Reference* will lead to the help pages for the exported code and data, and *Articles* will list the vignettes, which are available as webpages in the website. 
+
+The `pkgdown` website for this demo R package can be viewed [on github.io](https://mark-andrews.github.io/rdemopkg/).
+
+# Step 10: Create a Git repository, push to GitHub {#step_10}
+
+We are now ready to make the package directory into a Git repository.
+If you are familiar with Git, you will know that this can be accomplished by running the commands `git init` in the package directory in an operating system terminal (e.g. a Linux of MacOS unix terminal, or the [Git Bash](https://gitforwindows.org/) shell on Windows).
+To accomplish this in RStudio, and to create the first Git commit, inside RStudio, we can use the `use_git` command from `usethis`.
+Before we do this, it is a good idea to create a minimal `readme.md` file for the package.
+For present purposes, I will simply create a file `readme.md` and add the following line to it:
+```
+A demo R package
+```
+Also, we can manually edit `DESCRIPTION` to change the version to `0.1.0`, now that we are ready to go public.
+
+```{bash, echo=F}
+echo "A demo R package" > readme.md
+```
+
+By running the following command
+```{r}
+use_git()
+```
+a Git repository will be created, and you will be prompted to ask if you are happy to add all files in the repository except for those explicitly listed in the `.gitignore` file.
+```{bash, echo=FALSE, results='hide'}
+rm foo*
+git add -A 
+git commit -m 'Initial commit'
+```
+
+To push this repository to GitHub, although there is a `use_github` in `usethis`, I think it is easier to simply create a new bare repository on GitHub with the name of your package.
+When doing so, leave unchecked the *Add a README file*, *Add .gitignore*, *Choose a license* options, because we want the remote repository to be initially completely empty.
+When we create the repository this way, GitHub will provide us with `git remote add ...` code to paste into your operating system terminal (or Git Bash shell).
+For example, in my case, if I create a new repository named `rdemopkg` in my `mark-andrews` account on GitHub, GitHub provides me with the code
+```
+git remote add origin git@github.com:mark-andrews/rdemopkg.git
+```
+which I can then paste into a Linux terminal whose working directory is my Git repository for my `rdemopkg` package.
+
+I can now do the following, again in my Linux terminal:
+```
+git branch -m master main # rename master branch to main
+git push -u origin main
+```
+This will push the repository to GitHub.
+It is now publicly available, see [here](https://github.com/mark-andrews/rdemopkg), and anyone in the world can install it using the following command in R:
+```{r, eval=F}
+devtools::install_github("mark-andrews/rdemopkg")
+```
+

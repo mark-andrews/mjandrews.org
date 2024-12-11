@@ -1,0 +1,244 @@
+---
+title: "Reshaping data with `pivot_longer` and `pivot_wider`"
+author: Mark Andrews
+date: "2021, 07, 25, 11:10"
+categories: ["tidyverse", "data wrangling", "R"]
+description: |
+   In this post, we describe how to use `dplyr`'s `pivot_longer` and `pivot_wider` functions.
+   These are used to reshape data frames from wide to long formats, and long to wide formats, respectively.
+   We will discuss the basic versions of both functions, but then also discuss some of their more complex variants.
+
+---
+
+```{r}
+#| include = FALSE
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE)
+```
+
+```{r}
+#| echo = F
+library(tidyverse)
+theme_set(theme_classic())
+set.seed(101010101)
+```
+
+Data frames in R are rectangular data structures.
+They consist of one or more columns of data, each with the same number of rows, and with each element of each column being of the same data type, e.g. numbers, character strings, Boolean values, etc.
+Apart from these general constraints, however, the format and shape that the data takes within a data frame can vary.
+For example, consider two data frames that are read in from `.csv` files.
+On the one hand, we have the data frame read from [`df_wide.csv`](/notes/pivots/data/df_wide.csv):
+```{r}
+df_wide <- read_csv('data/df_wide.csv')
+df_wide
+```
+This is factiousness data representing the results of a repeated measures memory recall experiment.
+For each subject, we obtain a memory recall value in each of three different experimental conditions.
+So, for example, subject ``r df_wide[['subject']][1]`` as a memory recall score of `r df_wide[['condition_A']][1]` in experimental condition `condition_A`.
+On the other hand, we have the data frame read from [`df_long.csv`](/notes/pivots/data/df_long.csv):
+```{r}
+df_long <- read_csv('data/df_long.csv')
+df_long
+```
+The information in `df_long` is identical to `df_wide`.
+For example, by reading across the first row, we see that subject ``r df_long[['subject']][1]`` has a score of `r df_long[['recall']][1]` in condition ``r df_long[['condition']][1]``.
+Obviously, however, `df_wide` and `df_long` are structured or shaped differently.
+We say that `df_wide` is a *wide* data format, and `df_long` is a *long* data format.
+
+Often, we need to reshape data from a wide to long format, and vice versa.
+For many analyses in R, a long format is required, but it is not uncommon for the raw data to be in a wide format, and so it is necessary to reshape it from wide to long.
+Although reshaping from wide to long is the more common operation, we also still need to be able to reshape from to long to wide.
+Sometimes, for example, tables in a wide format may be easier to read and understand.
+More generally, when doing relatively complex data manipulation we may need to repeatedly reshape data in different ways, so being able to move efficiently from long to wide formats and back is an essentially general skill in data wrangling.
+
+In this post, we describe how to use `dplyr`'s `pivot_longer` and `pivot_wider`, which reshape data from wide to long formats, and long to wide formats, respectively.
+We will discuss the basic versions of both functions, but then also discuss some of their more complex variants.
+
+# From wide to long format with `pivot_longer`
+
+To convert `df_wide` to the long format in `df_long`, we use `pivot_longer`.
+In the basic version of this function, we need to specify just three things. 
+First, we need to specify which columns to "pivot", which in this case is the columns `condition_A`, `condition_B`, `condition_C`.
+Next, we need to specify the name of the new column whose values are the names of the to-be-pivotted columns.
+In this case, we can use the name `condition` as the names of the to-be-pivotted columns, i.e., `condition_A`, `condition_B`, `condition_C`, are the values of the experimental condition.
+Finally, we need to specify the name of the new column whose values are the values of the to-be-pivotted columns.
+In this case, we can use the name `recall` as the values of the to-be-pivotted columns are the recall memory scores.
+```{r}
+pivot_longer(df_wide,
+             cols = -subject,
+             names_to = 'condition',
+             values_to = 'recall')
+```
+Notice that here we selected the columns, `condition_A`, `condition_B`, `condition_C` with `cols = -subject`, which selects all columns except `subject`.
+
+The data frame produced by this `pivot_longer` is very similar, though not identical, to the `df_long` above.
+In particular, the values of `condition` in this data frame are `condition_A`, `condition_B`, etc., while in `df_long`, they are `A`, `B`, etc.
+In order to produce the same data frame as `df_long`, we can indicate that in this case, the names of columns being pivoted all have the prefix `condition_` that should not be used in the values of the new `condition` column:
+```{r}
+pivot_longer(df_wide,
+             cols = -subject,
+             names_to = 'condition',
+             names_prefix = 'condition_',
+             values_to = 'recall')
+```
+
+## Pivotting long into multiple columns
+
+Consider the data in the file [`df_wide2.csv`](/notes/pivots/data/df_wide2.csv):
+```{r}
+df_wide2 <- read_csv('data/df_wide2.csv')
+df_wide2
+```
+This fictitious data is also from a repeated measures experiment, but in this case, it is a factorial experiment, whereby data is obtained for each subject for each combination of two conditions.
+One condition has values `cued` versus `free`, and the other has conditions `neg`, `neu`, and `pos`.
+
+We can pivot data like this with `pivot_longer` just like above:
+```{r}
+pivot_longer(df_wide2,
+             cols = -subject,
+             names_to = 'condition',
+             values_to = 'recall')
+```
+In this case, the `condition` column has values like `cued_neg`, `cued_neu`, and so on.
+It would be preferable to split `condition` into two new columns with names like `cue` and `emotion`.
+We could do this with `tidyr`'s `separate` as follows:
+```{r}
+pivot_longer(df_wide2,
+             cols = -subject,
+             names_to = 'condition',
+             values_to = 'recall') %>% 
+  separate(condition, into = c('cue', 'emotion'), sep = '_')
+```
+However, we achieve the same effect using `pivot_longer` on its own too.
+For this, we provide a vector of two names for the `names_to` argument, and indicate that the names of the to-be-pivoted columns must be split using a certain separator:
+```{r}
+df_long2 <- pivot_longer(df_wide2,
+                         cols = -subject,
+                         names_to = c('cue', 'emotion'),
+                         names_sep = '_',
+                         values_to = 'recall')
+```
+
+We can also use `names_pattern` to provide a regular expression to indicate how to split the names of the to-be-pivoted columns into its constituent parts.
+In the case of `df_wide2`, this is not necessary as `names_sep` will suffice, but it is useful to illustrate this feature for use in more complex situations.
+One regular expression we could use is `(.*)_(.*)`.
+The parentheses enclose the patterns of the two names.
+The `.*` pattern means zero or more characters.
+So, the names to extract are strings to the left and to the right of the `_` separator:
+```{r}
+pivot_longer(df_wide2,
+             cols = -subject,
+             names_to = c('cue', 'emotion'),
+             names_pattern = '(.*)_(.*)',
+             values_to = 'recall')
+```
+We could be more explicit with our `names_pattern` regular expression as follows:
+```{r}
+pivot_longer(df_wide2,
+             cols = -subject,
+             names_to = c('cue', 'emotion'),
+             names_pattern = '(cued|free)_(neg|neu|pos)',
+             values_to = 'recall')
+```
+In other words, we say that one name consists of `cued` or `free`, and the other consists of `neg` or `neu` or `pos`.
+
+
+# From long to wide format with `pivot_wider`
+
+We can use `pivot_wider` to perform the inverse of `pivot_longer`.
+From example, to go from `df_long` to `df_wide`, we use `names_from` and `values_from` analogously to how we used `names_to` and `values_to` in `pivot_longer`:
+```{r}
+pivot_wider(df_long,
+            names_from = condition, 
+            values_from = recall)
+```
+In this case, the new column names are now `A`, `B`, and `C`.
+We can produce the names `condition_A`, `condition_B`, `condition_C`, by using the `names_prefix` just as we did above with `pivot_longer`:
+```{r}
+pivot_wider(df_long,
+            names_from = condition, 
+            names_prefix = 'condition_',
+            values_from = recall)
+```
+
+We can also use `pivot_wider` when there are multiple columns to pivot.
+This can be used to perform the inverse operation that produced `df_long2`.
+In this case, we need only provide a vector of column names as the values of `names_from`.
+The values of the corresponding columns create the new columns names in the wide format:
+```{r}
+pivot_wider(df_long2, 
+            names_from = c(cue, emotion), 
+            values_from = recall)
+```
+By default, the separator between the two parts of the new names will be an underscore, but we can change this to another character, e.g. `.`, using the `names_sep` argument:
+```{r}
+pivot_wider(df_long2, 
+            names_from = c(cue, emotion), 
+            values_from = recall,
+            names_sep = '.')
+```
+
+# Combining `pivot_longer` and `pivot_wider` in one operation
+
+Consider the following data frame, read in from [`df_long_wide.csv`](/notes/pivots/data/df_long_wide.csv), which is a reshaped variant of the `df_wide2` above:
+```{r}
+df_long_wide <- read_csv('data/df_long_wide.csv')
+df_long_wide
+```
+As we can see, this has a long format for one experimental variables (`cue`), but it is wide for the `emotion` variable.
+One way to create this data frame from `df_wide2` is to perform a `pivot_longer`, exactly as we did above, followed by a `pivot_wider` as follows:
+```{r}
+pivot_longer(df_wide2,
+             cols = -subject,
+             names_to = c('cue', 'emotion'),
+             names_sep = '_',
+             values_to = 'recall') %>% 
+  pivot_wider(names_from = emotion,
+              values_from = recall)
+```
+We can, however, achieve this same result from `pivot_longer` alone.
+To do so, we use a special variable name `.value` as one of the variables in the `names_to` vector.
+In other words, instead of `names_to = c('cue', 'emotion')`, we do `names_to = c('cue', '.value')`.
+The `.value` effectively tells `pivot_longer` that the second variable should be pivoted wide.
+Also, when using this special `.value` keyword, we don't use a `values_to` argument.
+```{r}
+pivot_longer(df_wide2,
+             cols = -subject,
+             names_to = c('cue', '.value'),
+             names_sep = '_') 
+```
+
+
+One common situation where the need for this kind of semi-long/semi-wide formatting arises is when performing multiple `summarize` functions on multiple variables.
+Consider the following data:
+```{r}
+data_df <- tibble(x = rnorm(10),
+                  y = rnorm(10),
+                  z = rnorm(10))
+```
+Let's say we want to calculate the mean, median, and standard deviation of all three variables.
+We can accomplish this using the `across` function and a list of summary statistics functions inside `summarize` (see [this blog post](/notes/acrosstidyverse) for more information on using `across`)
+```{r}
+data_summary <- summarize(data_df,
+          across(everything(),
+                 list(mean = mean,
+                      median = median,
+                      stdev = sd)
+          )
+)
+data_summary
+```
+This resulting data frame is not in an ideal format.
+It would be easier if the three variables corresponded to three separate rows, and the the columns were the mean, median, and standard deviation.
+We can accomplish this with a `pivot_longer` using the `.value` keyword in `names_to`:
+```{r}
+data_summary %>% 
+  pivot_longer(cols = everything(),
+               names_to = c('variable', '.value'),
+               names_sep = '_')
+```
+
+
+
+

@@ -1,0 +1,11 @@
+author: "Mark W Andrews"
+citation: true
+license: "CC BY-SA"
+appendix-cite-as: [bibtex, display]
+bibliography: references.bib
+toc: true
+toc-depth: 1
+format:
+  html:
+    css: 
+      - "../../assets/notes.css"

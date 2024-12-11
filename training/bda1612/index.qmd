@@ -1,0 +1,23 @@
+---
+title: Introduction to Bayesian Data Analysis using R and Jags
+date: December 12, 2016
+description: |
+  This is a two-day workshop on Bayesian data analysis using R and JAGS. The course provides an introduction to Bayesian data analysis and R, with a focus on Bayesian linear and generalized linear regression.
+subtitle: 12-13 December, 2016
+location: Cork, Ireland
+author: Mark Andrews
+categories:
+- Bayesian Data Analysis
+- Linear Models
+- Generalized Linear Models
+- JAGS
+- R
+
+---
+
+A two day workshop introducing Bayesian data analysis using R. On the
+first day, we provide a general introduction to Bayesian data analysis
+and how it differs from the more familiar classical approaches to data
+analysis. We will also provide a general introduction to R and RStudio.
+On the second day, we will cover Bayesian linear and generalized linear regression using
+the probabilistic programming language [Jags](http://mcmc-jags.sourceforge.net).

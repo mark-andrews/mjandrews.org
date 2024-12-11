@@ -1,0 +1,60 @@
+---
+title: Bayesian Parameter Estimation
+date: June 7, 2018
+description: |
+  This workshop offers a hands-on introduction to Bayesian data analysis and parameter estimation. It covers fundamental concepts of Bayesian statistical inference, contrasting them with frequentist methods. The course also delves into Bayesian linear regression models and their application in psychological research.
+subtitle: June 7, 2018
+location: Lancaster, UK
+author: Mark Andrews
+categories:
+- Bayesian Data Analysis
+- Statistical Inference
+- Linear Models
+- Psychology
+- R
+
+---
+
+This workshop provides a practical introduction to parameter estimation in
+Bayesian data analysis. We will start by describing the fundamental concepts of
+Bayesian statistical inference, and contrast these with frequentist methods of
+inference. Then, using a simple case study, we will explore all the major
+concepts and issues in Bayesian statistics including priors, likelihood
+functions, posterior inference, posterior predictive inference, Bayes factors,
+out-of-sample generalization, and so on. We will then turn to parameter
+estimation in Bayesian linear regression models. It is hoped that this workshop
+will provide a useful introduction to the theory and practice of parameter
+estimation in Bayesian data analysis, and provide an introductory guide on how
+to use Bayesian methods in psychological research.
+
+## Slides
+
+* [Introducing Bayesian Inference](https://github.com/lawsofthought/lancaster-bayes-workshop/blob/master/slides/pdf/introducing_bayesian_inference.pdf)
+* [Introducing MCMC](https://github.com/lawsofthought/lancaster-bayes-workshop/blob/master/slides/pdf/introducing_mcmc.pdf)
+
+
+## Demos
+
+The slides contain links to the following online demos:
+
+1. [Binomial test for coin toss data](https://lawsofthought.shinyapps.io/binomial_test).
+2. [Binomial likelihood for coin toss data](https://lawsofthought.shinyapps.io/binomial_likelihood).
+3. [Bayesian inference for coin toss data](https://lawsofthought.shinyapps.io/bayesian_coin_inference).
+
+## Source code
+
+R code to accompany the workshop can be found at <https://github.com/lawsofthought/lancaster-bayes-workshop/tree/master/code>.
+
+The demos above are all written in R and Shiny. The source code for these can be found at
+<https://github.com/lawsofthought/psypag-kent-2017/tree/master/shiny>. 
+
+All code is released according a free and open-source licence, see
+`License.txt` for more info.
+
+The LaTeX source code for the slides is also released according to a free and
+open-source licence (see `License.txt`) and can be found at <https://github.com/lawsofthought/lancaster-bayes-workshop/tree/master/slides>.
+
+# GitHub resources
+
+Further resources for this training course can be found on Github at [mark-andrews/lancaster-bayes-workshop](https://github.com/mark-andrews/lancaster-bayes-workshop).
+

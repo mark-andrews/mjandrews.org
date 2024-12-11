@@ -1,0 +1,37 @@
+/*Style sheet for notes pages*/
+
+/* dropcaps first letter of first paragraph in each note */
+main>p:first-of-type:first-letter {
+  float: left;
+  font-family: "EB Garamond", serif;
+  font-size: 5.05em;
+  line-height: 0.8;
+  color: #BE0000;
+  margin: 0.05em 0.075em -0.05em 0;
+}
+
+/* The sidebar "On this page" navigation menu. */
+.sidebar nav[role="doc-toc"] ul > li > a.active {
+  color: black !important;
+  border: 0px !important;
+} 
+
+/* The style for the header, i.e. the abstract/description and author/data */
+#title-block-header.quarto-title-block.default .description > p {
+  font-family: "EB Garamond", serif;
+  max-width: 66%;
+  font-size: 14pt;
+  margin-top: 20px;
+  /*margin: 20px auto 0 auto;*/
+}
+
+.quarto-title-meta {
+  max-width: 66%;
+  /*margin: 0 auto;*/
+}
+
+main .quarto-title-meta-contents p {
+  font-family: "EB Garamond", serif;
+  font-size: 14pt;
+  font-style: italic;
+}

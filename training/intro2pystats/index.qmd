@@ -1,0 +1,42 @@
+---
+title: A Brief Introduction to Statistical Data Analysis with Python
+date: May 7, 2021
+description: This course provides a concise overview of data analysis and statistics in Python. It covers data processing with `pandas`, statistical analysis with `statsmodels`, and data visualization using `matplotlib` and `seaborn`.
+subtitle: May 7, 2021
+location: Online course
+author: Mark Andrews
+categories:
+- Data Visualization
+- Data Wrangling
+- Python
+
+---
+
+In this 2hr course, we will provide an introduction to data analysis and statistics in Python. 
+In particular, we will cover data processing using `pandas`, statistical analysis using `statsmodels`, and data visualization using `matplotlib` and `seaborn`.
+In more detail, the `pandas` library provides means to represent and manipulate data frames.
+We will introduce how to read data in Python using `pandas`, and perform some general data wrangling including selecting rows and columns by name and other criteria, applying functions to the selected data, aggregating the data, etc. 
+We will also look at general data visualization. 
+The `matplotlib` library is a low level plotting library that allows for considerable control of the plot, albeit at the price of a considerable amount of low level code. 
+Based on `matplotlib`, and providing a much higher level interface to the plot, is the `seaborn` library. 
+This allows us to produce complex data visualizations with a minimal amount of code. 
+Finally, we will introduce how to to perform widely used statistical analysis in Python. Here we will
+focus on `statsmodels`, which provides many of the mostly widely used statistical methods.
+
+# Jupyter notebook
+
+The Jupyter notebook for this course is [here](https://github.com/mark-andrews/intro2pystats/blob/master/notebooks/notebook.ipynb).
+Usually, Jupyter notebooks render as a nice webpage in GitHub.
+Sometimes, it does require a few reloads to get that.
+But of course, you can always download it and use it in your Jupyter or upload it and use it on [Colab](https://colab.research.google.com/).
+
+## Use the notebook online with *mybinder*
+
+The [mybinder](https://mybinder.org) service allows you to share Jupyter notebooks so that others can use them (i.e. run them) online directly.
+Click the button below to access this repo in *mybinder*:
+
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/mark-andrews/intro2pystats/HEAD)
+
+# GitHub resources
+
+Further resources for this training course can be found on Github at [mark-andrews/intro2pystats](https://github.com/mark-andrews/intro2pystats).

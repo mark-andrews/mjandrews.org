@@ -1,0 +1,389 @@
+/*moved*/
+main {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  /* border: 2px solid black; */
+}
+
+/*moved*/
+body {
+  font-family: 'Gill Sans W01 Book';
+  width: 100%;
+  height: 100%;
+  color: #000;
+  background-color: #fff;
+  padding-top: 0px;
+  margin-bottom: 60px;
+}
+
+/*moved*/
+p {
+  font-family: 'Bembo Book W01';
+  font-size: 16pt;
+  padding: 0px 0px 20px 0px;
+}
+
+p>code {
+  font-family: monospace;
+  font-size: 75%;
+}
+
+/* For issue-20 */
+#bio p {
+  padding: 0px 0px 0px 0px;
+}
+
+/*sort of moved; moved to all p; but we need a blog_page class*/
+.blog_page>p:first-child:first-letter {
+  float: left;
+  font-family: 'Bembo Book W01';
+  font-size: 5.05em;
+  line-height: 0.8;
+  color: #BE0000;
+  margin: 0.05em 0.075em -0.05em 0;
+}
+
+/*moved*/
+footer {
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+  /* Set the fixed height of the footer here */
+  line-height: 60px;
+  /* Vertically center the text there */
+  background-color: #ffffff;
+}
+
+.copyright {
+  font-size: 10pt;
+}
+
+/*moved*/
+.book_page>ul {
+  font-family: 'Optima nova LT W01';
+  font-size: 16px;
+}
+
+.book_page p {
+  padding: 0px 0px 0px 0px;
+}
+
+/*moved*/
+.book_page>ul>li>a {
+  text-decoration: none;
+  color: black;
+}
+
+/*moved*/
+.book_page>ul{
+  padding: 0px;
+  margin: 0px;
+  padding-left: 10px;
+}
+
+/*moved*/
+.book_page>ul>li {
+  list-style-type: none;
+  padding: 0px;
+  margin: 0px;
+  padding-top: 5px;
+}
+/* .book_page>ul>li:before {
+  list-style-type: none;
+  font-family: 'FontAwesome';
+  content: '\f1c1';
+  margin:0 5px 0 0px;
+  color: black;
+} */
+
+.book_page ul a:hover {
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-color: black;
+  text-decoration-thickness: 1px;
+  color: black;
+}
+
+/*moved*/
+main a:link, main a:visited {
+  /*text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-color: black;
+  text-decoration-thickness: 1px;*/
+  color: #BE0000;
+}
+
+.social-media img {
+  width: 20px;
+}
+
+.social-media {
+  padding-bottom: : 20px;
+  margin-bottom: 16px;
+}
+
+.social-media li {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: inline;
+  padding-right: 16px;
+}
+
+.social-media ul {
+  margin: 0;
+  padding: 0;
+}
+
+.social-media a:link, .social-media a:visited {
+  font-family: 'Gill Sans W01 Book';
+  color: black;
+}
+
+@media (max-width: 600px) {
+  .social-media li {
+    display: block;
+  }
+}
+
+/*moved*/
+.mjandrews-brand {
+  color: #BE0000;
+  font-size: 20px;
+}
+
+/*moved*/
+.mjandrews-brand:hover {
+  color: #BE0000;
+  font-size: 20px;
+  text-decoration: none;
+}
+
+#recent-stuff {
+  font-family: 'Bembo Book W01';
+}
+
+#recent-stuff ul {
+  list-style-type: none;
+  padding: 0px;
+}
+
+#recent-stuff>h2 {
+  font-family: 'Bembo Book W01 Italic';
+  font-size: 20pt;
+}
+
+#recent-stuff>ul {
+  padding: 0px;
+  border-collapse: separate;
+  border-spacing: 0 5px;
+}
+
+#recent-stuff>ul>li {
+  display: table-row;
+}
+
+#recent-stuff>ul>li>.date {
+  font-family: 'Optima nova LT W01';
+  display: table-cell;
+  width: 175px;
+}
+
+#recent-stuff>ul>li>.description {
+  font-family: 'Optima nova LT W01';
+  display: table-cell;
+}
+
+#recent-stuff>ul>li>.description>a {
+  font-style: normal;
+  text-decoration: none;
+  color: black;
+}
+
+#about>h1 {
+  font-family: 'Bembo Book W01 Italic';
+  text-align: left;
+  font-size: 24pt;
+  padding-top: 12px;
+  padding-bottom: 0px;
+  margin-bottom: 8px;
+}
+
+/*moved*/
+main h1 {
+  font-family: 'Bembo Book W01 Italic';
+  text-align: left;
+  font-size: 24pt;
+  padding-top: 12px;
+  padding-bottom: 0px;
+  margin-bottom: 8px;
+}
+
+.page h2 {
+  font-family: 'Bembo Book W01 Italic';
+  text-align: left;
+  font-size: 24pt;
+  padding-top: 12px;
+  padding-bottom: 0px;
+  margin-bottom: 8px;
+}
+
+.blog_page h1 {
+  font-family: 'Bembo Book W01 Italic';
+  text-align: left;
+  font-size: 24pt;
+  padding-top: 12px;
+  padding-bottom: 0px;
+  margin-bottom: 8px;
+}
+
+.blog_page h1>code{
+  font-family: monospace;
+  font-size: 72%;
+}
+
+.blog_page h2 {
+  font-family: 'Bembo Book W01 Italic';
+  text-align: left;
+  font-size: 18pt;
+  padding-top: 12px;
+  padding-bottom: 0px;
+  margin-bottom: 8px;
+}
+
+.blog_page li {
+  font-family: 'Bembo Book W01';
+  font-size: 16pt;
+}
+
+
+.page_header>h1 {
+  font-family: 'Bembo Book W01 Italic';
+  text-align: left;
+  font-size: 32pt;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin-bottom: 8px;
+}
+.page_header>h2 {
+  font-family: 'Optima nova LT W01';
+  text-align: left;
+  font-size: 12pt;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  /* margin-bottom: 50px; */
+}
+
+.page_header>h2:last-child {
+  font-family: 'Optima nova LT W01';
+  text-align: left;
+  font-size: 12pt;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin-bottom: 50px;
+}
+
+.listings>h1 {
+  font-family: 'Bembo Book W01 Italic';
+  text-align: left;
+  font-size: 24pt;
+  padding-top: 12px;
+  padding-bottom: 0px;
+  margin-bottom: 8px;
+}
+
+.listings>h1>a {
+  color: black;
+}
+
+.listings>h1>a:hover {
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-color: black;
+  text-decoration-thickness: 1px;
+  color: black;
+}
+
+.listings>h2 {
+  font-weight: normal;
+  text-align: left;
+  font-style: italic;
+  font-size: 0.8em;
+}
+
+.listings>.post-summary {
+  font-weight: normal;
+  line-height: 1.0;
+  text-align: left;
+  font-size: 1.0em;
+  padding-bottom: 12px;
+  padding-top: 12px;
+}
+
+.listings>.post-summary>p>code {
+  font-family: monospace;
+  font-size: 0.9em;
+}
+
+.listings>.blurb>p {
+  /* font-style: italic;
+    font-weight: normal;
+    line-height: 1.5;
+    text-align: left;
+    font-size: 1.0em; */
+  line-height: 1.5;
+  text-align: left;
+  font-size: 1.0em;
+  font-size: 16pt;
+  font-family: 'Bembo Book W01';
+  padding-bottom: 20px;
+  padding-top: 12px;
+}
+
+.listings>ul {
+  padding: 0px 0px 0px 0px;
+}
+.listings>ul>li {
+  padding-bottom: 10px;
+  padding-top: 10px;
+  list-style-type: none;
+  list-style-type: none; /* Remove bullets */
+  padding-left: 0; /* Remove padding */
+  margin-left: 0; /* Remove margins */
+}
+
+.listings>ul>li>a {
+  font-style: normal;
+  text-decoration: underline;
+  color: black;
+  /*
+    font-weight: 500;
+    */
+}
+
+.listings>ul>li>.publication_links>a {
+  font-style: normal;
+  text-decoration: underline;
+  color: black;
+  /*
+    font-weight: 500;
+    */
+}
+
+.listings>.post-summary>p {
+  line-height: 1.5;
+  text-align: left;
+  font-size: 1.0em;
+  font-size: 12pt;
+  font-family: 'Optima nova LT W01';
+}
+
+code {
+  font-family: monospace;
+  color: black;
+  font-size: 12pt;
+}
+
+.publication_title {
+  font-style: normal;
+}

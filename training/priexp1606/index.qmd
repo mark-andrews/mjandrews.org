@@ -1,0 +1,19 @@
+---
+title: 'Prior Exposure Bayesian Data Analysis Workshops: June, 2016'
+date: June 15, 2016
+description: |
+  This is a three-day workshop on Bayesian data analysis. The course begins with an introduction to R for data processing and analysis. It then delves into the principles of Bayesian data analysis and its differences from classical approaches. The final day focuses on the theoretical and practical aspects of Bayesian inference, with a special emphasis on Bayesian linear models.
+subtitle: 15-17 June, 2016
+location: Nottingham, UK
+author:
+- name: Mark Andrews
+- name: Thom Baguley
+categories:
+- Bayesian Data Analysis
+- Statistical Inference
+- Linear Models
+- R
+
+---
+
+This is a three-day workshop on Bayesian data analysis. The course begins with an introduction to R for data processing and analysis. It then delves into the principles of Bayesian data analysis and its differences from classical approaches. The final day focuses on the theoretical and practical aspects of Bayesian inference, with a special emphasis on Bayesian linear models.

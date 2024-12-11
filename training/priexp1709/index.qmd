@@ -1,0 +1,101 @@
+---
+title: 'Prior Exposure Bayesian Data Analysis Workshops: September, 2017'
+date: September 27, 2017
+description: |
+  This two-day workshop covers advanced topics in Bayesian data analysis, focusing on multilevel models and probabilistic mixture models. The first day is dedicated to multilevel linear and generalized linear models using the `mcmcglmm` R package and JAGS. The second day delves into probabilistic mixture models, nonlinear regression, and the theoretical basis of Markov Chain Monte Carlo samplers, primarily using JAGS.
+subtitle: 27-28 September, 2017
+location: Nottingham, UK
+author:
+- name: Mark Andrews
+- name: Thom Baguley
+categories:
+- Bayesian Data Analysis
+- Multilevel Models
+- Mixed Effects
+- Probabilistic Mixture Models
+- Nonlinear Regression
+- Markov Chain Monte Carlo
+- R
+
+---
+
+This is a two day workshop on some relatively advanced topics in Bayesian data
+analysis.  On the first day, we cover Bayesian approaches to multilevel models
+including multilevel linear models and multilevel generalized linear models.
+For this, we will use the `MCMCglmm` R package and the Jags probabilistic
+programming language.  On the second day, we cover Bayesian approaches to
+probabilistic mixture models and nonlinear regression. We also provide a more
+thorough introduction to the theoretical basis of Markov Chain Monte Carlo
+(MCMC) samplers. On the second day, we will primarily use Jags.
+
+## Day 1: Bayesian multilevel models
+
+This workshop focuses on Bayesian data analysis using multilevel regression
+models. Given that Bayesian inference in almost all advanced probabilistic
+models is analytically intractable, the initial focus of this workshop will be
+on the theory and practice of Monte Carlo, and particularly Markov Chain Monte
+Carlo (MCMC), methods for drawing random samples from posterior probability
+distributions.  Despite its relatively advanced nature, it is important to
+emphasize that MCMC methods are not a niche topic in Bayesian data analysis.
+They are at the heart of almost all modern applications of Bayesian data
+analysis, and they are what have allowed Bayesian methods to become so
+influential in modern statistics. In addition, this workshop will also focus
+heavily on the nature and practice of multilevel regression modeling.
+Multilevel models are becoming increasingly prevalent in data analysis in
+psychology and the social sciences. Inference in multilevel models presents
+major challenges for classical methods, while inference using Bayesian methods
+is always possible in principle. The practical activities in this workshop will
+largely focus on the use of the BUGS/JAGS macro language.  This is an extremely
+powerful general tool for Bayesian data analysis as it allows for MCMC based
+inference in arbitrary probabilistic models. We will introduce BUGS/JAGS by way
+of relatively simple models, followed by in depth application to multilevel
+models.
+
+* *9.00am* Registration (including tea & coffee)                            
+* *9:30am* Introduction to probabilistic modelling with R, Jags and rjags   
+* *10:30am* Introduction to multilevel modelling                             
+* *11:00am* Practical multilevel modeling in R and R-studio                  
+* *12:30pm* *Lunch* (Newton Arkwright cafe)
+* *1:30pm* Running multilevel models in JAGS                                
+* *3:30pm* Break (including tea & coffee)                                   
+* *3:45pm* Advanced multilevel modelling with JAGS                          
+* *5:00pm* Discussion                                                       
+* *5:30pm* Close                                                            
+
+## Day 2: Latent variable and nonlinear models
+
+This workshop focuses on Bayesian latent variable modeling, particularly
+using mixture models. Mixture models, also known as latent class models, model
+probability distributions as finite or infinite sums of simple component
+distributions. As such, mixture models provide a general means for modeling
+unique and arbitrarily complex probability distributions. They are also
+routinely used in practice, particularly in psychometrics. Bayesian approaches
+to mixture modeling rely heavily on Dirichlet prior distributions over finite
+numbers of mixture component, and Dirichlet process priors over infinitely many
+components. These Dirichlet process mixture models provide an elegant solution
+to the otherwise formidable challenge of inferring the correct number of
+components in mixture models. This workshop also focuses on Bayesian approaches
+to nonlinear regression modeling using Gaussian process models. Gaussian
+process regression represents a unifying approach to nonlinear regression,
+with many particular approaches to nonlinear regression - radial basis
+function, multilayer perceptrons, splines - being special cases of this general
+form.
+
+## Schedule
+
+* *9.00am* Registration (including tea & coffee)       
+* *9:30am* Introduction to mixture modelling           
+* *10:30am* Mixture modelling using JAGS                
+* *11:30am* Dirichlet process mixture modelling         
+* *12:30pm* *Lunch* (Newton Arkwright cafe)
+* *1:30pm* Introduction to nonlinear regression        
+* *2:30pm* Nonlinear regression with basis functions   
+* *3:30pm* Break (including tea & coffee)              
+* *4:00pm* Gaussian process regression                 
+* *5:00pm* Discussion                                  
+* *5:30pm* Close                                       
+
+# GitHub resources
+
+Further resources for this training course can be found on Github at [mark-andrews/priorexposure](https://github.com/mark-andrews/priorexposure).
+

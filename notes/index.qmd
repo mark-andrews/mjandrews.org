@@ -1,0 +1,28 @@
+---
+author: ''
+listing:
+  contents:
+    - "**/index.qmd"
+    - "**/index.Rmd"
+  sort: "date desc"
+  fields: [date, title, description]
+  type: default
+  categories: false
+  sort-ui: false
+  filter-ui: false
+  date-format: 'Do MMMM, YYYY'
+  id: sample-listings
+title-block-banner: false
+citation: false
+license: ''
+---
+
+::: {#notes-listing-head}
+This is a collection of notes on topics such as statistics, data analysis, data
+science, machine learning, deep learning, computational modelling, R, Python, Linux, etc.
+:::
+
+::: {#sample-listings}
+:::
+
+

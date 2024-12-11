@@ -1,0 +1,22 @@
+---
+title: "Using a custom R package to facilitate teaching"
+subtitle: "Online Symposium, Department of Psychology, Lancaster University"
+author: "Mark Andrews"
+date: "19 July, 2021"
+author-title: 'Presenter'
+published-title: 'Date'
+---
+
+In this talk, I describe how we have used a custom R package,
+[`psyntur`](https://mark-andrews.github.io/psyntur), to facilitate
+teaching statistics using R in the Psychology Department at [Nottingham
+Trent University](https://www.ntu.ac.uk/). I describe our initial
+motivation for using a custom R package, our initial objectives for the
+package, the general objections to using a custom package, our response
+to these objections. Then, I will provide a brief overview of the
+package, and some unexpected practical issues we faced when using it.
+
+-   RMarkdown source code for the slides are available on
+    [GitHub](https://github.com/mark-andrews/teaching_with_R_lancaster).
+-   The pdf of the slides are available
+    [here](andrews2021lancaster_slides.pdf).

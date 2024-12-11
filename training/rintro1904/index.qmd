@@ -1,0 +1,46 @@
+---
+title: Introduction to R and RStudio
+date: April 23, 2019
+description: |
+  This one-day workshop offers a comprehensive introduction to R and RStudio, aimed at beginners. The course covers R fundamentals, including RStudio overview, R commands, data structures, functions, scripts, and packages. It also includes data analysis and visualization using ggplot2, with a focus on linear regression and Anova models.
+subtitle: April 23, 2019
+location: London, UK
+author: Mark Andrews
+categories:
+- R
+- RStudio
+
+---
+
+In this workshop, you will be provided with a friendly but comprehensive introduction to R. It is intended to provide people who are new to R with all the basics and fundamentals that they need to get up and running with R so that they can use it on a regular basis.
+No prior experience with R is necessary. All we will assume is a familiarity with statistics typical of someone with a undergrad, or higher, degree in psychology or related discipline.
+
+This workshop is free to anyone who is a member of any of the following three British Psychological Society sections:
+
+* Mathematics, Statistics, and Computing section
+
+* Cognitive Psychology section
+
+* Developmental Psychology section
+
+The schedule is as follows:
+
+* 9:00-9:30: Registration; tea & coffee
+* 9:30-10:00: What is R and why should you care
+* 10:00-10:30: A guided tour of RStudio
+* 10:30-11:00: Introducing R commands
+* 11:00-11:30: Variables, vectors, functions
+* 11:30-12:30: Writing R scripts
+* 12:30-13:30: Lunch (provided)
+* 13:30-14:00: Reading in and viewing data
+* 14:00-14:30: Summarizing data
+* 14:30-15:30: Plots and data visualiztion
+* 15:30-16:30: Linear regression, general linear models
+* 16:30-17:30: Anova (one-way, factorial, repeated measures)
+
+You will be required to bring your own laptop with R, RStudio, and some R packages installed. 
+
+
+# GitHub resources
+
+Further resources for this training course can be found on Github at [mark-andrews/bps-introduction-to-R](https://github.com/mark-andrews/bps-introduction-to-R).

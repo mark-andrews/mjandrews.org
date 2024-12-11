@@ -1,0 +1,32 @@
+---
+title: Bayesian Methods for Language Sciences
+date: June 29, 2017
+description: This is a 5-day course on Bayesian methods for language sciences, focusing on probabilistic language models and statistical data analysis of empirical data. The course is relevant to researchers in the language sciences, particularly those from Natural Language Processing, Linguistics or Psychology backgrounds.
+subtitle: 29-30 June, 2017
+location: Toulouse, France
+author: Mark Andrews
+categories:
+- Bayesian Data Analysis
+- Language Sciences
+- Probabilistic Language Models
+- Psycholinguistics
+
+---
+
+A 5 day lecture course on Bayesian methods for language sciences taught at 29th
+European Summer School in Logic, Language, and Information, University
+of Toulouse (France), 17-28 July, 2017
+
+Bayesian methods can be applied to research in the language sciences in at
+least two major ways. On the one hand, they can be used for the development and
+analysis of probabilistic language models of the kind used, for example, in
+corpus based computational linguistics. On the other hand, they can be used for
+the statistical analysis of empirical data obtained, for example, from
+psycholinguistic experiments. The aim of this workshop is to provide an
+introduction to both of these applications of Bayesian methods.  Given that
+probabilistic language modelling is a vital part of modern computational
+linguistics, and that statistical data analysis is an essential part of
+psycholinguistics, Bayesian methods are potentially relevant to a wide range of
+researchers in the language sciences. It is hoped, therefore, that this
+workshop will be potentially appealing to language science researchers from
+Natural Language Processing, Linguistics or Psychology backgrounds.

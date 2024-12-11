@@ -1,0 +1,227 @@
+---
+title: "Web scraping Wikipedia data tables into R data frames"
+author: "Mark Andrews"
+date: '2019, 1, 28, 12:00'
+categories: ["web scraping", "tidyverse", 'R']
+description: Wikipedia provides a lot of very useful tables of data. The data, however,
+  are in the form of html tables, rather than some easy to import format like csv.
+  To get this table into, for example, an R data frame requires some web scraping
+  followed by data wrangling.
+---
+
+```{r}
+#| label = "setup",
+#| include = FALSE
+knitr::opts_chunk$set(#collapse = TRUE,
+                      echo = TRUE,
+                      message = FALSE,
+                      warning = FALSE)
+
+# We'll use these to style the tables, but we'll keep 
+# it quiet.
+library(knitr)
+library(kableExtra)
+
+stylish_Df <- function(Df){
+  Df %>% 
+  kable() %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "responsive"),
+                font_size = 10,
+                full_width = TRUE)
+}
+
+
+```
+
+[Wikipedia](https://en.wikipedia.org/)  provides us with very large numbers of data tables. 
+All of these tables, though perhaps with some exceptions, provide a detailed reference to the original sources of the data and, by virtue of being on a Wikipedia page, are free to use according tothe [Creative Commons BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/) licence.
+However, if we want to do data analysis using R on data in these tables, we must first do some web scraping to extract the data from the html tables and then use `dplyr` and related tools to clean them up and convert them into a form that is easy to work with.
+Here, we provide a worked example of how to do this. 
+
+For this example, the page we will work with is [List of English districts by population](https://en.wikipedia.org/wiki/List_of_English_districts_by_population), and in particular the [page version](https://en.wikipedia.org/w/index.php?title=List_of_English_districts_by_population&oldid=879013307) as of 28 January 2019 10:38 UTC.
+
+Here's a screenshot of that page where we see the main table:
+```{r}
+#| out.width = "800px",
+#| echo = F,
+#| fig.align = "center"
+knitr::include_graphics("img/english_districts_wikipage_screenshot.png")
+```
+
+We'll need some R packages for web scraping, namely [rvest](https://cran.r-project.org/web/packages/rvest/), which provides a set of functions that are wrappers around functions in the [`httr`](https://cran.r-project.org/web/packages/httr) and [`xml2`](https://cran.r-project.org/web/packages/xml2/) packages.
+We'll then need [`dplyr`](https://cran.r-project.org/web/packages/dplyr/) for re-formatting and cleaning the data.
+We'll use [`magrittr`](https://cran.r-project.org/web/packages/magrittr/) for some processing pipelines.
+We'll use [`stringr`](https://cran.r-project.org/web/packages/stringr/) for some renaming.
+We'll use [`ggplot2`]() at the end for some visualizations.
+
+```{r}
+library(tidyverse) # loads dplyr, ggplot2, 
+library(rvest)
+library(magrittr)
+library(stringr)
+```
+
+# Web scraping the table
+
+The web scraping is relatively painless.
+In addition to the url of the webpage, we also need to know the [xpath](https://en.wikipedia.org/wiki/XPath) node of the table in the page. 
+This can be obtained using inspector tools in modern web-browsers, such as those provided by the DevTools in Chrome, see [here](https://developers.google.com/web/tools/chrome-devtools/inspect-styles/).
+On the webpage used in this example, there's actually just one html table, and we convert that to a [tibble](https://r4ds.had.co.nz/tibbles.html), although that final step is not strictly necessary.
+
+```{r}
+webpage_url <- 'https://en.wikipedia.org/w/index.php?title=List_of_English_districts_by_population&oldid=879013307'
+
+webpage_tables <- 
+  webpage_url %>% 
+  read_html() %>% 
+  html_nodes(xpath='//*[@id="mw-content-text"]/div/table') %>% 
+  html_table()
+
+Df <- webpage_tables[[1]] %>%   # There's only one table
+  as_tibble()
+```
+
+
+# Data wrangling 
+
+Having read in the data into a data-frame, we now must do a series of typical `dplyr` data wrangling steps. 
+
+First, let's take a look at the first 10 rows of the `Df` that we've obtained:
+```{r}
+Df
+```
+
+There are a few things that need to be fixed:
+
+* First, though this is maybe just a personal preference, we'll convert column names to lower case and with no spaces.
+* The original table's sub-headers like `More than 1,000,000 inhabitants`, `More than 500,000 inhabitants`, etc., have turned into rows with repeated values, and these need to be removed.
+* The population values need to be converted to integers.
+* Some variables can be dropped to make a cleaner data frame.
+
+To convert the column names, I'll create a function using `stringr` and apply it using `rename_with` (see [this blog post ](/notes/acrosstidyverse/index.html#replacing-rename_all-rename_at-rename_if-with-rename_with) for more details on using `rename_with`):
+```{r}
+tolower_no_spaces <- function(s){
+  s %>% 
+    str_to_lower() %>% 
+    str_replace_all(' ', '_')
+}
+
+Df %<>% rename_with(tolower_no_spaces)
+```
+
+To deal with the inclusion of sub-headers rows, we need to filter out all rows that contain values like `250,000 to 300,000 inhabitants`, `Below 50,000`, etc.
+If we just look at the `rank` variable, these cases can be relatively easily identified by whether they contain the words `to`, `than` or `Below`.
+
+```{r}
+Df %>% filter(str_detect(rank, 'to|than|Below'))
+```
+
+That gives us an easy rule with which to filter them out:
+```{r}
+Df %<>% filter(!str_detect(rank, 'to|than|Below')) 
+```
+
+We can now verify that the number of rows that we now have is the correct number, namely 326 (which is the current number of official [districts](https://en.wikipedia.org/wiki/Districts_of_England) that are in England).
+```{r}
+nrow(Df)
+```
+Now, let's take a look again at the first 10 rows:
+```{r}
+Df
+```
+
+Next, we'll convert the `population` variable to an  `integer` variable by first removing the commas in their values.
+However, before doing that, in the [original permanent URL page](https://en.wikipedia.org/w/index.php?title=List_of_English_districts_by_population&oldid=879013307), we notice that some values in the *Population* column have `align="center"` as values.
+```{r}
+Df %>% filter(str_detect(population, 'align="center"'))
+```
+This is presumably just an typographic error. 
+We could remove these rows, but when we convert to integers, `population` values in these rows will be converted to `NA`.
+
+After we convert to integers, we'll drop `rank` entirely because it can be calculated easily from `population`.
+
+```{r}
+Df %<>% mutate(population = str_replace_all(population, ',', '') %>% as.integer()) %>% 
+  select(-rank)
+```
+
+Let's look again at the first 10 rows:
+```{r}
+Df
+```
+
+The `type` variable is quite inconsistent. 
+The 326 English districts are in fact simply divided into 5 types but in our `Df`, the type variable 
+is sometimes missing, or has values like "City (2012)" that do not correspond to one the five English district types, or has two pieces of information that are separated by a comma.
+Because of this overall inconsistency, we will drop the variable. However, it
+is possible to recover this information from joining this table with other tables of English districts
+such as from what is available on the [List of English districts by area](https://en.wikipedia.org/wiki/List_of_English_districts_by_area) Wikipedia page. 
+
+```{r}
+Df %<>% select(-type) 
+```
+
+As a final fix, we can see that one district, namely *Stockton-on-Tees*, is listed as belonging to two regions of England:
+```{r}
+Df %>% filter(district == "Stockton-on-Tees")
+```
+
+Given that this district is listed [here](https://en.wikipedia.org/wiki/Borough_of_Stockton-on-Tees) as part of [North East England](https://en.wikipedia.org/wiki/North_East_England), we'll change its listed region to `North East`.
+```{r}
+Df %<>% mutate(english_region = recode(english_region, 
+                                       'North East andYorkshire and the Humber' = 'North East')
+)
+```
+
+The final state of the data frame is now as follows:
+```{r}
+Df
+```
+
+
+# Summarizing and visualizing the data
+
+Having extracted and cleaned the data, we can now obtain some summary statistics:
+```{r}
+Df %>% summarize(number_of_districts = n(),
+                 median_population = median(population, na.rm = T),
+                 population_iqr = IQR(population, na.rm = T)
+)
+```
+
+And we can provide these summaries by English region too. 
+```{r}
+Df %>% group_by(english_region) %>% 
+  summarize(number_of_districts = n(),
+            median_population = median(population, na.rm = T),
+            population_iqr = IQR(population, na.rm = T)
+  )
+```
+
+We can visualize the distributions of the population in each district.
+```{r}
+#| fig.align = "center"
+ggplot(Df,
+       aes(x = population)
+) + geom_histogram(bins = 25, col='white') + 
+  theme_classic() +
+  scale_x_continuous(name="Population", 
+                     breaks = c(10^5, 5*10^5, 10^6),
+                     labels = c('100K', '500K', '1M')
+        )
+```
+
+And do the same by region.
+```{r}
+#| fig.align = "center"
+ggplot(Df,
+       aes(x = population)
+) + geom_histogram(bins = 25, col='white') + 
+  facet_wrap(~english_region)+  theme_classic() +
+  theme(strip.background = element_blank()) + 
+  scale_x_continuous(name="Population", 
+                     breaks = c(10^5, 5*10^5, 10^6),
+                     labels = c('100K', '500K', '1M')
+  )
+```
+

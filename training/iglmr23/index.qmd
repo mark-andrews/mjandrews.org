@@ -1,0 +1,34 @@
+---
+title: "Introduction to Generalized Linear Models with R"
+author: "Mark Andrews"
+subtitle: '24-25 May, 2023'
+date: '24 May, 2023'
+location: Online
+description: "This two-day course provides a comprehensive practical and
+theoretical introduction to generalized linear models using R. The course
+covers specific models including binary, binomial, ordinal, and categorical
+logistic regression, Poisson and negative binomial regression for count
+variables, and zero-inflated Poisson and negative binomial regression models."
+categories: ["Generalized Linear Models", "R"]
+---
+
+In this two day course, we provide a comprehensive practical and theoretical introduction to generalized linear models using R. Generalized linear models are generalizations of linear regression models for situations where the outcome variable is, for example, a binary, or ordinal, or count variable, etc. The specific models we cover include binary, binomial, ordinal, and categorical logistic regression, Poisson and negative binomial regression for count variables. We will also cover zero-inflated Poisson and negative binomial regression models. On the first day, we begin by providing a brief overview of the normal general linear model. Understanding this model is vital for the proper understanding of how it is generalized in generalized linear models. Next, we introduce the widely used binary logistic regression model, which is is a regression model for when the outcome variable is binary. Next, we cover the ordinal logistic regression model, specifically the cumulative logit ordinal regression model, which is used for the ordinal outcome data. We then cover the case of the categorical, also known as the multinomial, logistic regression, which is for modelling outcomes variables that are polychotomous, i.e., have more than two categorically distinct values. On the second day, we begin by covering Poisson regression, which is widely used for modelling outcome variables that are counts (i.e the number of times something has happened). We then cover the binomial logistic and negative binomial models, which are used for similar types of problems as those for which Poisson models are used, but make different or less restrictive assumptions. Finally, we will cover zero inflated Poisson and negative binomial models, which are for count data with excessive numbers of zero observations.
+
+# Course programme 
+
+## Day 1 
+
+* Topic 1: *The general linear model*. We begin by providing an overview of the normal, as in normal distribution, general linear model, including using categorical predictor variables. Although this model is not the focus of the course, it is the foundation on which generalized linear models are based and so must be understood to understand generalized linear models.
+* Topic 2: *Binary logistic regression*. Our first generalized linear model is the binary logistic regression model, for use when modelling binary outcome data. We will present the assumed theoretical model behind logistic regression, implement it using R's `glm`, and then show how to interpret its results, perform predictions, and (nested) model comparisons.
+* Topic 3: *Ordinal logistic regression*. Here, we show how the binary logistic regresion can be extended to deal with ordinal data. We will present the mathematical model behind the so-called cumulative logit ordinal model, and show how it is implemented in the `clm` command in the `ordinal` package.
+* Topic 4: *Categorical logistic regression*. Categorical logistic regression, also known as multinomial logistic regression, is for modelling polychotomous data, i.e. data taking more than two categorically distinct values. Like ordinal logistic regression, categorical logistic regression is also based on an extension of the binary logistic regression case.
+
+## Day 2
+
+* Topic 5: *Poisson regression*. Poisson regression is a widely used technique for modelling count data, i.e., data where the variable denotes the number of times an event has occurred.
+* Topic 6: *Binomial logistic regression*. When the data are counts but there is a maximum number of times the event could occur, e.g. the number of items correct on a multichoice test, the data is better modelled by a binomial logistic regression rather than a Poisson regression. 
+* Topic 7: *Negative binomial regression*. The negative binomial model is, like the Poisson regression model, used for unbounded count data, but it is less restrictive than Poisson regression, specifically by dealing with overdispersed data.
+* Topic 8: *Zero inflated models*. Zero inflated count data is where there are excessive numbers of zero counts that can be modelled using either a Poisson or negative binomial model. Zero inflated Poisson or negative binomial models are types of latent variable models.
+
+
+

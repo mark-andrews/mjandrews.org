@@ -1,0 +1,87 @@
+---
+title: Bayesian Data Analysis
+date: September 25, 2018
+description: |
+  This two-day workshop provides an introduction to Bayesian data analysis, contrasting it with classical approaches. The first day covers the fundamental concepts of Bayesian statistical inference. The second day offers a theoretical and practical foundation for real-world Bayesian data analysis in psychology and social sciences, focusing on regression models and their applications using Stan and brms.
+subtitle: 25-26 September, 2018
+location: Munich, Germany
+author:
+- name: Mark Andrews
+- name: Thom Baguley
+categories:
+- Bayesian Data Analysis
+- Statistical Inference
+- Stan
+- brms
+- R
+
+---
+
+# Workshop Day 1 – Tuesday, Sept 25th 
+
+This workshop aims to be a general introduction to Bayesian data analysis and
+how it differs from the more familiar classical approaches to data analysis. We
+will start by providing a brief historical overview of statistical inference
+and introduce Bayes’s theorem. The fundamental concepts of Bayesian statistical
+inference will follow, contrasted with frequentist methods of inference. To
+provide a bridge between Bayesian and classical methods, we will describe
+likelihood function approaches to inference and introduce both the likelihood
+principle and the law of the likelihood as the general precepts of likelihood
+based inference. During this workshop, there will also be practical exercises
+including using Bayes’s rule to calculate posterior probabilities and posterior
+distributions, choosing priors in probabilistic models and illustrating their
+role on the posterior distributions, calculating likelihood ratios and Bayes
+factors to compare evidence for different parameters in a probabilistic model,
+and calculating marginal likelihoods for comparing distinct probabilistic
+models.
+
+- 09:00 Welcome (tea & coffee)
+- 09:30 Introduction and overview of workshop 1
+- 10:00 Introduction to likelihood
+- 11:30 Introduction to Bayesian inference
+- 12:30 Lunch
+- 13:30 Bayesian data analysis in action
+- 15:30 Break
+- 15:45 Bayes factors
+- 17:00 Discussion
+- 17:30 Close
+
+
+# Workshop Day 2 – Wednesday, Sept 26th 
+
+This workshop aims to provide a solid theoretical and practical foundation for
+real-world Bayesian data analysis in psychology and social sciences. We will
+begin by focusing on some simple, but nontrivial, statistical inference
+problems. These problems are simple enough to handle with just a few
+calculations using R, but can nonetheless illustrate clearly all the major
+concepts on Bayesian inference including prior distributions, the likelihood
+function, posterior distributions, high posterior density intervals, posterior
+predictive distributions, marginal likelihood, Bayesian model comparison, and
+so on. While these models can be very conceptually informative, their practical
+value for real world inference is limited by their simplicity. In order to
+provide more practically valuable tools, we will then turn to looking at
+regression model, beginning with the linear/normal models. These models, which
+include t tests, ANOVA, ANCOVA, and mutiple linear regression models, form a
+foundation for much of data analysis. We will explore these models using Stan,
+a probabilistic programming language, and brms, an R package that allows us to
+use Stan easily and efficiently. We then turn to generalized linear models,
+including logistic regression and Poisson regression, as well as their
+multilevel counterparts. Together together, the general and generalized linear
+models and their multilevel counterparts constitute a very powerful and
+practically valuable set of tools for data analysis. 
+
+- 09:00 Welcome (tea & coffee)
+- 09:30 Introduction and overview of workshop 2
+- 10:00 Bayesian inference in binomial models
+- 12:30 Lunch
+- 13:30 Bayesian inference in linear and normal models
+- 15:30 Break
+- 15:45 Bayesian inference in general and generalized multilevel linear models
+- 17:00 Discussion
+- 17:30 Close
+
+
+# GitHub resources
+
+Further resources for this training course can be found on Github at [mark-andrews/bayes-lmu-2018](https://github.com/mark-andrews/bayes-lmu-2018).
+

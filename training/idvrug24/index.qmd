@@ -1,0 +1,47 @@
+---
+title: "Introduction to Data Visualization and Data Dashboards with R using ggplot and Shiny"
+author: "Mark Andrews"
+subtitle: '1-2 May, 2024'
+date: '1 May, 2024'
+location: Online
+description: "This two-day course offers a comprehensive introduction to data
+visualization in R using ggplot. The course covers the general principles of
+data visualization, major types of plots for visualizing univariate and
+bivariate data, and provides fine-grained control of the plot by changing axis
+scales, labels, tick points, color palettes, and ggplot themes. The course also
+introduces how to insert plots into documents using RMarkdown and how to create
+labeled grids of subplots for presentations and publications."
+categories: ["Data Visualization", "R", "ggplot", "RMarkdown"]
+---
+
+In this two-day course, you will gain a comprehensive introduction to data visualization in R using ggplot. We will cover all the major data visualization techniques and use them to explore and illustrate the major patterns in data. We will also cover how to use R's Shiny package to make web-app based data dashboards and interactive visualizations.
+
+## The course will cover these key topics:
+
+* Utilising data visualisation techniques and tools particularly R's `ggplot` to explore patterns in datasets and to present them in an accessible manner appropriate for the intended audience and/or publications
+* Visualizing univariate, bivariate and multivariate data through the widely used graphical techniques such as, scatterplots, histograms, density plots, barplots, and Tukey boxplots
+* Introducing a range of less familiar plot types such as frequency polygons, area plots, line plots, uncertainty plots, violin plots, and geospatial mappings
+* We will introduce R's powerful Shiny package for developing web-apps for data dashboards and interactive visualizations
+* The course will take 6 contact hours per day plus two 1-hour breaks.
+
+## The sessions will be as follows:
+
+* Session 1: 9:30am-11:30am;
+* Session 2: 12:30am-2:30pm;
+* Session 3: 3:30pm-17:30pm
+
+## During the course you'll:
+
+* Understand the general principles behind `ggplot` for the purposes of data visualization
+* Recognise the major types of plots for visualizing distributions of univariate data and presenting multiple distributions simultaneously on the same plot using different colours and "facet" plots.
+* Learn how to visualise bivariate data using scatterplots, and how to apply linear and nonlinear smoothing functions to the data, add marginal histograms and labels to points, and scale each point by the value of a third variable
+* Expand your knowledge and application of less familiar plot types that are often related but not identical to those major types covered in earlier topics.
+* Learn about specific controls / functionalities of the plot to present the data in a visually appealing and accessible manner
+* Explore how to make plots for presentations and publications and insert them into documents using RMarkdown,
+* Learn how to make to make interactive web-apps using R's Shiny web app framework.
+
+## What will I gain?  
+
+By the end of the course, you'll have gained knowledge and understanding of the general purpose and principles of data visualisation and the fundamental graphical tools for visualising data.  You'll also be able to plot complex, multivariate datasets using a wide variety of fundamental graphical tools, and have the know-how to effectively explore and interrogate datasets visually.
+
+On completion of at least 80% of the course, you'll receive a certificate of attendance.

@@ -1,0 +1,28 @@
+---
+author: ''
+listing:
+  contents:
+    - "**/index.qmd"
+  sort: "date desc"
+  fields: [title, subtitle, description]
+  type: default
+  categories: false
+  sort-ui: false
+  filter-ui: false
+  date-format: 'Do MMMM, YYYY'
+  id: course-listings
+  page-size: 36
+title-block-banner: false
+citation: false
+license: ''
+---
+
+::: {#course-listings-head}
+I teach training courses, varying in length from 1 to 5 days, on data science and statistics. The topics I cover include Bayesian data analysis, multilevel modelling, nonlinear regression, structural equation modelling and path analysis, reproducible research, machine learning, deep learning, general data analysis and statistics using R, data science and scientific programming with Python.
+:::
+
+
+::: {#course-listings}
+:::
+
+

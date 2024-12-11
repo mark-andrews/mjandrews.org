@@ -1,0 +1,57 @@
+---
+title: "Doing Data Science in R: An Introduction for Social Scientists"
+toc: false
+page-layout: full
+---
+
+This book was published by SAGE in March, 2021.
+It is available for purchase on [Amazon](https://www.amazon.co.uk/dp/1526486776) and elsewhere.
+Below, you will find links to the RMarkdown source code of the book, copies of the data files uses in the book, and preprints of all the chapters.
+
+<!-- Add non-breaking space so that image will be centered. See https://github.com/quarto-dev/quarto-cli/issues/6509#issuecomment-1789454053 -->
+[![&nbsp;](ddsr_cover_image.jpg)](https://www.amazon.co.uk/dp/1526486776){fig-align="center"}
+
+*Doing Data Science in R* is about statistical data analysis of real world data using modern tools.
+It is aimed at those who are currently engaged in, or planning to be engaged in, analysis of statistical data of the kind that might arise at or beyond PhD level scientific research.
+It is ostensibly aimed at researchers in social science fields, but in fact is equally applicable to many other scientific fields, particularly the biological, medical, and life sciences fields.
+The data in these types of scientific fields is complex.
+There are many variables and complex relationships between them.
+Analyzing this data almost always requires data wrangling, exploration, and visualization.
+Above all, it involves statistical modelling the data using flexible probabilistic models.
+These models are then used to reason and make predictions about the scientific phenomenon being studied.
+This book aims to address all of these topics.
+
+## Source code
+
+This book was written entirely in RMarkdown and compiled to pdf using GNU Makefiles that are run inside a Docker container.
+The RMarkdown source code, any requisite R or Stan scripts and data files, and the shell scripts and GNU Makefiles and Docker files for building the pdfs of the book are all available in this [GitHub repository](https://github.com/mark-andrews/ddsr).
+
+
+## Data files
+
+The csv data files used in each chapter are available in this [zipfile](https://github.com/mark-andrews/ddsr/releases/download/v22.7.31/ddsr_data.zip), which has subdirectories for each chapter, inside of which are its data files.
+
+## Chapter preprints {#ddsr_chapters}
+
+There are 17 chapters in the book, listed below.
+For each one, you can download a preprint pdf.
+These are the pdfs of the versions of the chapters before the book manuscript was sent to the publisher.
+Therefore, there are differences between these and the chapters in the published book.
+
+* [Chapter 1: Data Analysis and Data Science <i class="far fa-file-pdf"></i>](https://github.com/mark-andrews/ddsr/releases/download/v22.7.31/chapter_01_datascience.pdf)
+* [Chapter 2: Introduction to R <i class="far fa-file-pdf"></i>](https://github.com/mark-andrews/ddsr/releases/download/v22.7.31/chapter_02_introduction.pdf)
+* [Chapter 3: Data Wrangling <i class="far fa-file-pdf"></i>](https://github.com/mark-andrews/ddsr/releases/download/v22.7.31/chapter_03_wrangling.pdf)
+* [Chapter 4: Data Visualization <i class="far fa-file-pdf"></i>](https://github.com/mark-andrews/ddsr/releases/download/v22.7.31/chapter_04_visualization.pdf)
+* [Chapter 5: Exploratory Data Analysis <i class="far fa-file-pdf"></i>](https://github.com/mark-andrews/ddsr/releases/download/v22.7.31/chapter_05_exploratory.pdf)
+* [Chapter 6: Programming in R <i class="far fa-file-pdf"></i>](https://github.com/mark-andrews/ddsr/releases/download/v22.7.31/chapter_06_programming.pdf)
+* [Chapter 7: Reproducible Data Analysis <i class="far fa-file-pdf"></i>](https://github.com/mark-andrews/ddsr/releases/download/v22.7.31/chapter_07_reproducible.pdf)
+* [Chapter 8: Statistical Models and Statistical Inference <i class="far fa-file-pdf"></i>](https://github.com/mark-andrews/ddsr/releases/download/v22.7.31/chapter_08_inference.pdf)
+* [Chapter 9: Normal Linear Models <i class="far fa-file-pdf"></i>](https://github.com/mark-andrews/ddsr/releases/download/v22.7.31/chapter_09_linear.pdf)
+* [Chapter 10: Logistic Regression <i class="far fa-file-pdf"></i>](https://github.com/mark-andrews/ddsr/releases/download/v22.7.31/chapter_10_logistic.pdf)
+* [Chapter 11: Generalized Linear Models for Count Data <i class="far fa-file-pdf"></i>](https://github.com/mark-andrews/ddsr/releases/download/v22.7.31/chapter_11_generalized.pdf)
+* [Chapter 12: Multilevel Models <i class="far fa-file-pdf"></i>](https://github.com/mark-andrews/ddsr/releases/download/v22.7.31/chapter_12_multilevel.pdf)
+* [Chapter 13: Nonlinear Regression <i class="far fa-file-pdf"></i>](https://github.com/mark-andrews/ddsr/releases/download/v22.7.31/chapter_13_nlregression.pdf)
+* [Chapter 14: Structural Equation Modelling <i class="far fa-file-pdf"></i>](https://github.com/mark-andrews/ddsr/releases/download/v22.7.31/chapter_14_sem.pdf)
+* [Chapter 15: High-Performance Computing with R <i class="far fa-file-pdf"></i>](https://github.com/mark-andrews/ddsr/releases/download/v22.7.31/chapter_15_hpc.pdf)
+* [Chapter 16: Interactive Web Apps with Shiny <i class="far fa-file-pdf"></i>](https://github.com/mark-andrews/ddsr/releases/download/v22.7.31/chapter_16_shiny.pdf)
+* [Chapter 17: Probabilistic Modelling with Stan <i class="far fa-file-pdf"></i>](https://github.com/mark-andrews/ddsr/releases/download/v22.7.31/chapter_17_stan.pdf)

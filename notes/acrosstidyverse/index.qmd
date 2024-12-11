@@ -1,0 +1,327 @@
+---
+title: "Superseding dplyr's suffixed variants"
+date: '2020, 10, 27, 12:00'
+categories: ["tidyverse", "data wrangling", "R"]
+description: |
+  This post explains how we can use `across`, `where()`, `rename_with()`, etc., to perform actions 
+  that were previously accomplished with the `_if`, `_at`, `_all` variants of the `dplyr` verbs.
+---
+
+```{r}
+#| include = FALSE
+knitr::opts_chunk$set(echo = TRUE,
+                      message = FALSE,
+                      warning = FALSE)
+```
+
+The [`dplyr`](https://dplyr.tidyverse.org/) package describes itself as a "grammar of data manipulation" and its main features are its "verbs" like `select`, `filter`, `mutate`, and so on.
+Prior to version `1.0` of `dplyr`, the verbs had variants with the suffices `_if`, `_at`, `_all`.
+These extended the basic functionality of each of the `dplyr` verbs.
+As of `1.0`, however, these suffixed variants have been superseded by another set of functions, often used in combination, including `across`, `where`, `rename_with`, `if_any`, `if_all`, and so on.
+Why the developers of `dplyr` chose to make these changes is described [here](https://dplyr.tidyverse.org/dev/articles/colwise.html#-if-at-all).
+What this means in practice is that if you are already using `dplyr`, while you can continue using the suffixed variants, using `across`, `where`, etc is now the recommended way to accomplish that which was previously accomplished by these variants.
+If, on the other hand, you are new to `dplyr`, it is not worthwhile learning `_if`, `_at`, `_all`, other than to know that they were the previous way of doing things that are now accomplished with new functions.
+
+In this post, I explain how we can use `across`, `where`, `rename_with`, etc., to perform actions that were previously accomplished with the suffixed variants of `dplyr` verbs.
+In addition, we will also cover a related function, `c_across`, which is used for rowwise operations in data-frames that were previously very awkward to accomplish in other ways.
+While I briefly summarize the main `dplyr` verbs in this post, I will assume that readers are already familiar, to at least minimal extent, with these verbs.
+
+In this coverage, we will use the data frame `blp_df` (the csv file of which is [here](data/blp-trials-short.txt)):
+```{r}
+library(tidyverse)
+blp_df <- read_csv("data/blp-trials-short.txt")
+blp_df
+```
+
+
+## Replacing `select_if` with `select` and `where`
+
+The `select` verb allows us to select columns in a variety of different ways such as their name, or position, or what characters their names begin or end with, etc.
+For example, here we select the columns that start with the string `rt`:
+```{r}
+select(blp_df, starts_with('rt'))
+```
+We can also select columns according to the properties of the values of the variable.
+For example, we can select those variables whose values are character strings, or numeric, or logical, etc.
+Previously, this was accomplished using `select_if`, whereby we selected a column if its values meet certain conditions.
+For example, to select the columns that are character vectors, we previously did the following:
+```{r}
+select_if(blp_df, is.character)
+```
+Now, we can accomplish this with `where()` as follows:
+```{r}
+select(blp_df, where(is.character))
+```
+
+When using `where` like this, we can also use custom functions like the following:
+```{r}
+# return TRUE if `x` is numeric and its mean > 700.
+has_high_mean <- function(x){
+  is.numeric(x) && (mean(x, na.rm = TRUE) > 700)
+}
+
+select(blp_df, where(has_high_mean))
+```
+As we can see, we select those columns for which the custom function returns `TRUE`.
+
+Note that we can also use anonymous functions, such as `purrr` lambdas as described [here](/notes/functionals/index.html#purrr-style-anonymous-functions), inside `where`.
+For example, we can accomplish the previous command with an anonymous function as follows:
+```{r}
+select(blp_df, where(~is.numeric(.) && (mean(., na.rm = TRUE) > 700)))
+```
+
+## Replacing `rename_all`, `rename_at`, `rename_if` with `rename_with`
+
+The `rename` verb allows us rename column names.
+For example, if we want to rename `participant` with `subject`, we do the following:
+```{r}
+rename(blp_df, subject = participant)
+```
+We can also use a renaming function that can be applied to all names.
+For example, we could use a function to convert all names to uppercase, or a function that replaces any occurrence of a dot with an underscore.
+Previously, this was accomplished with `rename_all`.
+```{r}
+rename_all(blp_df, toupper) # convert all names to uppercase
+rename_all(blp_df, ~str_replace_all(., '\\.', '_')) # replace dots with underscores
+```
+We can now accomplish this by using `rename_with` instead of `rename_all`.
+```{r}
+rename_with(blp_df, toupper)
+rename_with(blp_df, ~str_replace_all(., '\\.', '_'))
+```
+Admittedly, this appears like we have just renamed the function `rename_all` with `rename_with`.
+However, `rename_with` is more versatile than `rename_all`, and replaces other suffixed variants of `rename` such as `rename_at` and `rename_if`.
+As an example, let us say we want to replace the string`rt` (reaction time) with `time` in the column names so that, for example, `prev.rt` is replaced with `prev_time`, etc.
+We could try `rename_with` as follows:
+```{r}
+rename_with(blp_df,
+            ~str_replace_all(., 'rt', 'time'))
+```
+Clearly, this is not ideal as it replaced the `rt` in `participant` too, leading to `patimeicipant`.
+In order to apply a renaming function to selected columns only, previously we would have used `rename_at`, as in the following example:
+```{r}
+rename_at(blp_df,
+          vars(matches('^rt|rt$')),
+          ~str_replace_all(., 'rt', 'time'))
+```
+Here, the second line `vars(matches('^rt|rt$'))` selects those variables that match the regular expression `^rt|rt$`, which selects only those names that begin or end with `rt`.
+The `rename_with` function can accomplish this too as follows:
+```{r}
+rename_with(blp_df,
+            ~str_replace_all(., 'rt', 'time'),
+            matches('^rt|rt$'))
+```
+
+As an another example, consider renaming those columns whose values have certain characteristics.
+For example, we could rename the columns that are character vectors by converting their names to uppercase.
+Previously, we would have accomplished this with `rename_if` as follows:
+```{r}
+rename_if(blp_df, is.character, toupper)
+```
+Now, we can accomplish this with `rename_with` and `where` as follows:
+```{r}
+rename_with(blp_df, toupper, where(is.character))
+```
+
+## Replacing `filter_(all|if|at)` with `filter` and `if_any` or `if_all`.
+
+The `filter` verb will select rows of a data frame according to certain criteria.
+For example, the following gives us those observations where where `lex` has the value of `N` and `resp` has the value of `W` and `rt.raw` is less than or equal to 500.
+```{r}
+filter(blp_df, lex == 'N', resp=='W', rt.raw <= 500)
+```
+The `filter_all` variant of `filter` was previously used to filter those rows where a function returns true for any or all of the columns.
+For example, let's say we want to obtain those rows where any of the variables have missing values.
+This was previously accomplished with `filter_all` with the help of `any_vars` as follows:
+```{r}
+filter_all(blp_df, any_vars(is.na(.)))
+```
+If, on the other hand, we wanted to obtain those rows where all values are missing values, we could use `all_vars` as in the following:
+```{r}
+filter_all(blp_df, all_vars(is.na(.)))
+```
+This clearly returns an empty data frame as there are no rows where all values are `NA`.
+As a related example, let us say we wanted to select those rows where all values were numerically less than a specified threshold such as 500.
+We might try this:
+```{r}
+filter_all(blp_df, all_vars(. < 500))
+```
+This returns an empty data frame because when the function inside `all_vars` is applied to a character vector values, it will return a missing value.
+We therefore need to apply `all_vars(. > 500)` only to the numeric columns.
+This can be accomplished with `filter_if` as follows:
+```{r}
+filter_if(blp_df, is.numeric, all_vars(. < 500))
+```
+Alternatively, we could apply `all_vars(. > 500)` only to the columns that begin or end with `rt`.
+This can be done with `filter_at` where we select the appropriate columns with the `matches('^rt|rt$')` we also used above.
+```{r}
+filter_at(blp_df, vars(matches('^rt|rt$')), all_vars(. < 500))
+```
+
+These `filter_all`, `filter_if`, `filter_at` actions can now we accomplished by using `filter` itself with the help of functions like `if_any` or `if_all`.
+For example, to find all rows with missing values we can do the following:
+```{r}
+filter(blp_df, if_any(everything(), ~is.na(.)))
+```
+Here, the function `if_any` takes as its first argument a function that selects which columns to which to apply the, in this case, anonymous function `~is.na(.)`.
+In other words, we apply the function `~is.na(.)` to the values of all variables on all rows, and then we filter those rows where any returned value is true.
+We can use something other than `everything()` to accomplish that which was accomplished by `filter_at` or `filter_if` above.
+For example, to filter those rows of the numeric columns whose values are all less than 500, we can do the following, which replaces the `filter_if` example above:
+```{r}
+filter(blp_df, if_all(where(is.numeric), ~. < 500))
+```
+Alternatively, to filter those rows of the columns that begin or end with `rt` whose values are all less than 500, we can do the following, which replaces the `filter_at` example above:
+```{r}
+filter(blp_df, if_all(matches('^rt|rt$'), ~. < 500))
+```
+
+As some further examples, the following two commands select those rows where any or all, respectively, of the values of the columns from `rt` to `rt.raw` have values less than the median value of the column:
+```{r}
+filter(blp_df, if_any(rt:rt.raw, ~. < median(., na.rm = T)))
+filter(blp_df, if_all(rt:rt.raw, ~. < median(., na.rm = T)))
+```
+
+## Replacing `mutate_(all|if|at)` with `mutate` and `across`
+
+The `mutate` verb either modifies existing variables in the data frame or else creates new ones.
+For example, we can create a new variable `acc` that takes the value of `TRUE` whenever `lex` and
+`resp` have the same value as follows^[The `blp_df` data is from a [lexical decision task](https://en.wikipedia.org/wiki/Lexical_decision_task). The `lex` variable indicates if the string is a real word or not. The `resp` indicates if the participant responded that the string is a word or not. Therefore, whenever `lex` and `resp` are identical, the participant was accurate in their response.]:
+```{r}
+mutate(blp_df, acc = lex == resp)
+```
+We also modify an existing variable with `mutate`.
+For example, we can change the `rt` variable from millisecond units to seconds as follows:
+```{r}
+mutate(blp_df, rt = rt / 1000)
+```
+If, on the other hand, we want to change the units of `rt`, `prev.rt`, and `rt.raw` from milliseconds to seconds, we previously would have used `mutate_at`.
+For example, the following selects the variables `rt` to `rt.raw` and applies the divide by 1000 function to them:
+```{r}
+mutate_at(blp_df, vars(rt:rt.raw), ~./1000)
+```
+We now accomplish this using `across` inside `mutate`:
+```{r}
+mutate(blp_df, across(rt:rt.raw, ~./1000))
+```
+The use of `across` inside `mutate` can also replace `mutate_if` and `mutate_all`.
+For example, if we want to convert all the character vectors to factor variables, we would have previously used `mutate_if`, as in the following:
+```{r}
+mutate_if(blp_df, is.character, as.factor)
+```
+Or if we wanted to convert all variables to factor variables, we would have done `mutate_all`, as in the following:
+```{r}
+mutate_all(blp_df, as.factor)
+```
+Now, we can accomplish this using `across` inside `mutate`:
+```{r}
+# convert character vectors to factors
+mutate(blp_df, across(where(is.character), as.factor))
+
+# convert all vectors to factors
+mutate(blp_df, across(everything(), as.factor))
+```
+
+As another example, if we wish to rescale all the numeric variables so that they have a mean of zero and standard deviation of one, we previously would have used `mutate_if`:
+```{r}
+mutate_if(blp_df, is.numeric, ~as.vector(scale(.)))
+```
+Now, we use `across` inside `mutate`:
+```{r}
+mutate(blp_df, across(where(is.numeric), ~as.vector(scale(.))))
+```
+
+As a final example, let's say we want to recode the `N` and `W` in the variables `lex` and `resp` to `nonword` and `word`, respectively.
+Previously, we would have used `mutate_at` as follows:
+```{r}
+mutate_at(blp_df,
+          vars(c(lex, resp)),
+          ~recode(., 'W' = 'word', 'N' = 'nonword')
+)
+```
+Now, we use `mutate` with `across`:
+```{r}
+mutate(blp_df,
+       across(c(lex, resp), 
+              ~recode(., 'W' = 'word', 'N' = 'nonword'))
+)
+```
+
+## Replacing `summarize_(all|if|at)` with `summarize` and `across`
+
+The `summarize` (or `summarise`) function can be used to calculate summary statistics of variables.
+For example, to calculate the mean and standard deviation of the `rt`, and the median and [MAD](https://en.wikipedia.org/wiki/Median_absolute_deviation) of `rt.raw`, we would do the following:
+```{r}
+summarise(blp_df, 
+          avg_rt = mean(rt, na.rm = T),
+          sd_rt = sd(rt, na.rm = T),
+          median_raw = median(rt.raw, na.rm = T),
+          mad_raw = mad(rt.raw, na.rm = T)
+)
+```
+
+The `summarize_all` variant could be used to apply a summarization function to all variables.
+For example, to calculate the number of distinct elements in each variable, we would previously have used `summarize_all`:
+```{r}
+summarise_all(blp_df, n_distinct)
+```
+Now, we use `summarize` with `across`:
+```{r}
+summarize(blp_df, across(everything(), n_distinct))
+```
+The use of `across` in `summarize` also replaces `summarize_if` and `summarize_at`.
+For example, to calculate the mean of the variables that begin or end with `rt`, we would previously have used `summarize_at` as follows:
+```{r}
+summarise_at(blp_df,
+             vars(matches('^rt|rt$')),
+             ~mean(., na.rm = T))
+```
+Now, we use `across` inside `mutate`:
+```{r}
+summarize(blp_df,
+          across(matches('^rt|rt$'),
+                 ~mean(., na.rm = T))
+)
+```
+Likewise, to calculate the mean of all numeric variables, we previously would have used `summarize_if` as follows:
+```{r}
+summarise_if(blp_df, is.numeric, ~mean(., na.rm = T))
+```
+Now, we use `across` inside `mutate`:
+```{r}
+summarize(blp_df, across(where(is.numeric),
+                         ~mean(., na.rm = T))
+)
+```
+
+Note that if we want to apply multiple summarization functions to the variables selected by `across`, we can provide a list of functions as in the following example where we calculate the mean and the median of three selected variables:
+```{r}
+summarize(blp_df,
+          across(matches('^rt|rt$'),
+                 list(avg = ~mean(., na.rm = T),
+                      median = ~median(., na.rm = T))
+          )
+)
+```
+
+## Rowwise operations using `c_across`
+
+In `dplyr` version 1.0, the function `c_across` was introduced that allows us to perform operations across rows.
+As an example, let us say we want to calculate the mean for each row of the three columns that begin or end with `rt`.
+We accomplish this by selecting the three columns inside `c_across`, which is put inside the `mean` function.
+However, it is necessary to first apply the `rowwise` function to the data frame to ensure that the mean operation is applied across rows:
+```{r}
+rowwise(blp_df) %>% 
+  mutate(rt_avg = mean(c_across(rt:rt.raw)))
+```
+In this example, we selected the appropriate columns with using a range of column names.
+We could use any other way of selecting variables, including with `where`.
+For example, here we calculate the maximum values across all numeric variables in the data frame:
+```{r}
+rowwise(blp_df) %>% 
+  mutate(max_val = max(c_across(where(is.numeric))))
+```
+
+
+
+
+

@@ -1,0 +1,77 @@
+---
+title: "Introduction to Bayesian Data Analysis using R"
+author: "Mark Andrews"
+subtitle: '10-12 June, 2025'
+date: '10 June, 2025'
+location: Online
+description: |
+  This three-day course introduces the principles and practice of Bayesian data
+  analysis using R. It covers fundamental concepts of Bayesian inference and
+  modelling, and demonstrates how to perform Bayesian data analysis in practice
+  with R using the powerful `brms` package. Topics include Bayesian approaches to linear
+  regression, generalized linear models, and multilevel and mixed effects models.
+categories: ["Bayesian Data Analysis", "R", "brms", "Stan", "Markov Chain Monte Carlo"]
+---
+
+Bayesian methods have become an increasingly common approach to data analysis across many fields of research.
+They offer a flexible, coherent framework for statistical inference, one that differs fundamentally from the classical (frequentist) perspective.
+Yet many researchers have limited opportunities to learn the underlying principles of Bayesian inference, which can make putting these methods into practice challenging.
+
+This three-day course provides a solid introduction to Bayesian methods, both conceptually and in terms of applied analysis in R.
+We will start by carefully examining the core ideas behind Bayesian inference, what distinguishes it from the classical approach, and why this difference matters in practice.
+Building on these fundamentals, we will learn how to implement Bayesian models in R using the `brms` package, which provides a high-level interface to the powerful Stan probabilistic programming language.
+
+Our focus will begin with Bayesian approaches to simple models, like linear regression, before moving into more complex cases, including generalized linear models (for binary, ordinal, and count data) and multilevel or mixed effects models.
+Throughout the course, we will use Markov Chain Monte Carlo (MCMC) methods to fit models that are otherwise intractable, making it possible to work with a broad range of real-world data problems.
+By the end, participants will have a clear understanding of how to apply Bayesian methods thoughtfully, evaluate and compare models, and recognize when and why a Bayesian approach may be advantageous.
+
+## Course Programme
+
+### Day 1
+
+*Topic 1: What is Bayesian Data Analysis?*--
+We begin by exploring the essence of Bayesian inference and how it fits into the broader landscape of statistical approaches.
+Rather than treating Bayesian methods as a niche tool, we will discuss how they offer a distinct general perspective on all statistical inference that can complement, rather than exclude, classical methods.
+
+*Topic 2: Bayes’ Rule in Action*--
+Bayes’ rule provides the mathematical foundation for all Bayesian inference.
+We will start with simple, intuitive examples to see how prior information is updated by observed data to yield a posterior distribution.
+Understanding these basics lays the groundwork for more complex models.
+
+*Topic 3: A Simple Bayesian Model*--
+We will work through a classic inference problem—estimating the bias of a coin (or similar binary outcome) to illustrate major concepts such as the likelihood function, the prior, and the posterior distribution.
+
+### Day 2
+
+*Topic 4: Markov Chain Monte Carlo (MCMC) Methods*--
+While simple Bayesian models can sometimes be solved analytically, most real-world problems require numerical methods.
+We will introduce MCMC and demonstrate how the `brms` package in R uses Stan to fit a wide variety of Bayesian models.
+By replicating earlier analyses with MCMC, we’ll see how these methods generalize to more complex settings.
+
+*Topic 5: Bayesian Linear Models*--
+We next compare Bayesian linear regression using `brm` to classical regression with `lm`.
+By examining similarities and differences, participants will gain insight into how Bayesian estimation, inference, and model comparison can enrich their analysis.
+We will also explore categorical predictors and move toward varying intercept and slope models as a bridge to more complex structures.
+
+*Topic 6: Bayesian Model Evaluation and Comparison*--
+We next consider how to evaluate and compare Bayesian models, particularly by using posterior predictive checks and using fast and efficient cross-validation.
+These methods allow us to evaluate whether any given Bayesian model matches the observed data, and to compare competing statistical models or hypotheses.
+
+### Day 3
+
+*Topic 7: Extending the Linear Model*--
+Bayesian methods make it straightforward to relax standard assumptions.
+For instance, we can use t-distributions to handle outliers more robustly or model residual variance as a function of predictor variables.
+We will see how these flexible extensions can improve the fit and interpretability of our models.
+
+*Topic 8: Bayesian Generalized Linear Models (GLMs)*--
+We then move to GLMs, including logistic (binary, ordinal, multinomial), Poisson, negative binomial, and zero-inflated models.
+Using real data examples, we will show how Bayesian methods can handle a wide range of distributions and link functions, making it easier to choose models that align with the data’s structure and research goals.
+
+*Topic 9: Bayesian Multilevel and Mixed Effects Models*--
+Finally, we explore multilevel (hierarchical) and mixed effects models in a Bayesian context.
+We will see how to model nested and crossed data structures, incorporate group-level predictors, and handle complex correlation patterns.
+Bayesian methods often simplify fitting these models and can help avoid some of the convergence issues that can arise in a classical framework.
+
+
+By the end of the course, participants will have a clear understanding of the fundamental principles of Bayesian inference, practical experience in fitting a broad range of Bayesian models in R, and the confidence to apply these methods to their own research questions.

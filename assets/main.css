@@ -1,0 +1,293 @@
+/*google fonts*/
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Inconsolata:wght@200..900&family=Merriweather+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+.navbar {
+  border: none !important;
+  margin: 0 auto;
+}
+
+.navbar-brand:hover {
+  color: #BE0000;
+  text-decoration: none;
+}
+
+.navbar-brand {
+  color: #BE0000;
+  text-decoration: none;
+}
+
+main {
+  margin-top: 0px;
+  margin-bottom: 50px;
+}
+
+body {
+  font-family: "Work Sans", sans-serif;
+  font-weight: 400;
+  width: 100%;
+  height: 100%;
+  color: #000;
+  background-color: #fff;
+  padding-top: 0px;
+  margin-bottom: 60px;
+}
+
+
+body p {
+  font-family: "EB Garamond", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 16pt;
+  padding: 0px 0px 20px 0px;
+}
+
+
+main h1 {
+  font-family: "EB Garamond", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: italic;
+  text-align: left;
+  font-size: 32pt;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin-bottom: 8px;
+}
+
+main h2 {
+  font-family: "EB Garamond", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: italic;
+  text-align: left;
+  font-size: 24pt;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin-bottom: 8px;
+  border: none;
+}
+
+main h3 {
+  font-family: "EB Garamond", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: italic;
+  text-align: left;
+  font-size: 20pt;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin-bottom: 8px;
+  border: none;
+}
+footer p {
+  font-family: "Work Sans", sans-serif;
+  font-size: 12pt;
+}
+
+main a:link,
+main a:visited {
+  color: #BE0000;
+}
+
+/* ----------------------------------------------------------------------------------*/
+
+/* ------------------------------------------------------ */
+/* Style for links to book chapters on the ddsr book page */
+/* ------------------------------------------------------ */
+
+#ddsr_chapters>ul {
+  font-family: 'Merriweather Sans';
+  font-weight: 200;
+  font-size: 14px;
+  padding: 0px;
+  margin: 0px;
+  padding-left: 10px;
+}
+
+#ddsr_chapters>ul>li>a {
+  text-decoration: none;
+  color: black;
+}
+
+#ddsr_chapters>ul>li {
+  list-style-type: none;
+  padding: 0px;
+  margin: 0px;
+  padding-top: 5px;
+}
+
+/* ----------------------------------------------------------------------------------*/
+
+/* ------------------------------------------ */
+/* Style for code. Especially on notes pages. */
+/* ------------------------------------------ */
+
+.content code {
+  color: black;
+  background-color: transparent;
+  font-family: "Inconsolata", monospace;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+}
+
+
+.content h1 code {
+  color: black;
+  background-color: transparent;
+  font-family: "Inconsolata", monospace;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+  font-style: italic;
+}
+
+pre.sourceCode {
+  background-color: rgba(233, 236, 239, 0.5);
+  border: none;
+}
+
+code.sourceCode {
+  background-color: transparent;
+}
+
+.cell-output-stdout {
+  background-color: rgba(233, 236, 239, 0.5);
+}
+
+/* ----------------------------------------------------------------------------------*/
+
+/* ------------------ */
+/* notes listing page */
+/* ------------------ */
+
+/*We want the links to the notes pages to be black, not default.*/
+.quarto-listing a:link,
+.quarto-listing a:visited {
+  color: black;
+}
+
+#listing-sample-listings {
+  font-family: "EB Garamond", serif;
+}
+
+#listing-sample-listings h3 {
+  font-family: "EB Garamond", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: italic;
+  text-align: left;
+  font-size: 24pt;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin-bottom: 8px;
+}
+
+div.quarto-post>.metadata {
+  font-family: "EB Garamond", serif;
+  /*flex-basis: auto;*/
+  flex-basis: 15%;
+}
+
+/* ----------------------------------------------------------------------------------*/
+
+/*-----------*/
+/*papers and publications list*/
+/*-----------*/
+
+.publications-list li {
+  font-family: "EB Garamond", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 16pt;
+  padding: 0px 0px 20px 0px;
+}
+
+/* about page */
+#contacts-list>ul {
+  list-style: none;
+  font-family: "EB Garamond", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 14pt;
+  margin: 0px;
+  padding: 0px;
+  display: flex;
+  gap: 20px;
+}
+
+#contacts-list>ul>li>a {
+  text-decoration: none;
+  color: black;
+}
+#contacts-list>ul>li>a:hover {
+  text-decoration: underline;
+  color: black;
+}
+
+#contacts-list>ul>li {
+  list-style-type: none;
+  padding: 0px;
+  margin: 0px;
+  padding-top: 5px;
+}
+
+/* front pages */
+
+#listing-upcoming-training {
+  font-family: "EB Garamond", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+}
+
+
+/* control the amount of space either side of each course's description */
+#listing-upcoming-training {
+  margin-right: 0em;
+  margin-left: 0em;
+}
+
+#listing-upcoming-training div.quarto-post>.metadata {
+  flex-basis: 0%;
+}
+
+#listing-upcoming-training div.quarto-post {
+  border-bottom-style: none;
+}
+
+#listing-upcoming-training h3 {
+  font-style: italic;
+  text-align: left;
+  font-size: 18pt;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin-bottom: 8px;
+}
+
+#listing-upcoming-training h2 {
+  padding-bottom: 50px;
+}
+
+#upcoming-training-courses h2 {
+  font-size: 24pt;
+  padding-bottom: 20pt;
+}
+#recent-or-upcoming-training-courses h2 {
+  font-size: 24pt;
+  padding-bottom: 20pt;
+}
+
+main ul, ol {
+  font-family: "EB Garamond", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 16pt; /* Optional: Adjust the size to match your body font */
+}

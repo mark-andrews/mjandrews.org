@@ -1,0 +1,285 @@
+---
+title: "German Tank Problem: A Bayesian Analysis"
+author: Mark Andrews
+date: "2021, 7, 16, 12:00"
+categories: ["probability", "Bayesian", "R"]
+---
+
+```{r}
+#| include = FALSE
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE)
+```
+
+```{r}
+#| echo = F
+library(tidyverse)
+theme_set(theme_classic())
+set.seed(101010101)
+```
+
+
+\newcommand{\Prob}[1]{\mathrm{P}( #1 )}
+\newcommand*{\given}{\vert}
+
+The *German tank problem* is the name given to the problem of estimating the size of set of elements having observed the rank orders of a sample of elements from that set.
+More specifically, if we have a set of $N$ elements, where $N$ is unknown, and if the elements are labelled by integers $1 \ldots N$, then the problem is to estimate the value of $N$ having observed the integer labels of $n$ elements from the set.
+An alternative, though equivalent, way of describing the problem is that of estimating the upper bound $N$ of a set of integers from 1 to $N$ having sampled $n$ values uniformly at random, without replacement, from the set.
+The name given to the problem -- *German tank problem* --- is due to one of the [major applications of this problem](https://en.wikipedia.org/wiki/German_tank_problem).
+During World War II, using the serial number on captured or destroyed German tanks, the Allies tried to estimate the number of tanks being produced by the German military.
+Here, $N$ is the unknown number of tanks produced by the German military.
+The allies observed the serial numbers of $n$ of these tanks, and then tried to estimate the value of $N$ from this sample.
+
+Here, we present a Bayesian analysis of this problem, specifically involving an improper uniform prior over $N$.
+It turns out that this is particular problem is analytically tractable and relatively simple to explain.
+Other priors, which are proper and are not uniform, such as a negative binomial distribution, also have analytic solutions [@hohle2006bayesian], but we will not discuss these case here.
+
+# Bayesian analysis
+
+To state the German tank problem more formally as a problem of Bayesian inference, we have a random variable $N$ that represents the size of a set whose elements have been labelled uniquely $1 \ldots N$.
+We sample $n$ elements uniformly at random and without replacement from this set.
+The labels of these elements are denoted $x_1, x_2 \ldots x_n$.
+We aim to calculate the posterior probability distribution over the possible values of $N$ on the basis of $x_1, x_2 \ldots x_n$:
+$$
+\Prob{N \given x_1, x_2 \ldots x_n} 
+= \frac{
+\Prob{x_1, x_2 \ldots x_n \given N}\Prob{N}
+}{
+\sum_{\{N\}}\Prob{x_1, x_2 \ldots x_n \given N}\Prob{N},
+}
+$$
+where the denominator sums over all possible values of $N$.
+
+# The likelihood function
+
+In the numerator of the right hand side of the posterior distribution, $\Prob{x_1, x_2 \ldots x_n \given N}$ is the likelihood term.
+It gives the probability of observing the integer labels $x_1, x_2, \ldots x_n$ for any specified value of $N$.
+To work out the form of the likelihood, let us assume that we have observed exactly $n=1$ label, $x_1$.
+Now, we ask what the probability of observing $x_1$ given that $N$ has any particular value.
+This works out as follows:
+$$
+\Prob{x_1 \given N} 
+= \begin{cases}
+  \frac{1}{N},\quad\text{for $N \geq x_1$},\\
+            0, \quad\text{otherwise.}
+  \end{cases}
+$$
+In other words, the probability of observing $x_1$ is zero for any values of $N$ that are less than $x_1$ because we can not, by definition of the problem, observe a label greater than the maximum value of $N$.
+For all $N \geq x_1$, the probability of observing $x_1$ is simply $\frac{1}{N}$.
+This is because if we have a set of integers $1 \ldots N$, and we sample one of them uniformly at random, the probability of sampling any one is just $\frac{1}{N}$.
+
+The following plot displays the likelihood function for the case of one observation $x_1 = 7$.
+```{r}
+library(tidyverse)
+library(latex2exp)
+
+x_1 <- 7
+
+tibble(N = seq(50),
+       like = case_when(
+         N < x_1 ~ 0,
+         TRUE ~ 1/N
+       )
+) %>% 
+  ggplot(aes(x = N, y = like)) +
+  geom_point() +
+  geom_segment(aes(x = N, xend = N, y = 0, yend = like)) +
+  labs(x = TeX('$N$'),
+       y = TeX('$P(x_1 = 7 | N)$'))
+```
+
+As we can see from this, the likelihood function has its maximum value of $N = x_1$, and then decays slowly (specifically as inverse power law) after this.
+
+Now let us consider the case of two observations, $x_1$ and $x_2$.
+First, as above, neither $x_1$ nor $x_2$ can be greater than $N$, and so the probability of observing $x_1$ and $x_2$ is zero for any values of $N$ less than $\max(x_1, x_2)$.
+Then, the probability of first observing $x_1$ is $\frac{1}{N}$, for all $N \geq \max(x_1, x_2)$, while the probability of then observing $x_2$ is $\frac{1}{N-1}$, for all $N \geq \max(x_1, x_2)$.
+The reason that probability of the latter is $\frac{1}{N-1}$ is because we are sampling uniformly without replacement from the set $1 \ldots N$.
+Finally, given that we can observe $x_1$ and $x_2$ in any order, the probability of $x_1$ and $x_2$ in any order is
+$$
+2 \times \frac{1}{N} \frac{1}{N-1} .
+$$
+
+More generally, for $n$ observations $x_1, x_2 \ldots x_n$, following the same reasoning above, for any $N \geq \max(x_1 \ldots x_n)$, the probability is
+$$
+n! \times \frac{1}{N} \frac{1}{N-1} \ldots \frac{1}{N-n+1} = \binom{N}{n}^{-1}.
+$$
+
+Thus, in general, the likelihood function in this problem is
+$$
+\Prob{x_1, x_2 \ldots x_n \given N} 
+= \begin{cases}
+  \binom{N}{n}^{-1},\quad\text{for $N \geq x_1, x_2 \ldots x_n$},\\
+            0, \quad\text{otherwise.}
+  \end{cases}
+$$
+
+The following plot displays the likelihood function for the case of $n=5$ observations $x_{1:n} = 21, 17, 7, 16, 3$.
+```{r}
+x <- c(21, 17,  7, 16,  3)
+n <- length(x)
+
+tibble(N = seq(50),
+       like = case_when(
+         N < max(x) ~ 0,
+         TRUE ~ 1/choose(N, n)
+       )
+) %>% 
+  ggplot(aes(x = N, y = like)) +
+  geom_point() +
+  geom_segment(aes(x = N, xend = N, y = 0, yend = like)) +
+  labs(x = TeX('$N$'),
+       y = TeX('$P(x_{1\\colon n} | N)$'))
+```
+
+In comparison to the case of one observation, this function decays more rapidly, though still as a power law, after its maximum value at $N = \max(x_1 \ldots x_n)$.
+
+# Posterior distribution
+
+Having determined the likelihood function, and assuming a uniform prior over $N$, the posterior distribution is 0 for all values of $N$ less than $\max(x_1 \ldots x_n)$ and is otherwise:
+$$
+\Prob{N \given x_1, x_2 \ldots x_n} 
+= \frac{
+\binom{N}{n}^{-1}
+}{
+\sum_{N = m}^\infty \binom{N}{n}^{-1},
+},
+$$
+where $m = \max(x_1 \ldots x_n)$.
+
+Though the derivation is relatively complex, @hohle2006bayesian show that the denominator simplifies to 
+$$
+\sum_{N = m}^\infty \binom{N}{n}^{-1} = \binom{m}{n}^{-1} \frac{m}{n - 1}.
+$$
+
+We can verify that this form formula for the denominator is correct (or at least is not incorrect) from a few example calculations:
+```{r}
+N <- 1e6 # in place of oo
+
+n <- 10
+m <- 17
+
+c(map_dbl(seq(m, N), ~1/choose(., n)) %>% sum(),
+  1/choose(m, n) * m/(n-1))
+
+n <- 20
+m <- 27
+
+c(map_dbl(seq(m, N), ~1/choose(., n)) %>% sum(),
+  1/choose(m, n) * m/(n-1))
+
+```
+Given that we are using a uniform prior, what this posterior distribution looks like is exactly the same as the likelihood function except that the area under the curve sums to exactly 1.0.
+
+## Implementation in R
+
+The following function gives the posterior probability for any value of $N$ on the basis of sample of $n$ unique labels.
+The name, `dgtp`, is based on the usual convention of naming probability mass or density functions in R with `d` as the initial character, and `gtp` stands for German tank problem.
+```{r}
+dgtp <- function(N, x){
+  
+  n <- length(x)
+  m <- max(x)
+  
+  # log of denominator (marginal likelihood)
+  logZ <- -lchoose(m, n) + log(m) - log(n-1)
+
+  map_dbl(N,
+          ~{if_else(. < m, 0, exp(-lchoose(., n) - logZ))}
+  )
+}
+```
+Note that we calculate the numerator and denominator using logarithms, which can avoid numerical overflow when calculating binomial coefficients.
+
+As an example, if the true value of $N$ is 50, we can sample 5 values from the set as follows:
+```{r}
+x <- sample(seq(50))[1:5]
+x
+```
+The posterior distribution is shown in the following plot:
+```{r}
+n <- length(x)
+
+tibble(N = seq(40,120),
+       p = dgtp(N, x)
+) %>% 
+  ggplot(aes(x = N, y = p)) +
+  geom_point() +
+  geom_segment(aes(x = N, xend = N, y = 0, yend = p)) +
+  labs(x = TeX('$N$'),
+       y = TeX('$P(N | x_{1\\colon n})$'))
+```
+
+# Posterior median and mean
+
+The posterior median is easy to calculate numerically given that we have a formula for the posterior probability: we just need to find the highest integer value of $N^\prime$ such that $\sum_{N = m}^{N^\prime} \Prob{N^\prime \given x_1 \ldots x_n} \leq 0.5$.
+
+```{r}
+gtp_median <- function(x){
+  
+  m <- max(x)
+  
+  s <- dgtp(m, x)
+  i <- m
+  while (s + dgtp(i + 1, x) < 0.5) {
+    i <- i + 1
+    s <- s + dgtp(i, x)
+  }
+  
+  i
+}
+```
+
+Using the sample above (i.e., `r x`), the median is
+```{r}
+gtp_median(x)
+```
+
+The posterior mean has been shown by @hohle2006bayesian to have the following simple formula:
+$$
+\langle N \rangle = \frac{n-1}{n-2} (m - 1)
+$$
+```{r}
+gtp_mean <- function(x){
+  m <- max(x)
+  n <- length(x)
+  
+  (n-1)/(n-2) * (m - 1)
+}
+```
+
+Using the sample above, the mean is
+```{r}
+gtp_mean(x)
+```
+
+# High posterior density interval
+
+The $1-\alpha$ high posterior density (HPD) interval is the set of values of $N$ such that their combined posterior probability is $1-\alpha$ and also any value of $N$ in this interval has a higher posterior probability than any value of $N$ outside this interval.
+The HPD interval is easy to calculate, especially given that posterior probability distribution is monotonically decreasing from its maximum value, which occurs when $N = \max(x_1 \ldots x_n)$.
+Thus to obtain the, for example, 95% HPD interval, the lower bound is $\max(x_1 \ldots x_n)$, and the upper bound is the highest integer value of $N^\prime$ such that $\sum_{N = m}^{N^\prime} \Prob{N^\prime \given x_1 \ldots x_n} \leq 0.95$.
+
+```{r}
+gtp_hpd <- function(x, p = 0.95){
+  m <- max(x)
+
+  s <- dgtp(m, x)
+  i <- m
+  while (s + dgtp(i + 1, x) < p) {
+    i <- i + 1
+    s <- s + dgtp(i, x)
+  }
+  
+  c(m, i)
+}
+```
+
+For example, using the sample above, the 95% HPD interval is
+```{r}
+gtp_hpd(x)
+```
+
+
+
+
+# References

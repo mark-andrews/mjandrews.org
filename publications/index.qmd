@@ -1,0 +1,217 @@
+---
+title: 'Publications'
+---
+
+Below is a list of academic publications, including articles, conference proceedings, book chapters, and books.
+
+
+::: {.publications-list}
+-   Bolam, J., Diaz, J. A., Andrews, M., Coats, R. O., Philiastides, M. G.,
+    Astill, S. L., & Delis, I. (2024). A drift diffusion model analysis of
+    age-related impact on multisensory decision-making processes. Scientific
+    Reports, 14(1), 14895. https://doi.org/10.1038/s41598-024-65549-5. \[[full text](https://www.nature.com/articles/s41598-024-65549-5)\]
+-   Patterson, E., Tan, H. T. T., Groeger, D., Andrews, M., Buckley, M., Murphy,
+    E. F., & Groeger, J. A. (2024). Bifidobacterium longum 1714 improves sleep
+    quality and aspects of well-being in healthy adults: A randomized, double-blind,
+    placebo-controlled clinical trial. Scientific Reports, 14(1), 3725. 
+    https://doi.org/10.1038/s41598-024-53810-w. \[[full text](https://www.nature.com/articles/s41598-024-53810-w)\]
+-   Wider, C., Mitra, S., Boulton, H., & Andrews, M. (2022). Age-related asymmetry
+    in anticipatory postural movements during unilateral arm movement and imagery.
+    Experimental Brain Research, 240(9), 2435–2457.
+    https://doi.org/10.1007/s00221-022-06416-5. 
+    \[[full text](https://link.springer.com/article/10.1007/s00221-022-06416-5)\]
+-   Andrews, M., Justice, L. (2021). [Statistical Analysis of
+    Intervention Studies in Forensic Psychology]{.publication_title}. In
+    Winder, B., Blagden, N., Hamilton, L., Scott, S. (Eds.), [ Forensic
+    Interventions for Therapy and Rehabilitation: Case Studies and
+    Analysis.]{.journal_title} Routledge. [
+    \[[full text](https://www.routledge.com/Forensic-Interventions-for-Therapy-and-Rehabilitation-Case-Studies-and/Winder-Blagden-Hamilton-Scott/p/book/9780367205362)\]
+    ]{.publication_links}
+-   Andrews, M. (2021). [Doing Data Science in R: An Introduction for
+    Social Scientists]{.publication_title}. SAGE Publishing, London, UK.
+    [ \[[full text](https://www.mjandrews.org/book/ddsr)\]
+    ]{.publication_links}
+-   Jones, G., Cabiddu, F., Andrews, M., Rowland, C. (2021). [Chunks of
+    phonological knowledge play a significant role in children's word
+    learning and explain effects of neighborhood size, phonotactic
+    probability, word frequency and word length]{.publication_title}. [
+    Journal of Memory and Language]{.journal_title}. 119, (104232). [
+    \[[full text](https://www.sciencedirect.com/science/article/pii/S0749596X21000152)\]
+    ]{.publication_links}
+-   Pilling, M., Guest, D., Andrews, M. (2019). [Perceptual Errors
+    Support the Notion of Masking by Object
+    Substitution]{.publication_title}. [ Perception]{.journal_title}.
+    48, (138-161). [
+    \[[full text](https://journals.sagepub.com/doi/abs/10.1177/0301006619825782)\]
+    ]{.publication_links}
+-   Andrews, M., Justice, L. (2019). [The Replication
+    Crisis]{.publication_title}. In Banyard, P., Norman, C., Dillon, G.,
+    Winder, B. (Eds.), [ Essential Psychology (3rd Ed).]{.journal_title}
+    SAGE Publishing. [
+    \[[full text](https://uk.sagepub.com/en-gb/eur/essential-psychology/book258446)\]
+    ]{.publication_links}
+-   Andrews, M. (2018). [Some reflections on the replication crises:
+    Reviews of \"The Seven Deadly Sins of Psychology\" and \"Rigor
+    Mortis\"]{.publication_title}. [ The Cognitive Psychology
+    Bulletin]{.journal_title}. 3, (22-24). [
+    \[[full text](https://shop.bps.org.uk/publications/publication-by-series/cognitive-psychology-bulletin/the-cognitive-psychology-bulletin-nbsp-issue-3-spring-2018.html)\]
+    ]{.publication_links}
+-   Andrews, M. (2017). [Review of \'The Seven Deadly Sins of
+    Psychology: A Manifesto for Reforming the Culture of Scientific
+    Practice\' by Chris Chambers]{.publication_title}. [ The
+    Psychologist]{.journal_title}. 30, (58-59). [
+    \[[full text](https://thepsychologist.bps.org.uk/volume-30/august-2017/repent-and-reform)\]
+    ]{.publication_links}
+-   Andrews, M. (2017). [A Bayesian Model of Memory for
+    Text]{.publication_title}. In Gunzelmann, G., Howes, A., Tenbrink,
+    T., Davelaar, E. (Eds.), [ Proceedings of the 39th Annual Meeting of
+    the Cognitive Science Society.]{.journal_title} Cognitive Science
+    Society. [
+    \[[full text](https://mindmodeling.org/cogsci2017/papers/0025/index.html)\]
+    ]{.publication_links}
+-   Andrews, M., Baguley, T. (2017). [Bayesian Data
+    Analysis]{.publication_title}. In Hopkins, B., Geangu, E.,
+    Linkenauger, S. (Eds.), [ The Cambridge Encyclopedia of Child
+    Development (2nd Ed).]{.journal_title} Cambridge University Press. [
+    \[[full text](https://www.cambridge.org/core/books/cambridge-encyclopedia-of-child-development/bayesian-data-analysis/A127D8B194198BF278178D76EA2D7BFF)\]
+    ]{.publication_links}
+-   Baguley, T., Andrews, M. (2016). [Handling Missing
+    Data]{.publication_title}. In Robertson, J., Kaptein, M. (Eds.), [
+    Modern Statistical Methods for HCI.]{.journal_title} Springer. [
+    \[[full text](http://www.springer.com/gb/book/9783319266312)\]
+    ]{.publication_links}
+-   Andrews, M., Frank, S., Vigliocco, G. (2014). [Reconciling Embodied
+    and Distributional Accounts of Meaning in
+    Language]{.publication_title}. [ Topics in Cognitive
+    Science]{.journal_title}. 6(3), (359-370). [
+    \[[full text](https://onlinelibrary.wiley.com/doi/abs/10.1111/tops.12096)\]
+    ]{.publication_links}
+-   Davies, J., Gander, P. E., Andrews, M., Hall, D. A. (2014).
+    [Auditory network connectivity in tinnitus patients: a resting-state
+    fMRI study]{.publication_title}. [ International Journal of
+    Audiology]{.journal_title}. 53(3), (192-198). [
+    \[[full text](https://www.tandfonline.com/doi/full/10.3109/14992027.2013.846482)\]
+    ]{.publication_links}
+-   Andrews, M. (2013). [Probabilistic Language Modeling with Hidden
+    Stochastic Automata]{.publication_title}. In Knauff, M., Pauen, M.,
+    Sebanz, N., Wachsmuth, I. (Eds.), [ Proceedings of the 35th Annual
+    Meeting of the Cognitive Science Society.]{.journal_title} Cognitive
+    Science Society. [
+    \[[full text](https://mindmodeling.org/cogsci2013/papers/0327/index.html)\]
+    ]{.publication_links}
+-   Vigliocco, G., Kousta, S. T., Vinson, D. P., Andrews, M., Del
+    Campo, E. (2013). [The Representation of Abstract Words: What
+    Matters? Reply to Paivio\'s (2013) Comment on Kousta et al.
+    (2011)]{.publication_title}. [ Journal of Experimental Psychology:
+    General]{.journal_title}. 142(1), (288-291). [
+    \[[full text](http://psycnet.apa.org/record/2013-02996-002)\]
+    ]{.publication_links}
+-   Andrews, M., Baguley, T. (2013). [Prior approval: The growth of
+    Bayesian methods in psychology]{.publication_title}. [ British
+    Journal of Mathematical and Statistical Psychology]{.journal_title}.
+    66(1), (1-7). [
+    \[[full text](https://onlinelibrary.wiley.com/doi/abs/10.1111/bmsp.12004)\]
+    ]{.publication_links}
+-   Vinson, D. P., Andrews, M., Vigliocco, G. (2013). [Giving words
+    meaning: Why better models of semantics are needed in language
+    production research]{.publication_title}. In Goldrick, M., Ferreira,
+    V., Miozzo, M. (Eds.), [ Oxford Handbook of Language
+    Production.]{.journal_title} Oxford University Press. [
+    \[[full text](http://www.oxfordhandbooks.com/view/10.1093/oxfordhb/9780199735471.001.0001/oxfordhb-9780199735471)\]
+    ]{.publication_links}
+-   Vigliocco, G., Andrews, M. (2012). [The Limitations of the
+    Distributional Hypothesis: Augmenting Distributional Statistics with
+    Experiential Data]{.publication_title}. In Valentina, B., Irene, R.,
+    Pier Marco, B. (Eds.), [ Language and the brain -
+    Semantics.]{.journal_title} Bulzoni Editori. [
+    \[[full text](https://www.bulzoni.it/it/catalogo/linguaggio-e-cervello-semantica-language-and-the-brain-semantics.html)\]
+    ]{.publication_links}
+-   Andrews, M. (2011). [A Review of \"Doing Bayesian Data Analysis: A
+    Tutorial Using R and BUGS\" by John K.
+    Kruschke]{.publication_title}. [ British Journal of Mathematical and
+    Statistical Psychology]{.journal_title}. 64, (538-541). [
+    \[[full text](https://onlinelibrary.wiley.com/doi/pdf/10.1111/j.2044-8317.2011.02027.x)\]
+    ]{.publication_links}
+-   Kousta, S. T., Vigliocco, G., Vinson, D. P., Andrews, M., Del
+    Campo, E. (2011). [The Representation of Abstract Words: Why Emotion
+    Matters]{.publication_title}. [ Journal of Experimental Psychology:
+    General]{.journal_title}. 140(1), (14-34). [
+    \[[full text](http://psycnet.apa.org/record/2010-26153-001)\]
+    ]{.publication_links}
+-   Andrews, M., Vigliocco, G. (2010). [The Hidden Markov Topic Model: A
+    Probabilistic Model of Semantic Representation]{.publication_title}.
+    [ Topics in Cognitive Science]{.journal_title}. 2(1), (101-113). [
+    \[[full text](https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1756-8765.2009.01074.x)\]
+    ]{.publication_links}
+-   Andrews, M., Vigliocco, G., Vinson, D. P. (2009). [Integrating
+    Experiential and Distributional Data to Learn Semantic
+    Representations]{.publication_title}. [ Psychological
+    Review]{.journal_title}. 116(3), (463-498). [
+    \[[full text](http://psycnet.apa.org/record/2009-10379-001)\]
+    ]{.publication_links}
+-   Vigliocco, G., Meteyard, L., Andrews, M., Kousta, S. T. (2009).
+    [Toward a Theory of Semantic Representation]{.publication_title}. [
+    Language and Cognition]{.journal_title}. 1(2), (219-247). [
+    \[[full text](https://www.cambridge.org/core/journals/language-and-cognition/article/toward-a-theory-of-semantic-representation/90A3FB3B15DB7034858BB808B41DCA4B)\]
+    ]{.publication_links}
+-   Andrews, M., Vigliocco, G. (2009). [Learning Semantic
+    Representations with Hidden Markov Topic
+    Models]{.publication_title}. In Taatgen, N., van Rijn, H. (Eds.), [
+    Proceedings of the 31st Annual Meeting of the Cognitive Science
+    Society.]{.journal_title} Cognitive Science Society. [
+    \[[full text](http://csjarchive.cogsci.rpi.edu/proceedings/2009/papers/29/index.html)\]
+    ]{.publication_links}
+-   Andrews, M., Vinson, D. P., Vigliocco, G. (2008). [Inferring a
+    Probabilistic Model of Semantic Memory from Word Association
+    Norms]{.publication_title}. In Love, B. C., McRae, K.,
+    Sloutsky, V. M. (Eds.), [ Proceedings of the 30th Annual Meeting of
+    the Cognitive Science Society.]{.journal_title} Cognitive Science
+    Society. [
+    \[[full text](http://csjarchive.cogsci.rpi.edu/proceedings/2008/forms/contents6.htm)\]
+    ]{.publication_links}
+-   Andrews, M., Vigliocco, G., Vinson, D. P. (2007). [Evaluating the
+    Contribution of Intra-Linguistic and Extra-Linguistic Data to the
+    Structure of Human Semantic Representations]{.publication_title}. In
+    McNamara, D. S., Trafton, J. G. (Eds.), [ Proceedings of the 29th
+    Annual Meeting of the Cognitive Science Society.]{.journal_title}
+    Cognitive Science Society. [
+    \[[full text](http://csjarchive.cogsci.rpi.edu/proceedings/2007/forms/contents4.htm)\]
+    ]{.publication_links}
+-   Andrews, M., Vigliocco, G., Vinson, D. P. (2005). [The Role of
+    Attributional and Distributional Information in Semantic
+    Representation]{.publication_title}. In Bara, B. G., Barsalou, L.
+    W., Bucciarelli, M. (Eds.), [ Proceedings of the 27th Annual Meeting
+    of the Cognitive Science Society.]{.journal_title} Cognitive Science
+    Society. [
+    \[[full text](http://csjarchive.cogsci.rpi.edu/proceedings/2005/forms/content4.htm)\]
+    ]{.publication_links}
+-   Andrews, M., Vigliocco, G., Vinson, D. P. (2005). [Integrating
+    Attributional and Distributional Information in a Probabilistic
+    Model of Meaning Representation]{.publication_title}. In Honkela,
+    T., Könönen, V., Pöllä, M. (Eds.), [ Adaptive Knowledge
+    Representation and Reasoning.]{.journal_title} [
+    \[[full text](http://research.ics.aalto.fi/events/AKRR05/papers)\]
+    ]{.publication_links}
+-   Andrews, M., Salzberg, C. (2004). [Sexual and Asexual Paradigms in
+    Evolution: The Implications for Genetic
+    Algorithms]{.publication_title}. In Deb, K. (Eds.), [ Genetic and
+    Evolutionary Computation \-- GECCO 2004. Lecture Notes in Computer
+    Science, vol 3103.]{.journal_title} Springer. [
+    \[[full text](https://link.springer.com/chapter/10.1007/978-3-540-24855-2_33)\]
+    ]{.publication_links}
+-   Andrews, M. (2003). [Language Learning and Nonlinear Dynamical
+    Systems]{.publication_title}. Doctoral Dissertation. Cornell
+    University, Ithaca, New York. [ ]{.publication_links}
+-   Andrews, M. (2001). [Language Learning by Vector Field
+    Estimation]{.publication_title}. In Moore, J. D., Stenning, K.
+    (Eds.), [ Proceedings of the 23rd Annual Meeting of the Cognitive
+    Science Society.]{.journal_title} Cognitive Science Society. [
+    \[[full text](http://conferences.inf.ed.ac.uk/cogsci2001/poster-2.html)\]
+    ]{.publication_links}
+-   Spivey, M., Andrews, M., Richardson, D. (1999). [On computational
+    and behavioral evidence regarding Hebbian transcortical cell
+    assemblies]{.publication_title}. [ Behavioral and Brain
+    Sciences]{.journal_title}. 22(2), (302-302). [
+    \[[full text](https://www.cambridge.org/core/journals/behavioral-and-brain-sciences/article/on-computational-and-behavioral-evidence-regarding-hebbian-transcortical-cell-assemblies/0533B17B7BE5DE09205ADE515542451E#)\]
+    ]{.publication_links}
+:::

@@ -1,0 +1,207 @@
+---
+title: Structural Equation Models, Path Analysis, Causal Modelling and Latent Variable
+  Models Using R
+date: September 16, 2019
+description: |
+  This five-day workshop provides a comprehensive introduction to structural equation
+  modelling, path analysis, causal modelling, mediation analysis, latent
+  variable modelling, Bayesian networks, graphical models, and other related
+  topics. The course begins with a thorough review of regression
+  modelling, then moves on to path analysis and structural equation modelling. The course also covers latent variable models, particularly factor analysis and latent class models.
+subtitle: 16-20 September, 2019
+location: Glasgow, Scotland
+author: Mark Andrews
+categories:
+- Structural Equation Modelling
+- Path Analysis
+- Causal Modelling
+- Latent Variable Modelling
+- Bayesian Networks
+- R
+
+---
+
+This course provides a comprehensive introduction to a set of inter-related
+topics of widespread applicability in the social social sciences: structural
+equation modelling, path analysis, causal modelling, mediation analysis, latent
+variable modelling (including factor analysis and latent class analysis),
+Bayesian networks, graphical models, and other related topics.  The course
+begins with a thorough review, both practical and theoretical, of regression
+modelling, particularly on general and generalized linear regression. We then
+turn to the topic of path analysis. At its simplest, path analysis can be seen
+as an extension of standard (e.g. linear) regression analysis to cases where
+there are more complex structural relationship between the predictor and
+outcome variables. More generally, and more usefully, we can view path analysis
+as specifying and modelling causal relationships between observed variables. In
+order to fully appreciate path analyses, and especially their role as causal
+models, we will introduce the concept of directed acyclic graphical models,
+also known as Bayesian networks, which are a powerful mathematical and
+conceptual tool for reasoning about causal relationships.  We then thoroughly
+cover the topic of mediation analysis, which can seen as a special case, though
+still very widely applicable, of path analysis and causal models.  We then turn
+to structural equation modelling, which can be seen as an extension of path
+analysis, particularly due to the inclusion of unobserved or latent variables.
+More generally, structural equation models allow for the specification and
+testing of more complex theoretical models of the observed data. In order to
+properly introduce structural equation models, we first explore latent variable
+models, particularly factor analysis and latent class models. In our coverage
+of structural equation models we deal with the general concepts of model
+identification, inference, and evaluation, and then explore special topics such
+as categorical, nonlinear, and non-normal structural equation models,
+multilevel structural equation models, and latent growth curve modelling.
+
+## Intended Audience
+
+This course is aimed at anyone who is interested to learn and apply this
+powerful and flexible set of statistical modelling methods that have widespread
+application across the social, medical, and biological sciences.
+
+## Teaching Format
+
+This course will be hands-on and workshop based. Throughout each day, there
+will be some lecture style presentation, i.e., using slides, introducing and
+explaining key concepts. However, even in these cases, the topics being covered
+will include practical worked examples that will work through together.
+
+## Assumed quantitative knowledge
+
+We assume familiarity with linear regression analysis, and the major concepts
+of classical inferential statistics (p-values, hypothesis testing, confidence
+intervals, model comparison, etc). Some passing familiarity with models such as
+logistic regression will also be assumed.
+
+
+## Assumed computer background
+
+R experience is desirable but not essential. Although we will be using R
+extensively, all the code that we use will be made available, and so attendees
+will just to add minor modifications to this code. Attendees should install R
+and RStudio on their own computers before the workshops, and have some minimal
+familiarity with the R environment. 
+
+## Equipment and software requirements
+
+A laptop computer with a working version of R or RStudio is required. R and
+RStudio are both available as free and open source software for PCs, Macs, and
+Linux computers. R may be downloaded by following the links here
+https://www.r-project.org/. RStudio may be downloaded by following the links
+here: https://www.rstudio.com/.  All the R packages that we will use in this
+course will be possible to download and install during the workshop itself as
+and when they are needed. The major R packages will include `lavaan`,
+`blavaan`, `sem`, `brms`, but the full list of required packages will be made
+available to all attendees prior to the course.  In some cases, some additional
+open-source software will need to be installed to use some R packages. In
+particular, these include `Stan` and `Jags` for probabilistic modelling.
+Directions on how to install this software will also be provided before and
+during the course.
+
+# Course programme 
+
+## Monday, September 16
+
+* Topic 1: *General and generalized linear regression, including multilevel
+  models*. In order to provide a solid foundation for the remainder of the
+  course, we begin by providing a comprehensive overview of general linear
+  models, also covering their multilevel (or hierarchical) counterparts. For
+  this topic, we will use R tools such as `lm`, `lme4::lmer`.
+
+* Topic 2: *Path analysis*. Having covered regression, we proceed to path
+  analysis, which can be viewed as a straightforward extension of standard
+  regression analysis. The primary R package that we will use for this
+  introduction to path analysis is `lavaan`.
+
+* Topic 3: *Graph theory and causal models*. Path analysis can, and should, be
+  seen more than just an extension of regression analysis and be seen as a type
+  of causal model. In order to explore this in depth, we will introduce the
+  concepts of directed acyclic graphs and Bayesian networks, originally
+  developed in computer science and artificial intelligence research, and show
+  how they provide a powerful framework of reasoning about and with causal
+  models.
+
+## Tuesday, September 17
+
+* Topic 4: *Mediation analysis*. A special case of path analysis is mediation
+  analysis.  This is where the causal effect of one or more variables on some
+  outcome is by way of their effect on an intermediary variable. For example,
+  we say the effect of smoking on lung cancer is mediated by the tar content of
+  cigarettes, (smoking causes tar build-up in the lungs, tar build-up in the
+  lungs causes lung cancer). In this section, we will provide an introduction
+  to mediation analysis, and pay particular attention to how it has been
+  traditionally analysed.
+
+* Topic 5: *Causal mediation analysis*. Traditional mediation analysis,
+  although useful, does not extend easily to situations where there are
+  interactions (moderations) between predictor and moderator variables, or
+  where there are nonlinear effects between variables, and other variants.
+  Causal mediation analysis is a more general framework for mediation modelling
+  based on modelling counterfactuals and using graphical models. Here, we will
+  also discuss the relationship between causal mediation analysis and
+  traditional mediation analysis, and also how causal mediation analysis is
+  related to the concept of instrumental variables.
+
+## Wednesday, September 18
+
+* Topic 6: *Factor analysis*: Latent variable models assume the presence of
+  variables that are not directly observed but are assumed to affect other
+  variables that are observed. One of the most commonly used latent variable
+  models, and one that can be seen as a special case of structural equation
+  models that we will explore on Day 3, is factor analysis. Here, we will
+  describe factor analysis, distinguishing between what are known as
+  *exploratory* and *confirmatory* factor analysis models. We will also discuss
+  how factor analysis relates to other widely used latent variable modelling
+  techniques such as *principal components analysis* and *independent
+  components analysis*.
+
+* Topic 7: *Latent class models*. Latent class models, also known as
+  probabilistic mixture models, are another widely used latent variable
+  modelling technique. They differ from factor analyses and related models by
+  the fact that they assume the latent variable is a categorical variable.
+  What this entails is that latent class models assumes that observed data has
+  emerged from a set of categorically distinct underlying unobserved component.
+
+## Thursday, September 19
+
+Days 4 and 5 will cover structural models in depth. On Day 4, we will provide a
+comprehensive introduction to all the major and general concepts of structural
+equation models. On Day 5, we will explore different variants of the structural
+equation models.
+
+* <p>Topic 8: *Structural equation modelling: General concepts*. Structural
+  equation models can be seen as an extension of path analysis, particularly
+  due to the use of latent variables. In this introduction to the topic, we
+  will first explore different examples of structural equation models using
+  real world example data sets, and consider the standard or typical types of
+  assumed models. We will also cover the major and general topics of model
+  identification, model inference, and model evaluation. Here, we will also
+  describe traditional and more modern, and more flexible, approaches to
+  identification, inference, and evaluation. The R packages that we will use
+  here will primarily include `lavaan`, `blavaan`, `sem`, `piecewiseSEM`, `brms`, and we will
+  also use probabilistic programming languages such as `Jags` and `Stan`.</p>
+
+## Friday, September 20
+
+
+* Topic 9: *Nonlinear, non-normal and categorical structural equation models*:
+  The standard, or typical, structural equation model assumes that variables
+  are continuous, have normal distributions, and that there are linear
+  relationships between these variables. While this is often a useful default
+  or starting assumption, more powerful and flexible structural equation models
+  are possible if we allow for continuous variables that have non-normal
+  distributions, nonlinear relationships between these variables, and 
+
+* Topic 10: *Multilevel structural equation models*: Multilevel structural
+  equation models allow us to model variation across different groups. As an
+  example from the context of education studies, we could model phenomena
+  modelled by structural equation models vary across different schools and
+  across different regions, etc.
+
+* Topic 11: *Latent growth curve modelling*: A special case of structural
+  equation models is a latent growth curve model. These are widely used with
+  data from longitudinal or other repeated measures studies, and their primary
+  purpose is to model change or development trajectories over time.  
+
+
+
+# GitHub resources
+
+Further resources for this training course can be found on Github at [mark-andrews/pssem01](https://github.com/mark-andrews/pssem01).

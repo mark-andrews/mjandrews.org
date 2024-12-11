@@ -1,0 +1,40 @@
+---
+toc: false
+---
+
+## Academic bio
+
+I am an [associate professor](https://www.ntu.ac.uk/staff-profiles/social-sciences/mark-andrews) in the Department of Psychology in Nottingham
+Trent University, where I primarily teach statistics at undergraduate and
+postgraduate levels. Between 2002 and 2009, I was a senior research fellow
+in University College London,  with positions first in the [Gatsby
+Computational Neuroscience Unit](https://www.ucl.ac.uk/gatsby/) and later
+in the [Division of Psychology and Language
+Sciences](https://www.ucl.ac.uk/pals/). I have a PhD and MSc in Psychology
+and Cognitive Science from [Cornell University](https://www.cornell.edu/).
+
+My academic background is in computational cognitive science and
+mathematical psychology. My general research interests has been focused on
+the application of mathematical and statistical models to the understanding
+of human cognition. This research primarily has involved
+computational modelling of human language processing and psycholinguistics,
+with particular emphasis on modelling how word meanings are learned from
+statistical information.
+
+## Contact 
+
+::: {#contacts-list}
+
+* <i class="fa-regular fa-envelope"></i> [mark.andrews@ntu.ac.uk](mailto:mark.andrews@ntu.ac.uk)
+* <i class="fa-brands fa-bluesky"></i> [@xmjandrews.bsky.social](https://bsky.app/profile/xmjandrews.bsky.social)
+* <i class="fa-brands fa-github"></i> [github.com/mark-andrews](https://github.com/mark-andrews)
+
+:::
+
+## About this website
+
+This website was built with [Quarto](https://quarto.org/). 
+It was last updated on {{< meta build_date >}}. 
+All content is copyrighted by {{< var copyright_holder >}}, 2021-{{< meta build_year >}}, 
+and licensed for reuse under [{{< var licence.full >}}]({{< var licence.url >}}) licence.
+

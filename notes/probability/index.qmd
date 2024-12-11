@@ -1,0 +1,286 @@
+---
+title: Probability theory
+author: Mark Andrews
+date: '2021, 7, 13, 12:00'
+categories: ["probability", "mathematics", "Bayesian"]
+description: |
+  A brief introduction to the basics of probability theory, covering the fundamental definitions and axioms,
+  the concepts of random variables, joint probability distributions, conditional probability distributions, statistical independence, Bayes 
+  theorem, and other concepts.
+---
+
+```{r}
+#| include = FALSE
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE)
+```
+
+\newcommand{\Prob}[1]{\mathrm{P}( #1 )}
+\newcommand*{\given}{\vert}
+
+Probability theory begins with the simple but fundamental concept of a *random experiment*. 
+This is an idealized procedure that can be repeated infinitely many times and that has a well defined set of mutually exclusive outcomes.
+This set of possible outcomes is known as the *sample space*, which we can denote as follows:
+$$
+\Omega = \{\omega_1, \omega_2 \ldots \omega_n \ldots\},
+$$
+where each $\omega_i$ is one possible outcome of the random experiment.
+Paradigm examples of random experiment are usually based on games of chance, such as throwing a die or choosing a card from a deck of cards.
+For example, the sample space of a throw of six sided die is the set of die sides $\Omega = \{1, 2, 3, 4, 5, 6\}$.
+
+Having defined the sample space, we then define the set of possible *events* of $\Omega$, which we denote by $\mathcal{F}$.
+An *event* is any subset of $\Omega$.
+The set of all possible events of a finite or [countably infinite](https://en.wikipedia.org/wiki/Countable_set) sample space $\Omega$ is its [power set](https://en.wikipedia.org/wiki/Power_set), which is the set of all possible subsets, and which we denote by $2^\Omega$.
+If, for example, $\Omega = \{1, 2, 3, 4, 5, 6\}$, the set of all possible events is the power set of $\Omega$, which has $2^{\vert \Omega \vert} = 32$ elements.
+In an [uncountably infinite](https://en.wikipedia.org/wiki/Uncountable_set) $\Omega$, on the other hand, we must define a [$\sigma$-algebra](https://en.wikipedia.org/wiki/%CE%A3-algebra).
+A $\sigma$-algebra is a collection of subsets of $\Omega$ that includes $\Omega$ and the empty set $\emptyset$, is closed under complementation, and is closed under countable unions.
+Being closed under complementation means that if an particular event is an element of the $\sigma$-algebra, so is its complement.
+Being closed under countable union means that for any countable set of events in the $\sigma$-algebra, their union is also in the $\sigma$-algebra.
+Why we need to use a $\sigma$-algebra, rather a power set, when $\Omega$ is uncountably infinite, is relatively complex discussion about mathematical pathologies, but see [here](https://stats.stackexchange.com/questions/199280/why-do-we-need-sigma-algebras-to-define-probability-spaces) for a brief but useful introduction.
+
+Finally, we then define a function $P$ on $\mathcal{F}$
+$$
+P: \mathcal{F} \mapsto [0, 1],
+$$
+where, to be clear, $[0, 1]$ is the interval of the real line $\mathbb{R}$ between, and including, $0$ and $1$.
+This is known as a *probability measure*, and must obey three axioms, which we describe next.
+
+The triplet $(\Omega, \mathcal{F}, P)$ is known as a *probability space*.
+
+# Probability axioms
+
+A probability measure obeys three axioms, usually known as the [*Kolmolgorov axioms*](https://en.wikipedia.org/wiki/Probability_axioms):
+  
+1. For any set $A \in \mathcal{F}$, $P(A) \geq 0$.
+1. $P(\Omega) = 1$.
+1. For any mutually disjoint sets $A_1, A_2 \ldots A_3 \ldots$, where each $A_i \in \mathcal{F}$, then
+$$
+P\left(\bigcup_{i=1}^\infty A_i \right) = \sum_{i=1}^\infty P(A_i).
+$$
+
+Put informally, $P$ is a function that assigns a *measure*, which we can view as something like mass, to each subset of $\Omega$.
+This measure is non-negative, and the total amount of measure it assigns to the whole of $\Omega$ is $1$.
+The measure assigned to any subset of $\Omega$ is the sum of the measures assigned to its disjoint subsets.
+Put another way, if $A$ and $B$ are two disjoint subsets of $\Omega$, then the measure assigned to $A \cup B$ is equal to the sum of the measure assigned to $A$ an $B$.
+
+# Probability theorems
+
+Having defined our probability space where the probability measure $P$ obeys the probability axioms, we can now state endless numbers of theorems.
+Here are some examples.
+
+* $0 \leq P(A) \leq 1$ 
+* $P(A^c) = 1 - P(A)$
+* $P(\emptyset) = 0$
+* $P(A \cup B) = P(A) + P(B) - P(A \cap B)$
+
+These can be proved using basic set theory and the probability axioms, as follows.
+
+* $0 \leq P(A) \leq 1$: Given that $A \subseteq \Omega$, $P(A) \leq 1$, and by the first axiom, $P(A) \geq 0$.
+* $P(A^c) = 1 - P(A)$: 
+  If $A$ is a subset of $\Omega$ and $A^c$ is its complement, then $A \cup A^c = \Omega$, and so $P(A \cup A^c) = P(\Omega) = 1$.
+  By definition, $A$ and $A^c$ are disjoint, and so by by axiom 3, $P(A \cup A^c) = P(A) + P(A^C)$.
+  Therefore, $P(A) + P(A^C) = 1$ and $P(A^c) = 1 - P(A)$.
+* $P(\emptyset) = 0$: The complement of $\Omega$ is $\Omega^c = \emptyset$.
+  By the previous theorem, $P(\Omega^c) = 1 - P(\Omega$), and so $P(\emptyset) = 1 - 1 = 0$.
+* $P(A \cup B) = P(A) + P(B) - P(A \cap B)$: By the [algebra of sets](https://en.wikipedia.org/wiki/Algebra_of_sets), $A \cup B = (A \cup B) \cap \Omega = (A \cup B) \cap (A \cup A^c)$ and so from this, we have $A \cup B = A \cup (B \cap A^c)$, and $A$ and $B \cap A^c$ are disjoint. 
+  Similarly, $B = B \cap \Omega = B \cap (A \cup A^c)$, and so from this, we have $B = (A \cap B) \cup (B \cap A^c)$. And so $P(A \cup B) = P(A) + P(B \cap A^c)$. Given that $P(B) = P(A \cap B) + P(B \cap A^c)$, we have $P(B \cap A^c) = P(B) - P(A \cap B)$. Therefore, $P(A \cup B) = P(A) + P(B) - P(A \cap B)$.
+
+# Conditional probability
+
+For any two events $A$ and $B$, the conditional probability of $A$ given that $B$ has occurred, written as $P(A \given B)$, is defined as follows:
+$$
+P(A \given B) = \frac{P(A \cap B)}{P(B)}.
+$$
+For example, using the die throw example, if $A = \{2, 4, 6\}$ and $B = \{4, 5, 6\}$, the conditional probability of $A$ given that $B$ has been observed is
+$$
+\frac{P(A \cap B)}{P(B)} = \frac{P(\{4, 6\})}{P(\{4, 5, 6\})}.
+$$
+
+In general then, conditional probability effectively defines a new probability space with $B$ as the sample space, the subsets of $B$ as the set of events, and the probability measure assigned to these events is the probability measure from the original probability space divided by $P(B)$.
+
+Note that by the definition of conditional probability above, we also have
+$$
+P(A \cap B) = P(A \given B) P(B),
+$$
+and also
+$$
+P(A \cap B) = P(B \given A) P(A),
+$$
+and this means, for example,
+$$
+P(A \given B) P(B) = P(B \given A) P(A),
+$$
+and 
+$$
+P(B \given A) = \frac{P(A \given B) P(B)}{P(A)},
+$$
+and so on.
+
+# Random variables
+
+A random variable is not like a variable in the usual mathematical sense of the term.
+It is in fact a function mapping from the sample space $\Omega$ to a new measurable space, which is usually the real line $\mathbb{R}$.
+We define a random variable $X$ more formally as follows:
+$$
+X \colon \Omega \mapsto \mathbb{R}.
+$$
+
+For any $s \subseteq \mathbb{R}$, the probability that $X$ takes a value in $s$ is
+$$
+\Prob{X \in s} = P(\{\omega\colon X(\omega) \in s\}).
+$$
+We can read this as follows: the probability that $X$ takes a value in the set $s$ is the probability measure assigned to the set of all outcomes $\omega$ such that $X(\omega) \in s$.
+
+As an example, again using our die throw example where $\Omega = \{1, 2, 3, 4, 5, 6\}$, we can define a random variable $X$ that maps each outcome in the set $\{1, 2, 3, 4\}$ to $0$, and each outcome in the set $\{5, 6\}$ to $1$.
+If our probability measure on $\Omega$ is simply that each of the 6 possible outcomes has a probability of $\frac{1}{6}$, then we have 
+$$
+\begin{aligned}
+\Prob{X = 0} &=  P(\{\omega\colon X(\omega) = 0\}),\\
+             &=  P(\{1, 2, 3, 4\}) = \frac{2}{3}.
+\end{aligned}
+$$
+
+Somewhat informally, the probability assigned by the random variable $X$ to each possible value in $\mathbb{R}$ is known probability distribution of $X$, and written $\Prob{X}$.
+This $\Prob{X}$ is a function (possibly continuous, possibly discontinuous) over $\mathbb{R}$.
+Every value of this function must be non-negative and it must integrate to 1.0.
+
+## Joint random variables
+
+Given a sample space $\Omega$, we may define multiple random variables, e.g. $X$, $Y$ \ldots.
+For any $s \subseteq \mathbb{R}$, $r \subseteq \mathbb{R}$, the probability that $X$ takes a value in $s$ *and* $Y$ takes a value in $r$ is 
+$$
+\Prob{X \in s, Y \in r} = P(\{\omega\colon X(\omega) \in s \land Y(\omega) \in r\}),
+$$
+where $\land$ is the logical and operator.
+For example, let the random variable $X$ be the function that we just saw that maps $\{1, 2, 3, 4\}$ to $0$ and $\{5,6\}$ to $1$.
+On the other hand, let a new random variable $Y$ be the function that maps $\{1, 3, 5\}$ to $0$ and $\{2, 4 ,6\}$ to $1$.
+From this, we have
+$$
+\begin{aligned}
+\Prob{X = 0, Y = 0} &= P(\{\omega\colon X(\omega) =0 \land Y(\omega) = 0\}), \\
+                    &= P(\{1, 3\}),\\
+                    &= \frac{2}{6}.
+\end{aligned}
+$$
+Following similar reasoning, we have 
+$$
+\begin{aligned}
+\Prob{X = 1, Y = 0} &= P(\{5\}) = \frac{1}{6},\\
+\Prob{X = 0, Y = 1} &= P(\{2, 4\}) = \frac{2}{6},\\
+\Prob{X = 1, Y = 1} &= P(\{6\}) = \frac{1}{6},
+\end{aligned}
+$$
+Note, the sum of the probabilities of the four possible combinations of the two values of $X$ and $Y$ is 1.
+
+We refer to the probability distribution over multiple random variables as a *joint* probability distribution.
+If there are a finite number of possible values for $X$ and $Y$, the joint distribution over $X$ and $Y$ can be represented by a table whose elements must sum to exactly 1.
+If there are a continuum of possible values of $X$ and $Y$, the joint probability distribution is a function over a 2 dimensional space that must integrate to exactly 1.
+
+## Conditional probability distributions
+
+Given the joint distribution of $X$ and $Y$, we can calculate the *conditional* probability distribution of $X$ given $Y$, using the definition of conditional probability above, as follows:
+$$
+\Prob{X \in s \given Y \in r} = \frac{\Prob{X \in s, Y \in r}}{\Prob{Y \in r}}.
+$$
+For example, using $X$ and $Y$ as defined above, we have 
+$$
+\begin{aligned}
+\Prob{X = 0 \given Y = 0} &= \frac{P(\{\omega\colon X(\omega) =0 \land Y(\omega) = 0\})}{P(\{\omega\colon Y(\omega) = 0\})}, \\
+                    &= \frac{P(\{1, 3\})}{P(\{1, 3, 5\})},\\
+                    &= \frac{2}{3}.
+\end{aligned}
+$$
+
+## Marginal probability
+
+Given a joint probability of $X$ and $Y$, the *marginal* probability that $X \in s$ is defined as
+$$
+\Prob{X \in s} = \sum_{r \in \mathbb{R}}\Prob{X \in s, X \in r}.
+$$
+In more detail, we have
+$$
+\begin{aligned}
+\Prob{X \in s} &= \sum_{r \in \mathbb{R}}\Prob{X \in s, X \in r},\\
+               &= \sum_{r \in \mathbb{R}}P(\{\omega\colon X(\omega) \in s \land Y(\omega) \in r\}),\\
+               &= P(\{\omega\colon X(\omega)\in s\}).
+\end{aligned}
+$$
+
+
+# Independent random variables
+
+Two variables random variables $X$ and $Y$ are *independent* if and only if, for all possible values of $s$ and $r$, we have
+$$
+\Prob{X = s, Y = r} = \Prob{X = s}\Prob{Y = r}.
+$$
+Given that, as we have seen,
+$$
+\Prob{X = s \given Y = r} = \frac{\Prob{X = s, Y = r}}{\Prob{Y = r}},
+$$
+then
+$$
+\Prob{X = s, Y = r} = \Prob{X = s \given Y = r}\Prob{Y = r},
+$$
+and so, if $X$ and $Y$ are independent, we see that $\Prob{X = s \given Y = r} = \Prob{X = s}$.
+From this perspective, we that independence means that the probability that $X$ takes on any given value does not vary with the value that $Y$ takes.
+
+
+## Conditional independence 
+
+Two variables $X$ and $Y$ are *conditionally independent* given a third variable $Z$ if, for all possible values of $s$, $r$, $w$,   
+$$\Prob{X = s, Y = r \given Z =w } = \Prob{X = s\given Z = w}\Prob{Y = r \given Z = w}.$$
+In other words, given that we know that $Z$ takes any given value, then the probability that $X$ takes on any value does not vary with the value that $Y$ takes.
+Likewise the probability that $Y$ takes on any value does not vary with the value that $X$ takes. 
+
+# Chain rule
+
+We have seen above that for random variables $X$, $Y$
+$$\Prob{X, Y} = \Prob{X\given Y}\Prob{Y} = \Prob{Y\given X}\Prob{X}.$$
+
+Similarly, for $X$, $Y$, $Z$,
+$$\begin{aligned}
+\Prob{X, Y, Z} &= \Prob{X \given Y, Z}\Prob{Y \given Z}\Prob{Z},\\
+&=\Prob{Y \given X, Z}\Prob{X \given Z}\Prob{Z},\\
+&=\Prob{Z \given X, Y}\Prob{X \given Y}\Prob{Y}.
+\end{aligned}
+$$
+
+This means that any joint probability distribution can be decomposed in the products conditional probability distributions.
+
+# Reasoning with probabilistic models
+
+If we have, for example, a set of random variables $y_1, y_2 \ldots y_n$ that are independently and identically distributed as $N(\mu, \sigma^2)$, which is a normal distribution with mean $\mu$ and variance $\sigma^2$, then if $\mu$ and $\sigma$ also defined by probability distributions, our joint probabilistic model over all these variables is a probability distribution over $n + 2$ random variables
+$$
+\Prob{y_1, y_2, y_2 \ldots y_n, \mu, \sigma^2}.
+$$
+
+Because of conditional independence, namely that  $y_1, y_2 \ldots y_n$ are mutually independent given knowledge of $\mu$ and $\sigma^2$, this joint probability decomposes as follows:
+$$
+\prod_{i=1}^n \Prob{y_i \given \mu, \sigma^2}\Prob{\mu, \sigma^2}.
+$$
+The marginal probability of $y_1 \ldots y_n$ is
+$$
+\Prob{y_1 \ldots y_n} = \int \Prob{y_1 \ldots y_n, \mu, \sigma^2} d\mu d\sigma^2
+$$
+
+# Bayes theorem
+
+Given a joint probability distribution over $y_1 \ldots y_n$ and $\mu$, $\sigma^2$, we define the conditional probability of $\mu$ and $\sigma^2$ given $y_1 \ldots y_n$, using definitions above, as follows:
+$$
+\begin{aligned}
+\Prob{\mu, \sigma^2 \given y_1 \ldots y_n} &= \frac{\Prob{y_1 \ldots y_n, \mu, \sigma^2}}{\Prob{y_1 \ldots y_n}},\\
+ &= \frac{
+\prod_{i=1}^n \Prob{y_i \given \mu, \sigma^2}\Prob{\mu, \sigma^2}.
+}{
+\Prob{y_i \ldots y_n}
+},\\
+&= \frac{
+\prod_{i=1}^n \Prob{y_i \given \mu, \sigma^2}\Prob{\mu, \sigma^2}.
+}{
+\int \prod_{i=1}^n \Prob{y_i \given \mu, \sigma^2}\Prob{\mu, \sigma^2} d\mu d\sigma^2.
+}
+\end{aligned}
+$$
+
+This is Bayes theorem, which the basis of statistical inference in Bayesian data analysis.

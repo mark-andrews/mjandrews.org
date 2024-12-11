@@ -1,0 +1,19 @@
+---
+title: "Introduction to Mixed Effects Regression"
+author: "Mark Andrews"
+subtitle: '20-21 June, 2024'
+date: '20 June, 2024'
+location: "Liverpool John Moores University"
+description: "This two-day course covers random effects multilevel models, linear mixed
+effects models, and multilevel models for nested and crossed data, as well as
+group level predictor variables."
+categories: ["Multilevel models", "Mixed Effects", "R"]
+---
+
+In this two day course, we provide a comprehensive practical and theoretical introduction to multilevel models, also known as hierarchical or mixed effects models.
+On Day 1, we will begin by focusing on *random effects* multilevel models.
+These models make it clear how multilevel models are in fact models of models.
+In addition, random effects models serve as a solid basis for understanding mixed effects, i.e. fixed and random effects, models.
+In this coverage of random effects, we will also cover the important concepts of statistical shrinkage in the estimation of effects, as well as intraclass correlation.
+We then proceed to cover linear mixed effects models, particularly focusing on varying intercept and/or varying slopes regresssion models.
+On Day 2, we cover further aspects of linear mixed effects models, including multilevel models for nested and crossed data data, and group level predictor variables.

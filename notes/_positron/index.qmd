@@ -1,0 +1,123 @@
+# Switching to Positron IDE
+
+For now, just a log of my thoughts as I explore it.
+
+## RMarkdown
+
+How do I start an RMarkdown file? Do I just start a new file that ends with the Rmd extension?
+That is what I just tried. It worked, but it feels like I am missing something.
+Do I actually have to create/save a file in Positron (or vscode/code oss generally) to open a file in the buffer?
+
+
+## Vim keybinding
+
+Do I use extensions? 
+
+I think I do.
+
+I am trying "VSCode Neovim".
+
+
+## Keymappings
+
+* Ctrl+shift x: extensions
+* Ctrl+shift e: project file explorer
+* Ctrl+shift g: git
+
+
+## Assignment operator
+
+Alt minus does not work in Rmarkdown or Quarto?
+
+It does. Enable RStudio Keymaps in settings.
+
+All keybindings: Alt+shift+k
+
+## Old pipe, tidyverse pipe
+
+In settings, change pipe
+
+## Theme
+
+Use extensions. I use Catpuccin Macchiato
+
+## Settings
+
+Settings look like they are in C:/Users/andrews/AppData/Roaming/Positron/User/setttings.json
+
+and that can be edited directly I think.
+
+In Linux, it is 
+
+/home/andrews/.config/Positron/User/settings.json
+
+## Font
+
+Again, set in settings, but maybe also by direct editing of settings.json
+I have Cascadia Code and font ligatures
+
+{
+    "positron.r.pipe": "%>%",
+    "workbench.colorTheme": "Catppuccin Macchiato",
+    "workbench.iconTheme": "catppuccin-macchiato",
+    "editor.fontFamily": "'Cascadia Code'",
+    "editor.fontLigatures": true
+}
+
+I use catpuccino extension :)
+
+## Virtual environments
+
+I figured out virtual environments for Python at least. 
+What about R versions?
+
+Also, while we are here, how do the different types of virtual environments in Python work?
+I seem to recall that when the global interpreter changes, the virtual environments change.
+Am I wrong about that? Is that just the type I am using?
+
+## No packages tab?
+
+Really?
+
+
+## Extensions
+
+The extensions, VSIX, seem like they will make Positron much more powerful and useful than RStudio.
+But how does this VSIX work. Is this different to the VSCODE marketplace. I believe there is some difference.
+
+## Projects? Or what is the difference between projects, folder, workspaces
+
+Can I, or should I, open an RStudio project?
+
+## Package development
+
+In RStudio, I do the use document, load, etc., How do I do that here?
+
+See blogs below
+
+## Blogs and other resources
+
+* https://blog.stephenturner.us/p/r-package-development-in-positron
+* https://www.andrewheiss.com/blog/2024/07/08/fun-with-positron/
+* https://drmowinckels.io/blog/2024/positron/
+* https://occasionaldivergences.com/posts/positron-intro/
+
+
+## Set up
+
+I have just installed on yggdrasil and so am setting up for the first time.
+Here are my steps
+
+* Install Catpuccin for VSCode theme extension: Macchiato
+* Vim extension
+* Change my font and add ligatures
+
+Was that it? For now, yes I think.
+
+## Things I miss
+
+* Ability to zoom into panes
+* Ability to zoom into a plot
+* Package browser
+* History browser
+

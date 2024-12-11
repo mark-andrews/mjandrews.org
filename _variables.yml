@@ -1,0 +1,24 @@
+copyright_holder: 'Mark Andrews'
+copyright_years:  '2021-2023'
+licence:
+  full:           'Creative Commons Attribution-ShareAlike 4.0'
+  short:          'CC BY-SA 4.0'
+  url:            'https://creativecommons.org/licenses/by-sa/4.0/'
+
+
+social_media:
+    # youtube:
+    #     url:    "https://www.youtube.com/channel/UCDJysywTpkyWWZT1l9j4BlA"
+    #     image:  "iconmonstr-youtube-1.svg"
+    mail:
+        label:    "mark.andrews@ntu.ac.uk"
+        url:      "mailto:mark.andrews@ntu.ac.uk"
+        image:    "mail.svg"
+    github:
+        label:    "github.com/mark-andrews"
+        url:      "https://github.com/mark-andrews"
+        image:    "github.svg"
+#    twitter:
+#        label:    "@xmjandrews"
+#        url:      "https://twitter.com/xmjandrews"
+#        image:    "twitter.svg"

@@ -1,0 +1,60 @@
+---
+title: Bayesian Data Analysis
+date: August 28, 2018
+description: |
+  This workshop offers a hands-on introduction to Bayesian data analysis. It covers fundamental concepts of Bayesian statistical inference, explores major concepts and issues in Bayesian statistics, and covers Bayesian general and generalized linear regression models. The course aims to provide a solid foundation in the theory and practice of Bayesian data analysis, particularly for psychological research.
+subtitle: August 28, 2018
+location: Liverpool, UK
+author: Mark Andrews
+categories:
+- Bayesian Data Analysis
+- Statistical Inference
+- Linear Models
+- Psychology
+- R
+
+---
+
+This workshop provides a practical introduction to Bayesian data analysis. We
+will start by describing the fundamental concepts of Bayesian statistical
+inference, and contrast these with frequentist methods of inference. Then,
+using a simple case study, we will explore all the major concepts and issues in
+Bayesian statistics including priors, likelihood functions, posterior
+inference, posterior predictive inference, Bayes factors, out-of-sample
+generalization, and so on. We will then turn to doing Bayesian general and
+generalized linear regression models and their multilevel counterparts. It is
+hoped that this workshop will provide a useful introduction to the theory and
+practice of Bayesian data analysis, and provide an introductory guide on how to
+use Bayesian methods in psychological research.
+
+## Slides
+
+* [History of Bayesian Inference](https://github.com/lawsofthought/bps-cog-2018-bayes-workshop/blob/master/pdf/history.pdf)
+* [Introducing Bayesian Inference](https://github.com/lawsofthought/bps-cog-2018-bayes-workshop/blob/master/pdf/introducing_bayesian_inference.pdf)
+
+
+## Demos
+
+The slides contain links to the following online demos:
+
+1. [Binomial test for coin toss data](https://lawsofthought.shinyapps.io/binomial_test).
+2. [Binomial likelihood for coin toss data](https://lawsofthought.shinyapps.io/binomial_likelihood).
+3. [Bayesian inference for coin toss data](https://lawsofthought.shinyapps.io/bayesian_coin_inference).
+
+## Source code
+
+R code to accompany the workshop can be found at <https://github.com/lawsofthought/bps-cog-2018-bayes-workshop/tree/master/code>.
+
+The demos above are all written in R and Shiny. The source code for these can be found at
+<https://github.com/lawsofthought/psypag-kent-2017/tree/master/shiny>. 
+
+All code is released according a free and open-source licence, see
+`License.txt` for more info.
+
+The LaTeX source code for the slides is also released according to a free and
+open-source licence (see `License.txt`) and can be found at <https://github.com/lawsofthought/bps-cog-2018-bayes-workshop/tree/master/slides>.
+
+# GitHub resources
+
+Further resources for this training course can be found on Github at [mark-andrews/bps-cog-2018-bayes-workshop](https://github.com/mark-andrews/bps-cog-2018-bayes-workshop).
+

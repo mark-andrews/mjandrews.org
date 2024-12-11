@@ -1,0 +1,27 @@
+---
+title: An introduction to the Python programming language for beginners
+date: September 2, 2014
+description: |
+  This workshop aims to introduce Python programming for cognitive psychology research. Over the past decade, Python has developed into a scientific and numerical computing environment, comparable to Matlab, R, and Mathematica. This tutorial will highlight Python's potential applications and advantages in cognitive psychology research.
+subtitle: September 2, 2014
+location: Nottingham, UK
+author: Mark Andrews
+categories:
+- Cognitive Science
+- Scientific Computing
+- Numerical Computing
+- Python
+
+---
+
+The objective of this workshop is to introduce and motivate the use of
+the Python programming language in research in cognitive psychology.
+Within the last ten years, the development of scientific and numerical
+libraries in Python has grown to the point where Python can now be
+used as a scientific and numerical computing environment comparable to
+products like Matlab, R and Mathematica. As of yet, however, it
+appears that knowledge of the potential applications of Python to
+research in cognitive psychology is still rather limited.  The aim of
+this tutorial, therefore, is to describe these areas of application
+and to advocate the advantages and appeals of using Python as the
+principal programming language in cognitive psychology research.

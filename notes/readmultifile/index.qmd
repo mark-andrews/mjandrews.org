@@ -1,0 +1,217 @@
+---
+title: "Read Multiple Files into a Single Data Frame"
+author: Mark Andrews
+date: "2021, 07, 23, 19:42"
+categories: ["tidyverse", "R"]
+description: |
+   In R, usually data frames are created by reading data from a single file.
+   Sometimes, however, we may wish to read multiple files into a single data frame.
+   In this post, we will look at some of the main `tidyverse` ways in which we can read in files into a single data frame.
+---
+
+```{r}
+#| include = FALSE
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE)
+
+unzip('notes/country_data.zip')
+
+
+```
+
+```{r}
+#| echo = F
+library(tidyverse)
+theme_set(theme_classic())
+set.seed(101010101)
+```
+
+For most analyses in R, our data are represented in data frames.
+These data frames are often created initially by reading in data from files, such as `.csv` files, Excel files, and so on.
+Usually, in this case, the data frame is created by reading from a single file.
+For example, we might have a csv file named `foo.csv` (available [`here`](data/foo.csv)) with the following contents:
+```{bash}
+#| echo: false
+#| comment: ""
+echo '#foo.csv'
+cat data/foo.csv
+```
+We can read in its contents as follows:
+```{r}
+library(tidyverse)
+
+read_csv('data/foo.csv')
+```
+Sometimes, however, we may wish to read multiple files into a single data frame.
+There are countless situations where this could arise.
+As a very simple example, we might have conducted a study in multiple different countries, whereby in each country, we collected the gender, height, and weight of a sample of people.
+From each country, we might then have a single `.csv` file, with names like `england.csv`, `france.csv`, and so on, but we may wish to read the data from all these `.csv` files into one single data frame.
+Fictitious `.csv` data files of this kind are available in a zip file named [`country_data.zip`](data/country_data.zip).
+
+In this post, we will look at some of the main ways in which we can read in multiple `.csv` files into a single data frame, using the `county_data.zip` files as an example.
+In particular, we will look at using `purrr::map` combined with `dplyr::bind_rows`, using `purrr::map_dfr`, and using `readr` version 2.0.0.
+We will also look some common problems, and their solutions, that can arise when reading and concatenating multiple csv files in this way.
+We will use `read_csv` as the function to read individual files, but all of what we discuss is equally applicable when using other read functions like `read_tsv`, `read_delim`, etc., from `readr`, and the methods involving the `map` functionals can be used with almost any function for reading files such as `readxl::read_excel`, `haven::read_spss`, and so on.
+
+# Using `purrr`'s `map` with `bind_rows`
+
+As discussed in [this blog post](/notes/functionals), functionals like base R's `lapply`, `purrr`'s `map`, and their many variants, effectively apply functions to each element of a list and then collect the results in a new list or some other data structure.
+We can therefore use functionals to read multiple `.csv` files into R as a list of data frames, which may be then concatenated into a single data frame.
+To do this, we first get a vector with the names of `.csv` files that we want to read in.
+This can be done using base R's `list.files`, or else the `fs` package's `dir_ls` command.
+
+For example, assuming we have unzipped the [`country_data.zip`](data/country_data.zip) file into a directory named `country_data`, we can get a list of all the files in it as follows:
+```{r}
+library(fs)
+csv_file_list <- dir_ls('country_data')
+csv_file_list
+```
+We can now use `purrr::map` to read in each one of these `.csv` files in a data frame using `read_csv`, and to collect these data frames in a list.
+This is done as follows:
+```{r}
+df_list <- map(csv_file_list, read_csv)
+```
+The object `df_list` is a list of length `r length(csv_file_list)`.
+```{r}
+class(df_list)
+length(df_list)
+```
+Each element of this list is a data frame, and the name of each element is the file name from which the data was read.
+```{r}
+names(df_list)
+```
+
+We can now use `bind_rows` to concatenate all the data frames in the list:
+```{r}
+bind_rows(df_list)
+```
+While this does concatenate the data frame, the result does not contain a variable to indicate the country.
+We can, however, add in this variable by using the `.id` argument to `bind_rows` as follows:
+```{r}
+bind_rows(df_list, .id = 'country')
+```
+This adds a new variable, named `country`, whose values are the list names corresponding to each data frame being concatenated.
+In this example, we probably would prefer the country name to be `austria` etc., rather than `country_data/austria.csv` etc.
+This can be accomplished with `str_match` and a regular expression as follows:
+```{r}
+bind_rows(df_list, .id = 'country') %>% 
+  mutate(country = str_match(country, 'country_data/(.*)\\.csv')[,2])
+```
+Or if we are going to re-use the `str_match` function often, we can do
+```{r}
+get_country <- function(filename){
+  str_match(filename, 'country_data/(.*)\\.csv')[,2]
+}
+
+bind_rows(df_list, .id = 'country') %>% 
+  mutate(country = get_country(country))
+```
+
+
+We can put all these steps together into one pipeline as follows:
+```{r}
+dir_ls('country_data') %>% 
+  map(read_csv) %>% 
+  bind_rows(.id = 'country') %>% 
+  mutate(country = get_country(country))
+```
+
+# Using `map_dfr`
+
+We also use the `map_dfr` variant of `map` to effectively perform the `map` and `bind_rows` operations in one step:
+```{r}
+dir_ls('country_data') %>% 
+  map_dfr(read_csv, .id = 'country') %>% 
+  mutate(country = get_country(country))
+```
+
+Given that `map_dfr` does in one step that which requires two separate steps when using `map` itself, it may seem always preferable.
+There are occasions, however, where we might like to have the list of data frames returned by `map`, and perform additional wrangling and tidying operations on the individual data frames before we combine them into one single data frame.
+
+
+# Additional arguments to `read_csv`
+
+In all of the above example, we used `read_csv` with no optional arguments.
+Should we wish to use optional arguments to `read_csv`, we can use add them as arguments to `map` or `map_dfr`.
+For example, if we want to limit the number of records we read in to no more than 10 rows per file, we would use `n_max = 10` in `read_csv`, which we can accomplish with a functional as follows:
+```{r}
+dir_ls('country_data') %>% 
+  map_dfr(read_csv, n_max = 10, .id = 'country') %>% 
+  mutate(country = get_country(country))
+```
+
+# Using `readr` 2.0.0
+ 
+Since [`readr` 2.0.0](https://www.tidyverse.org/notes/2021/07/readr-2-0-0/), released on July 20, 2021, `read_csv` on its own can read in and concatenate multiple files:
+```{r}
+packageVersion('readr')
+
+dir_ls('country_data') %>% 
+  read_csv(id = 'country') %>% 
+  mutate(country = get_country(country))
+```
+Note that here we use `id` (without the leading `.`) to accomplish what `.id` was doing in `map` above.
+
+While this feature of `read_csv` is undoubtedly very convenient, the `map` and `map_dfr` are more general.
+For example, if the files being read in have their columns in different orders, then `read_csv` will not work with the file list, as we see in the following example:
+```{r}
+#| error = TRUE
+write_csv(tibble(x = 1:10, y = 10:1), 'file1.txt')
+write_csv(tibble(y = 1:10, x = 10:1), 'file2.txt')
+
+files <- dir_ls(glob = '*.txt')
+read_csv(files, id = 'filename')
+```
+On the other hand, `map_dfr`, and `map ... bind_rows` too, will work in this situation too:
+```{r}
+map_dfr(files, read_csv, .id = 'filename')
+```
+
+# Incompatible column types
+
+As a final topic, let us consider a problem that sometimes arises when combining data frames.
+When reading and combining dozens or hundreds of files, it is not unlikely that some errors in some files will prevent combining the corresponding data frames.
+As an example, consider the files [`foo.csv`](/notes/readmultifile/data/foo.csv), [`foo1.csv`](/notes/readmultifile/data/foo1.csv)
+[`foo2.csv`](/notes/readmultifile/data/foo2.csv).
+Their contents are as follows:
+```{bash}
+#| echo: false
+cd data
+head foo.csv foo1.csv foo2.csv
+```
+
+If we try to combine these files into one data frame using the methods above, we encounter an error:
+```{r}
+#| error = TRUE
+dir_ls('data', regexp = 'foo.*\\.csv') %>% 
+  map_dfr(read_csv)
+```
+
+What has happened here is that the string `X` in the `b` column of `foo2.csv` forces that column to be read as a character vector, while the `b` columns in `foo.csv` and `foo1.csv` are read, correctly, as numeric vectors.
+This is confirmed if we just use `map` with `read_csv` and view the data frames:
+```{r}
+dir_ls('data', regexp = 'foo.*\\.csv') %>% 
+  map(read_csv)
+```
+
+This `X` string can be see as an example of coding error that could arise in one of the original `.csv` files.
+We can deal with this in different ways.
+One way is to explicitly inform `read_csv` to treat a value of `X` as a missing value.
+We do this with the `na = 'X'` argument to `read_csv`, which can be added as additional arguments to `map_dfr`, etc.
+```{r}
+dir_ls('data', regexp = 'foo.*\\.csv') %>% 
+  map_dfr(read_csv, na = 'X')
+```
+
+Alternatively, we could force `read_csv` to parse every `b` column as a numeric column, which forces every non-numeric value to be coded as a `NA`, and then the data frames can be combined.
+This can be done as follows:
+```{r}
+dir_ls('data', regexp = 'foo.*\\.csv') %>% 
+  map_dfr(read_csv, 
+          col_types = list(b = col_double())
+  )
+```
+
+
+

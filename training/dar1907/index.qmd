@@ -1,0 +1,48 @@
+---
+title: Data Analysis Using R
+date: July 15, 2019
+description: |
+  This two-day workshop provides a comprehensive introduction to R and statistical data analysis. The first day covers R fundamentals, data wrangling, and visualization. The second day covers statistical tests and linear models, including generalized linear models and multilevel modelling.
+subtitle: 15-16 July, 2019
+location: Hatfield, UK
+author: Mark Andrews
+categories:
+- Data Wrangling
+- Data Visualization
+- Linear Models
+- R
+
+---
+
+In this two day workshop, we will provide a general introduction to R
+        and how to do statistical data analysis using R.  On the first day, we
+        will provide an introduction to R fundamentals (RStudio overview, R
+        commands and operations, assignment, data structures, functions,
+        scripts, packages, reading in data files, viewing and summarizing
+        data). This will be followed by data wrangling (using dplyr, tidyr, and
+        pipelines), and data visualization using ggplot2.  On the second data,
+        we begin by covering introductory statistical tests (t-tests,
+        correlation, Chi-square), and then proceed to linear models (simple
+        linear regression, multiple linear regression, general linear models,
+        oneway anova, factorial anova). We will then cover generalized linear
+        models (logistic regression, Poisson regression, negative binomial
+        regression), and general and generalized linear mixed effects
+        (multilevel) modelling.
+
+# Schedule
+
+* Day 1, part 1: Introduction to R fundamentals (RStudio overview, R commands and operations, assignment, data structures, functions, scripts, packages, reading in data files, viewing and summarizing data).
+
+* Day 1, part 2: Data wrangling the tidyverse way (using dplyr, tidyr, and pipelines); data visualization using ggplot2 (histograms, density plots, barplots, boxplots, scatterplots, facet plots, etc).
+
+* Day 2, part 1: Introductory statistical tests (t-tests, correlation, Chi-square), linear models (simple linear regression, multiple linear regression, general linear models, oneway anova, factorial anova).
+
+* Day 2, part 2: Generalized linear models (logistic regression, Poisson regression, negative binomial regression). Linear and generalized linear mixed effects modelling (and as part of this we'll deal with repeated measures Anova and and how and why liner mixed effects models effectively supersede repeated measures Anova).
+
+
+For Day 1, the only required R package is `tidyverse` (which is a package of packages). For Day 2, you need the R packages `reghelper`, `car`, `lme4`, and `brms` (which requires `rstan`, see next section).
+
+
+# GitHub resources
+
+Further resources for this training course can be found on Github at [mark-andrews/u-herts-r-workshop](https://github.com/mark-andrews/u-herts-r-workshop).
