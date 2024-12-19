@@ -1,0 +1,143 @@
+---
+title: "Sending individualized Outlook emails using R"
+date: 2024-12-19
+categories: ["email", "R"]
+knitr:
+    opts_chunk: 
+      message: false
+description: |
+    This note describes how to send emails through Outlook directly from R using the `Microsoft365R` package.
+    In particular, it shows how you can easily send formatted personalized emails, including with attachments, using this package and a few other tools in R.
+---
+
+The R package [`Microsoft365R`](https://cran.r-project.org/package=Microsoft365R) makes it easy to send email via your personal or business (e.g., university) Outlook email from inside R.
+For example, to send an Outlook email from my university account using R, I would first do the following:
+```{r}
+#| 
+library(Microsoft365R)
+
+outlook <- get_business_outlook() 
+```
+The first time I run `get_business_outlook` function, it will open a web browser at my university's usual Microsoft365 sign-in page, where I sign in as normal, which may include using two-factor authentication.
+Once authenticated, I can use the `outlook` object in R to send an email.
+As a very simple example, I could send a one-line email (to myself, in this case) as follows:
+```{r}
+#| eval: false
+email <- outlook$create_email(
+  body = "This email is sent from R",
+  subject = "Message sent from R",
+  to = "mark.andrews@ntu.ac.uk"
+)
+
+email$send()
+```
+
+This email is sent just as it would have been had you used the Outlook mail client.
+For example, if you go to your Sent folder in your Outlook client, if will have a copy of the email.
+
+This particular email will be plain text, while most emails nowadays are formatted html.
+Below, we will see how we can easily send formatted html emails just as easily as plain text ones.
+
+```{r}
+#| echo: false
+mailmerge_df <- readr::read_csv('
+firstname,lastname,email,grade,feedback
+Alice, Ayers, alice@uni.edu, A+, alice_ayers.pdf
+Bob, Katt, bob@uni.edu, A+, bob_katt.pdf
+Carol, Singer, carol@uni.edu, A-, carol_singer.pdf
+Dorothy, Oz, dorothy@uni.edu, B+, dorothy_oz.pdf
+Jane, Doe, jane@uni.edu, B, jane_doe.pdf
+Mary, Betts, mary@uni.edu, B-, mary_betts.pdf
+Joe, Bloggs, joe@uni.edu, C, joe_bloggs.pdf 
+')
+```
+
+If you have to send the same email to more than one recipient, you can use a vector of email address as the value of the `to` argument in `create_email`.
+But as you can imagine, because this is just regular R code, you also have endless options for sending individualized or personalized emails to multiple different recipients.
+As an example, I will show how you could send assessment feedback to a set of students.
+Obviously, these emails would need to be individualized, with one email with information specific to the student sent to each one of the students.
+
+Although not necessary, let's assume we have all the information about the students --- names, email addresses, etc. --- and the grades or other feedback that we want to send to them in data frame.
+As a minimal example, we could have a tibble data frame named `mailmerge_df` like this:
+
+```{r}
+mailmerge_df
+```
+As you can see, the `feedback` column gives the name of a pdf document.
+This contains the detailed feedback to the student and we will attach this file to the email.
+
+First, let's create a personalized email body.
+For this, we will use functions from the [`glue`](https://cran.r-project.org/package=glue) R package, which is for string interpolation.
+If you have never used `glue` before, here's an example of how it works using the `glue` command:
+
+```{r}
+library(glue)
+
+firstname <- 'Jane'
+grade <- 'A+'
+
+msg <- '
+Hi {firstname},
+
+Your grade on the exam is {grade}.
+
+best,  
+Mark
+'
+
+glue(msg)
+```
+
+In this example, the `firstname` and `grade` variables are in the global environment, but we can also use `glue` where the variables are inside a data frame.
+For example, the following creates a new column named `msg` in the `mailmerge_df` data frame where the value of `msg` on each row is based on the value of the `firstname` and `grade` values of that row:
+
+```{r}
+library(tidyverse)
+mailmerge_df <- mailmerge_df |>
+    mutate(msg = glue(msg))
+mailmerge_df
+```
+Although it is not necessarily apparent from the output because of the way it truncates, the value of this new `msg` variable on each row is just like the string produced by `glue` that we saw above.
+
+```{r}
+#| echo: false
+
+# we can use this for testing purposes
+#file.create('foo.pdf')
+#writeLines(c("This is a blank file.", "Here is a line"), "foo.pdf")
+#mailmerge_df <- mutate(mailmerge_df, email = 'mark.andrews@ntu.ac.uk', feedback = 'foo.pdf')
+```
+
+The easiest way, at least from my perspective, to iterate through the `mailmerge_df` data frame and send an email for each row is to use `pwalk`, which is a [functional](/notes/functionals) that is part of the [`purrr`](https://purrr.tidyverse.org/) package (and so is loaded when we load `tidyverse`).
+In `pwalk`, we supply a function that will send an email based on the values of variables on each row.
+For example, we could write a `send_email` function like this:
+```{r}
+send_email <- function(feedback, msg, email, ...) {
+
+  email <- outlook$create_email(
+    body = markdown::markdownToHTML(msg, fragment.only = TRUE),
+    subject = "Exam grade and feedback",
+    content_type = "html",
+    to = email
+  )
+
+  email$add_attachment(feedback)
+  email$send()
+}
+```
+When used with `pwalk`, this function will take the value of `feedback`, `msg`, and `email` on each row of `mailmerge_df`.
+It uses the `markdownToHTML` function from the [`markdown`](https://cran.r-project.org/package=markdown) package to format `msg` as html.
+This allows us to use all the features of markdown to format the message.
+For example, we could add sections labels, bulleted or enumerated list, hyper-links, bold or italics formatting, and so on.
+
+In addition, the `send_email` also adds an attachment using the `add_attachment` function.
+
+Note that the `send_email` function has named arguments `feedback`, `msg`, and `email`, which are the only variables we need from `mailmerge`.
+But because `mailmerge` has more variables than just these three, we need to add an ellipsis to capture these.
+Nothing is done with these additional variables, but an error will be raised by `pwalk` if we don't have a function that captures them. 
+
+Now we can send all the emails as follows:
+```{r}
+#| eval: false
+pwalk(mailmerge_df, send_email)
+```
