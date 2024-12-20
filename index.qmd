@@ -16,13 +16,13 @@ listing:
       categories: false
       sort-ui: false
       filter-ui: false 
+description: The personal academic website of Mark Andrews, associate professor in the Department of Psychology in Nottingham Trent University.
 ---
 
 I am an associate professor in the Department of Psychology in Nottingham Trent University, where I teach statistics. 
 I also teach [training courses](/training) in advanced statistics and data science. 
 I have a [textbook](/book/ddsr) on data science. 
 My academic background is in computational cognitive science.
-
 
 ## Upcoming training courses
 

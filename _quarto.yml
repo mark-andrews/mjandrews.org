@@ -11,6 +11,7 @@ website:
   back-to-top-navigation: true
   title: "Mark Andrews"
   favicon: assets/academic.png
+  image: assets/spiral.png
   site-url: https://www.mjandrews.org
   repo-url: "https://github.com/mark-andrews/mjandrews.org"
   repo-branch: "main"
