@@ -1,0 +1,166 @@
+---
+title: "Qualitative text analysis with local LLMs: Part I"
+date: 2025-01-28
+categories: ["llm", "R"]
+execute:
+    message: false
+    echo: true
+description: |
+    This is Part I of a three part note on qualitative text analysis with a locally running LLM.
+    In this part, I provide some background context and describe how to install local LLMs with Ollama and how to use them in R.
+---
+
+Large Language Models (LLM) like [ChatGPT](https://chatgpt.com/), [Claude](https://claude.ai/), [Llama](https://www.llama.com/), and others can potentially be used for qualitative text analysis of the kind used throughout the social sciences. 
+Since 2023, there has been a growing literature of research articles addressing this potential use of LLMs.
+I have not attempted anything like a proper or comprehensive literature review, but I have put a sample of relevant research articles below.
+
+In this note, I want to cover how to use standard off-the-shelf LLMs, like those just mentioned, as opposed to special-purpose or fine-tuned LLMs designed specifically for qualitative analysis. 
+That is not to say that I think special-purpose LLMs are a bad idea; quite the contrary. 
+I assume that for the best results, we probably will require special-purpose tools. 
+However, for the purposes of this note, I just want to focus on standard tools.
+
+A potential major obstacle to using LLMs for qualitative text analyses is the ethics of sending confidential data to LLM servers like ChatGPT.
+Even though OpenAI allows you to opt-out of using your data for training of their models (see [OpenAI consumer privacy policy](https://openai.com/consumer-privacy/)), this will likely not be sufficient to satisfy ethics review boards' requirements for privacy and confidentiality of participant data because the data will still be transmitted to a third-party and can be accessed by OpenAI personnel and may be shared with others (see [OpenAI consumer data FAQs](https://help.openai.com/en/articles/7039943-data-usage-for-consumer-services-faq)).
+Different providers and different service plans will different privacy policies, but I think OpenAI's policies are quite typical, and this could mean that researchers may be reluctant or not be permitted to use third-party server based LLMs for qualitative data analysis.
+
+Another barrier to using LLMs provided by a third-parties is financial.
+Using an OpenAI model, such as ChatGPT, programmatically is done via an API, see [OpenAI Developer Platform](https://platform.openai.com).
+The same applies for the other major LLM service providers.
+These APIs are not free (as in $0) to use.
+The pricing for the OpenAI API, for example, is listed [here](https://platform.openai.com/docs/pricing).
+At the time of writing, it is US $2.50 per 1 million input tokens and US $10.00 per 1 million output tokens.
+While I think this is generous and means a lot can be done for the price of the proverbial cup of coffee, it can nonetheless add up to a nontrivial amount for large analyses.
+Roughly, one English word translates to around 1.5 tokens, so if you were repeatedly analysing thousands of texts, each being thousands of words, coupled with lengthy system prompts for instructions, the running costs could run into hundreds or even thousands of dollars.
+
+For either ethical or financial reasons, therefore, LLMs provided by third-parties may be difficult, or impractical, or impossible to use. 
+For this reason, the focus on this note is on using local LLMs for qualitative analysis.
+A local LLM, as the name implies, is installed and runs locally on a user's computer rather than on a server[^2] and there no communication between the LLM and any server.
+This clearly avoids any ethical issues with third-party LLM providers.
+From an ethical point of view, 
+qualitative analysis of textual data using a local LLM is essentially no different to doing any mundane routine text analysis like counting keywords.
+Or put another way, doing qualitative analysis on confidential text data using a local LLM is no different to doing a statistical analysis of confidential numerical data, which of course is now and always has been routinely done by social science researchers.
+And there is no extra cost, other than the cost of electrical power consumption, to running LLMs locally,which means that it can be used for large scale analyses but the avoid the potentially spiralling costs of third-party LLM services.
+
+[^2]: Of course, if you have a server, then you can run a local LLM on that server and use it remotely in various ways.
+
+In this note, I will use a locally running [Llama LLM](https://www.llama.com/), which is an open-source[^1] LLM provided by [Meta](https://about.meta.com).
+I will programmatically interact with this LLM using R, specifically using the [`ellmer`](https://ellmer.tidyverse.org/) package, but it would be just as easy to use other languages such as Python and others.
+
+# Install and use local LLMs 
+
+The easiest way that I know of to install and use local LLMs is with [Ollama](https://ollama.com/), which is open-source software, available for Windows, MacOS, and Linux, that allows you to easily install and run different local LLMs.
+At the time of writing, it has many dozens of available open-source LLMs including Llama, [DeepSeek](https://www.deepseek.com/), [Mistral](https://mistral.ai/), [Gemma](https://ai.google.dev/gemma), and many more.
+
+[^1]: How open-source are open-source LLMs is a matter of debate and controversy, at least in some cases. We won't get into that debate here. For present purposes, open-source LLMs are LLMs where some of the vital code, particularly the model's trained parameters are made available to users.
+
+Installation instructions for all platforms are [here](https://ollama.com/download).
+In my case, however, because I am working on Linux, specifically Arch Linux, and because I want to avail of the GPU for the computing (more discussion about this later), I installed the [`ollama-cuda`](https://archlinux.org/packages/extra/x86_64/ollama-cuda/) Arch Linux package as follows:
+```bash
+sudo pacman -S ollama-cuda  
+```
+I have not experimented much with Ollama on other platforms like Windows or MacOS but did manage to install it on both platforms without any problems just by following the instructions provided on the [download page](https://ollama.com/download).
+Whether any extra steps are required to use the GPU on these platforms, if one is available, is not something I have investigated.
+
+Once Ollama is installed, and I assume this is the same on all platforms, the LLM server (that is, the *local* LLM server) is launched in a terminal with
+```bash
+ollama serve
+```
+and will be available on the local host on the 11434 port by default, i.e. http://localhost:11434.
+
+## Install models
+
+Once the server is running, you can install as many LLM models as you wish by running commands like the following (in another terminal):
+```bash
+ollama pull llama3.3  # get the llama3.3 LLM
+```
+The list of models that are available from Ollama are [here](https://ollama.com/search).
+For the rest of this note, however, I will just use Llama 3.3, which is a 70B parameter (around 43GB) model released in December 2024, and was arguably the most powerful LLM available on Ollama at that time, which is when the analyses described in this note were carried out.
+
+## Install `ellmer` and use `chat_ollama`
+
+Once the model is installed, and as long as the server is running, you are not ready to interact with the LLM through R, Python, and so on.
+As mentioned, I will be using the `ellmer` package in R, which can be installed as per normal in R, e.g.
+```r
+install.packages("ellmer")
+```
+and loaded as per normal
+```r
+library(ellmer)
+```
+and then you can use the command `chat_ollama` to interact with the model
+For example, the following commands creates a `client` object (specifically, an [R6](https://r6.r-lib.org/) object), and we then use the `chat` method of the client object
+to ask a question:
+```r
+client <- chat_ollama(model = "llama3.3")
+client$chat('What is 6 times 6?')
+```
+
+```{r}
+#| echo: false
+cat('6 x 6 = 36')
+```
+
+
+```{r}
+#| echo: false
+pedantic_reply <- "
+The ostensibly straightforward query you've posed, namely, the multiplication of the integer six by itself, belies a profound complexity that warrants a nuanced and multifaceted 
+explication, replete with caveats, clarifications, and a plethora of ancillary observations. To wit, the arithmetic operation in question, i.e., 6 × 6, necessitates an examination of the 
+fundamental principles underlying our decimal system, not to mention a consideration of the ontological implications inherent to the very notion of numerical multiplication.
+
+Assuming, arguendo, that we are operating within the parameters of standard arithmetic, wherein the Peano axioms and the distributive property hold sway, one might propose that the product 
+of 6 × 6 is readily calculable via the memorization of multiplication tables or, alternatively, through the deployment of more sophisticated mathematical techniques, such as the application
+of logarithmic functions or the utilization of computational algorithms.
+
+However, lest we indulge in an unbecoming naivety, it behooves us to acknowledge the inherent ambiguities and contextual dependencies attendent upon this seemingly innocuous arithmetic 
+operation. For instance, one must ponder the possibility that the numeral \"6\" might be interpreted as a placeholder or a symbolic representation within a more extensive mathematical 
+expression, rather than as a discrete integer value per se.
+
+Having thus navigated the labyrinthine complexities attendant upon your query, I shall, with a certain degree of trepidation and an acute awareness of the potential for epistemological 
+pitfalls, venture to proffer the following response: 6 × 6 = 36. Yet, I must emphasize that this answer is contingent upon a plethora of unstated assumptions, implicit presuppositions, and 
+context-dependent variables, which, were they to be rigorously interrogated, might occasion a profound revisioning of our understanding of arithmetic itself.
+
+Thus, in conclusion, while the calculational aspect of your question may appear straightforward, its underlying ontological, epistemological, and mathematical implications are, in reality, 
+freighted with an intricate web of subtleties, nuances, and complexities that resist facile or reductionist explication.
+"
+```
+
+
+When creating the client object with `chat_ollama` we can provide a `system_prompt`.
+This is particularly important for giving general instructions.
+For example, we could do the following and obtain a very different style of response: 
+
+```{r}
+#| eval: false
+pedantic <- "When answering, provide a turgid and convoluted reply in the style of an insufferable pedant."
+client <- chat_ollama(model = "llama3.3", system_prompt = pedantic)
+client$chat('What is 6 times 6?')
+```
+
+```{r}
+#| echo: false
+cat(stringr::str_wrap(pedantic_reply, width=100)) 
+```
+
+This concludes Part I of this note.
+In [Part II](part2), we will go into detail on how to use `ellmer` and its commands like `chat_ollama` to do a realistic qualitative text analysis problem.
+
+# Some relevant articles 
+
+The following list is just a sample of the research done on this topic in 2023 and 2024.
+There are many others too and I would guess that this literature will proliferate even more as time goes by.
+
+- Barros, C. F., Azevedo, B. B., Graciano Neto, V. V., Kassab, M., Kalinowski, M., do Nascimento, H. A. D., & Bandeira, M. C. G. S. P. (2024). *Large language model for qualitative research -- A systematic mapping study*. arXiv. [https://arxiv.org/abs/2411.14473](https://arxiv.org/abs/2411.14473).
+- Dai, S.-C., Xiong, A., & Ku, L.-W. (2023). *LLM-in-the-loop: Leveraging large language model for thematic analysis*. arXiv. [https://arxiv.org/abs/2310.15100](https://arxiv.org/abs/2310.15100).
+- De Paoli, S. (2024). *Performing an inductive thematic analysis of semi-structured interviews with a large language model: An exploration and provocation on the limits of the approach.* *Social Science Computer Review, 42*(4), 997–1019. [https://journals.sagepub.com/doi/10.1177/08944393231220483](https://journals.sagepub.com/doi/10.1177/08944393231220483).
+- Gao, J., Guo, Y., Lim, G., Zhang, T., Zhang, Z., Li, T. J., & Perrault, S. T. (2024). *CollabCoder: A lower-barrier, rigorous workflow for inductive collaborative qualitative analysis with large language models*. arXiv. [https://arxiv.org/abs/2304.07366](https://arxiv.org/abs/2304.07366).
+- Gao, J., Choo, K. T. W., Cao, J., Lee, R. K., & Perrault, S. T. (2023). CoAIcoder: Examining the Effectiveness of AI-assisted Human-to-Human Collaboration in Qualitative Analysis. *ACM Transactions on Computer-Human Interaction*. [https://doi.org/10.1145/3617362](https://doi.org/10.1145/3617362).
+- Gilardi, F., Alizadeh, M., & Kubli, M. (2023). ChatGPT outperforms crowd workers for text-annotation tasks. *Proceedings of the National Academy of Sciences, 120*(30). [http://dx.doi.org/10.1073/pnas.2305016120](http://dx.doi.org/10.1073/pnas.2305016120).
+- Khan, A. H., Kegalle, H., D'Silva, R., Watt, N., Whelan-Shamy, D., Ghahremanlou, L., & Magee, L. (2024). *Automating thematic analysis: How LLMs analyse controversial topics*. arXiv. [https://arxiv.org/abs/2405.06919](https://arxiv.org/abs/2405.06919).
+- Leça, M. d. M., Valença, L., Santos, R., & Santos, R. de S. (2024). *Applications and implications of large language models in qualitative analysis: A new frontier for empirical software engineering*. arXiv. [https://arxiv.org/abs/2412.06564](https://arxiv.org/abs/2412.06564).
+- Mellon, J., Bailey, J., Scott, R., Breckwoldt, J., Miori, M., & Schmedeman, P. (2024). Do AIs know what the most important issue is? Using language models to code open-text social survey responses at scale. *Research & Politics, 11*(1). [https://journals.sagepub.com/doi/10.1177/20531680241231468](https://journals.sagepub.com/doi/10.1177/20531680241231468)
+- Morgan, D. L. (2023). Exploring the Use of Artificial Intelligence for Qualitative Data Analysis: The Case of ChatGPT. *International Journal of Qualitative Methods, 22*. [https://journals.sagepub.com/doi/10.1177/16094069231211248](https://journals.sagepub.com/doi/10.1177/16094069231211248)
+- Sinha, R., Solola, I., Nguyen, H., Swanson, H., & Lawrence, L. (2024). *The role of generative AI in qualitative research: GPT-4's contributions to a grounded theory analysis*. In *Proceedings of the 2024 Symposium on Learning, Design and Technology* (pp. 17–25). Association for Computing Machinery. [https://doi.org/10.1145/3663433.3663456](https://doi.org/10.1145/3663433.3663456).
+- Smirnov, E. (2024). Enhancing qualitative research in psychology with large language models: a methodological exploration and examples of simulations. *Qualitative Research in Psychology*, 1–31. [https://doi.org/10.1080/14780887.2024.2428255](https://doi.org/10.1080/14780887.2024.2428255).
+- Tai, R. H., Bentley, L. R., Xia, X., Sitt, J. M., Fankhauser, S. C., Chicas-Mosier, A. M., & Monteith, B. G. (2024). An Examination of the Use of Large Language Models to Aid Analysis of Textual Data. *International Journal of Qualitative Methods, 23*. [https://doi.org/10.1177/16094069241231168](https://doi.org/10.1177/16094069241231168).
+- Xiao, Z., Yuan, X., Liao, Q. V., Abdelghani, R., & Oudeyer, P.-Y. (2023). *Supporting qualitative analysis with large language models: Combining codebook with GPT-3 for deductive coding*. In *28th International Conference on Intelligent User Interfaces*. ACM. [http://dx.doi.org/10.1145/3581754.3584136](http://dx.doi.org/10.1145/3581754.3584136).

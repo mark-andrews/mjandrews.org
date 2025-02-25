@@ -1,0 +1,347 @@
+---
+title: "Qualitative text analysis with local LLMs: Part II"
+date: 2025-01-28
+categories: ["llm", "R"]
+knitr:
+    opts_chunk: 
+      message: false
+description: |
+    This is Part II of a three part note on analysing text with a locally running LLM.
+    In this part, I provide a worked example of doing text analysis with a local LLM using R.
+    The example problem comes from a free-text rating problem in recently published Psychological Science paper.
+---
+
+In [Part I](/notes/text_analysis_with_llms/part1) of this note, we introduced the topic of using local LLMs for qualitative text analysis. 
+There, we also explained how to install a local LLM and use it with R using the `ellmer` package.
+In this part, we will use a local LLM to analyse and rate free-text survey responses.
+While this task is not as difficult as some other qualitative analysis, it is still a nontrivial problem and also allows us to compare the LLM performance to that of humans.
+
+# Example problem
+
+The particular problem we will consider was part of the research study described in the following article:
+
+- Merrell, W. N., Choi, S., & Ackerman, J. M. (2024). When and why people conceal infectious disease. *Psychological Science*, 35(3), 215-225. 
+[https://doi.org/10.1177/09567976231221990](https://doi.org/10.1177/09567976231221990).
+
+The materials used in this study are made available on [OSF](https://osf.io/r9cug/).
+Part of this study was about the reasons people give for concealing infectious illnesses. 
+Participants wrote their reasons for doing so in free-text survey responses, which were then rated by two people in terms of the reasons they gave.
+Here's an example of a response:
+
+> I didn't really want people to be afraid of me. I had taken a test and I knew I wasn't positive for Covid, so I was just worried that people would think it was false and that they'd avoid me or get mad at me for attending when I was sick
+
+```{r}
+K <- 409
+```
+
+There were `r K` free-text responses like this. 
+All of them are available in this [spreadsheet on OSF](https://osf.io/48anh).
+
+Two raters were asked to rate each response for the following motivations:
+
+a) (Self vs. other motivation) Did the participant mention motivations for concealment that were more related to the *self* or more related to *others*? 
+b) (Illness harm motivation) Did the participant mention illness harm to others in their motivation response? 
+c) (Stigma, rejection, isolation motivation) Did the participant discuss motivations for concealment that mentioned feeling stigmatized, rejected, excluded, or isolated?
+c) (Missing class/work motivation) Did the participant mention concealing because they did not want to miss work or class? 
+
+They were given detailed instructions about how to rate the responses with respect to these motivations, which are available [here](https://osf.io/w8vbz).
+For example, by way of general introduction to the task, they were told:
+
+> We have collected free response data from students at the University of Michigan and healthcare 
+> workers within Michigan Medicine. Your job will be to read through these free responses about why 
+> participants said they were motivated to hide signs of infectious illness and indicate where they fall on a 
+> number of different variables ...
+
+and also provided details about the format of the data and how to indicate their on a spreadsheet. 
+Then for the self vs. other motivation rating task, for example, the instructions were as follows:
+
+> Did the participant mention motivations for concealment that  were more related to the self or more related to others?  
+> Examples of *self* motivation include not wanting to miss out on in-person things like work or class, not wanting others to judge them, not wanting others to avoid them.  
+> Examples of *other* motivation include not wanting to worry other people, not wanting to burden others by missing a work shift.  
+> Coding scheme: please put a "1" if it is a self motivation, a "2" if it is an other motivation, and a "0" if it is neither/unclear.  
+> Note: It is possible for a response to mention both self and other reasons, so it is ok for there to be both a 1 and a 2 for the same response.   
+
+The instructions for the other rating questions were similar in their level of detail.
+
+
+# Rating free-text responses using Llama 
+
+Using Ollama and R's `ellmer` package, the basic code that is needed to do the rating task is quite simple.
+For example, for the self vs. other motivation rating, and using the example free response mentioned above, the following code is sufficient:
+
+```{r}
+#| echo: false
+results <- '
+1 
+
+This response mentions motivations related to the self, such as not wanting others to judge them ("get mad at me"), avoid them, or think negatively of them ("think it was false"). These are all concerns about how others might perceive or react to the participant, which falls under self-motivation. There is no mention of motivations related to others, such as not wanting to burden or worry them.
+'
+```
+
+```{r}
+#| eval: false
+instructions <- '
+We have collected free response data from students at the University of Michigan
+and healthcare workers within Michigan Medicine.
+Your job will be to read through these free responses about why participants said they
+were motivated to hide signs of infectious illness and indicate where they fall on a 
+number of different variables.
+
+Does the participant mention motivations for concealment that were more related to
+the self or more related to others?
+Examples of self motivation include not wanting to miss out on in-person things
+like work or class, not wanting others to judge them, not wanting others to avoid them.
+Examples of other motivation include not wanting to worry other people, not wanting
+to burden others by missing a work shift.
+
+Coding scheme: please put a "1" if it is a self motivation, a "2" if it is an other
+motivation, and a "0" if it is neither/unclear.
+NOTE: It is possible for a response to mention both self and other reasons, so it is ok
+for there to be both a 1 and a 2 for the same response, i.e. "1,2".
+
+Your final answer should be either "0" or "1" or "2" or "1,2".
+'
+
+free_text <- "
+I didn't really want people to be afraid of me. I had taken a test and 
+I knew I wasn't positive for Covid, so I was just worried that people would think
+it was false and that they'd avoid me or get mad at me for attending when I was sick
+"
+
+client <- chat_ollama(model = "llama3.3", system_prompt = instructions)
+client$chat(free_text)
+```
+```{r}
+#| echo: false
+cat(stringr::str_wrap(results, width=100)) 
+```
+
+There are a few important points to note here:
+
+* The output contains more information that we strictly asked for.
+We just asked for a numeric rating value but also got an explanation for the rating.
+Of course, that explanation is useful but it generally better if we can control the output and its format, so we can explicitly ask for an explanation to accompany the rating, and we can then ask for how all the output should be formatted.
+* The output of the LLM is random and so each time the `client$chat(free_text)` command is run, a possibly different response is obtained.
+* The output above is an unformatted string.
+If we want to collect and store large numbers of LLM responses, especially if the responses can contain a lot of information, it is very helpful if we instruct the LLM to format the output in some way, for example as JSON or YAML.
+
+Given these points, we can modify our instructions as follows:
+
+```{r}
+#| eval: false
+instructions <- 'We have collected free response data from students at the University of Michigan
+and healthcare workers within Michigan Medicine.
+Your job will be to read through these free responses about why participants said they were motivated 
+to hide signs of infectious illness and indicate where they fall on a number of different variables.
+
+Does the participant mention motivations for concealment that were more related to the self or more 
+related to others? Examples of self motivation include not wanting to miss out on in-person things
+like work or class, not wanting others to judge them, not wanting others to avoid them.
+Examples of other motivation include not wanting to worry other people, not wanting to burden
+others by missing a work shift
+
+Coding scheme: please put a "1" if it is a self motivation, a "2" if it is an other motivation,
+and a "0" if it is neither/unclear.
+Note: It is possible for a response to mention both self and other reasons, so it is ok for there
+to be both a 1 and a 2 for the same response, i.e. "1,2".
+
+Before answering, explain your reasoning step by step, using example phrases or words.
+Then provide the final answer.
+
+Your final answer should be either "0" or "1" or "2" or "1,2".
+
+Format your response as a JSON object literal with keys "reasoning" and "answer".
+The value of "reasoning" is your step by step reasoning, using phrases or words.
+The value of "answer" is the numerical score ("0", "1", "2", or "1,2") that you assign
+to the free response text.
+
+And example of a JSON object literal response is this:
+
+  {"reasoning": "The text shows many elements of a self motivation.",
+  "answer": "1"}
+
+Please make sure that there is an opening (left) and closing (right) curly brace in what you return.
+If not, this is not a proper JSON object literal.
+'
+client <- chat_ollama(model = "llama3.3", system_prompt = instructions)
+results <- client$chat(free_text)
+```
+
+```{r}
+#| echo: false
+results <- '
+{"reasoning": "The participant mentions not wanting people to be afraid of them and not wanting others to avoid them or get mad at them, which suggests a motivation related to how others might perceive or react to them. This is indicative of a self motivation, as the participant is concerned about their own social interactions and potential judgments from others. Specifically, the phrases \'people would think it was false\', \'avoid me\', and \'get mad at me\' imply that the participant is worried about being judged or ostracized, which is a self-related concern.", 
+"answer": "1"}
+'
+```
+
+Now, we get JSON formatted output and we can use a JSON parser to return this as an R list:
+
+```{r}
+jsonlite::fromJSON(results)
+```
+
+Also, for each free-text response, we can re-run the above commands multiple times to get multiple ratings.
+This way, we can find the most common numeric rating for each text and use this as the final rating.
+
+# LLM Evaluation
+
+```{r}
+#| echo: false
+
+library(tidyverse)
+library(yaml)
+library(readxl)
+
+n_iter <- 10
+
+# The data read in from the Rds is a list of lists of lists of strings.
+# Those strings are supposed to be yaml strings, although some are ill-formed.
+# We this lists of lists of lists to be a data frame, ignored the mangled/ill-formed responses.
+# We also remove the numerical ratings that are not '0', '1', '2', or '1,2' (or '1, 2', which we merge with '1,2').
+
+# try to parse the string; return NA if it fails
+# we are using a YAML parser here because the json parser fails more often
+# This is often because the JSON is ill-formed in some way, e.g. single instead of 
+# double quotes.
+# Because YAML and JSON are similar in some ways, the YAML parser will succeed 
+# sometimes where the JSON fails.
+yaml_parse_or_na <- function(x) {
+  tryCatch(
+    yaml.load(x),
+    error = function(e) NA
+  )
+}
+
+llm_results <- readRDS('code/llama3.3_2024_12_30.Rds') |> 
+  map(~set_names(., nm = str_c('iteration_', seq(length(.))))) |> 
+  unlist(recursive = FALSE) |> 
+  map(~set_names(., nm = str_c('response_', seq(length(.))))) |> 
+  unlist() |> 
+  enframe() |> 
+  mutate(value = map(value, yaml_parse_or_na)) |>
+  # remove the ill-formed responses
+  filter(map_lgl(value, ~length(.) == 2)) |> 
+  filter(map_lgl(value, ~all(names(.) == c('reasoning', 'answer')))) |> 
+  # unnest wide the yaml parsed string, parsed into 'reasoning and 'answer'
+  unnest_wider(col = value) |> 
+  mutate(answer = as.character(answer)) |> 
+  separate_wider_delim(
+    cols  = name,
+    delim = ".", 
+    # We only keep "task", "iter_num", and "resp_num";
+    # `NA` means "skip/ignore" that part.
+    names = c('topic', 'iteration', 'response')
+  ) |> 
+  mutate(iteration = str_remove(iteration, 'iteration_'),
+         response = str_remove(response, 'response_')) |> 
+  mutate(across(c(iteration, response), as.numeric)) |> 
+  filter(answer %in% c('0', '1', '2', '1,2', '1, 2')) |> 
+  mutate(answer = case_when(
+    answer == '1, 2' ~ '1,2',
+    TRUE ~ answer
+  )) |> 
+  select(topic, iteration, item = response, llm_rating = answer, reasoning)
+
+# proportion of LLM responses that are usable; total is 4 (topic) by 10 (iterations) of 409 item per each topic
+proportion_of_usable_responses <- nrow(llm_results) / (4 * n_iter * K)
+
+# Evaluation -------------------------------------------------------------
+
+# This is available here: https://osf.io/48anh
+#fname <- "code/study_1_qualitative_coding_disc_con_xlsx"
+
+topics <- c("self-other", "harm", "stigma", "miss") 
+topics <- topics |> set_names(topics)
+
+# For each of the items in each of the topics, get the rating by each of the two human raters
+# A data frame with four columns: topic, item, human_rater, human_rating
+# Here is how you read it in from the Excel file at https://osf.io/48anh
+# data_df <- map(topics, ~ read_excel(fname, sheet = .) |>
+#   rowid_to_column(var = "item") |>
+#   select(item, wg = WG, ra = RA) |>
+#   mutate(across(c(wg, ra), as.character))) |>
+#   bind_rows(.id = "topic") |>
+#   pivot_longer(cols = c(ra, wg), names_to = "human_rater", values_to = "human_rating") |>
+#   mutate(human_rating = case_when(
+#     human_rating == "1 and 2" ~ "1,2",
+#     TRUE ~ human_rating
+#   ))
+# And here's one I made earlier:
+data_df <- readRDS('code/human_raters.Rds')
+
+# For each item in each topic on each iteration is the LLM rating equal to
+# either of the two human raters' ratings
+llm_accuracy <- data_df |>
+  left_join(llm_results, by = c("topic", "item"), relationship = "many-to-many") |> 
+  select(topic, item, iteration, human_rater, human_rating, llm_rating) |> 
+  mutate(accuracy = human_rating == llm_rating) |>
+  drop_na() 
+
+
+# For each item in each topic, are the two raters' rating identical
+inter_rater_accuracy <- data_df |>
+  pivot_wider(names_from = human_rater, values_from = human_rating) |>
+  mutate(accuracy = ra == wg)
+
+most_common <- function(x) {
+  names(which.max(table(x)))
+}
+
+llm_evaluation_results <- inter_rater_accuracy |>
+  select(-accuracy) |>
+  left_join(summarise(llm_accuracy, llm = most_common(llm_rating), .by = c(topic, item))) |>
+  pivot_longer(cols = c(ra, wg), names_to = 'rater', values_to = 'rater_value') |> 
+  summarise(accuracy = mean(llm == rater_value, na.rm = TRUE), .by = topic)
+
+llm_evaluation_results_table <- inter_rater_accuracy |>
+  summarise(`Inter-rater agreement` = mean(accuracy), .by = topic) |>
+  left_join(rename(llm_evaluation_results, `LLM-rater average agreement` = accuracy)) |> 
+  rename(Criterion = topic) |> 
+  relocate(`LLM-rater average agreement`, .after = Criterion)
+
+llm_evaluation_results_overall <- llm_evaluation_results_table |> summarise(across(where(is.numeric), mean)) |> unlist()
+
+```
+
+As mentioned, in the data set we are using, there were `r K` free-text responses. 
+Each one was rated by two separate (human) raters according to four separate criteria.
+We provided the same rating instructions used by the human rater, albeit with the modifications mentioned above to obtain formatted output, to the Llama LLM and so it too provided ratings for each of the `r K` free-text responses for each of the four criteria.
+For each text and criteria, we re-ran the LLM analysis `r n_iter` times and then used its most common response as its ultimate rating of each text and criterion.
+
+To evaluate the LLM, for each of the four criteria, we can calculate how often its rating was identical to each of the two raters and then calculate its average agreement.
+For example, if its ratings for one criterion were identical to the first rater 70% of the time, and identical to the second rater 80% of the time, its average agreement with the raters for that criterion is simply 75%.
+For comparison, for each criterion, we can calculate how often the two human raters agreed.
+These results are shown in the following table:
+
+```{r, echo=FALSE}
+as_percent <- function(x, digits=1){
+  stringr::str_c(round(x * 100, digits = digits), '%')
+}
+llm_evaluation_results_table |> 
+  mutate(across(where(is.numeric), as_percent)) |> 
+  knitr::kable(caption = '') 
+  
+```
+
+Overall, averaging over the four criteria, the average agreement between the LLM and the human raters is `r as_percent(llm_evaluation_results_overall['LLM-rater average agreement'])`, compared to an overall agreement between the two humans of `r as_percent(llm_evaluation_results_overall['Inter-rater agreement'])`.
+Clearly, however, there is some variability in performance across the four criterion, with a quite poor performance of `r llm_evaluation_results_table |> filter(Criterion=='harm') |> pull(2) |> as_percent()` for the LLM on the "harm" criterion.
+
+## Discussion
+
+In that rating task just described, the average agreement between the LLM and human raters was approximately 80%.
+This compares to an agreement of approximately 90% between the two human raters.
+What can we conclude from this evaluation and this result?
+First, I don't think we can conclude that much, certainly not about the general usefulness of LLMs for qualitative analysis.
+This is just one task after all and we would need a greater variety of tasks to properly evaluate the use of LLMs generally.
+Second, the performance is not great. It is not bad, but not great either.
+A great result would be one where the average agreement with LLMs and human raters is 90%, and so there would be as much agreement between LLMs and human raters as between human raters themselves.
+However, if 90% is the gold standard, 80% is presumably a respectable and far from disastrous result.
+More importantly, it is a result that was obtained by just using off-the-shelf LLMs with no customization or fine-tuning.
+There was even no so-called "prompt engineering", whereby we try optimize the prompts we use.
+As described above, the prompt was just the instructions that the human raters used, with minor modifications to obtain a formatted output.
+A final point of encouragement is that LLMs are evolving very rapidly. 
+A performance of 80% using the readily available models in December 2024 may possibly be exceeded very quickly as new models become available.
+
+This concludes Part II of this note.
+In [Part III](/notes/text_analysis_with_llms/part3.html), we will consider some additional practicalities when using LLMs, especially local LLMS, for qualitative text analysis.

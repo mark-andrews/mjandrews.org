@@ -1,0 +1,164 @@
+---
+title: "Qualitative text analysis with local LLMs: Part III"
+date: 2025-01-28
+categories: ['llm', 'R']
+description: |
+    In this third part of a three part note on qualitative text analysis with LLMs, 
+    I discuss some practical issues concerning using local LLMs, especially the 
+    computational power requirements.
+---
+
+```{r}
+#| message: false
+#| echo: false
+library(tidyverse)
+```
+
+In [Part I](part1.html) of this note, we described how to install and use local LLMs, and in [Part II](part2.html), we described how to use a local LLM to rate free-text survey responses like a human rater.
+Here, we want to very briefly consider some practical issues concerning using local LLMs for text analysis.
+In particular I consider the computational power needed for local LLMs.
+
+# Computational power
+
+Thus far, we have not directly discussed the computational power requirements for running local LLMs.
+I have not done anything like a comprehensive analysis, I have just speed tested Llama3.3 doing one task on two devices, one that has a CPU only and another that has a good GPU.
+
+* CPU only device: AMD Ryzen 9 7900x 12-Core, 94GB of DDR5 RAM
+* GPU device: AMD Ryzen Threadripper PRO 3995WX 64-Cores, 512GB DDR4 RAM, with a RTX A6000 GPU (10752 CUDA cores, 48GB of VRAM).
+
+Of course, these two devices differ not simply by one having a GPU.
+The Threadripper also has many more CPU cores and considerably more RAM too.
+To be able to identify the speed-up from the GPU per se, we will also test the Threadripper with the GPU disabled.
+
+It should be pointed out the the Ryzen 9, although a bit out of date now, is still a relatively high-end desktop CPU as of late 2024.
+The Threadripper is a bit of date now, but a few years ago would have been on the high-end for a server or scientific workstation CPU.
+The RTX A6000, also a bit out of date now, is still a relatively high-end GPU.
+
+For the tests, I ran the following `speed_test.R` script, which is based on the task described in [Part II](part2.html):
+
+```{r}
+#| eval: false
+# speed_test.R
+free_text <- "
+I didn't really want people to be afraid of me. I had taken a test and 
+I knew I wasn't positive for Covid, so I was just worried that people would think
+it was false and that they'd avoid me or get mad at me for attending when I was sick
+"
+
+instructions <- 'We have collected free response data from students at the University of Michigan
+and healthcare workers within Michigan Medicine.
+Your job will be to read through these free responses about why participants said they were motivated 
+to hide signs of infectious illness and indicate where they fall on a number of different variables.
+
+Does the participant mention motivations for concealment that were more related to the self or more 
+related to others? Examples of self motivation include not wanting to miss out on in-person things
+like work or class, not wanting others to judge them, not wanting others to avoid them.
+Examples of other motivation include not wanting to worry other people, not wanting to burden
+others by missing a work shift
+
+Coding scheme: please put a "1" if it is a self motivation, a "2" if it is an other motivation,
+and a "0" if it is neither/unclear.
+Note: It is possible for a response to mention both self and other reasons, so it is ok for there
+to be both a 1 and a 2 for the same response, i.e. "1,2".
+
+Before answering, explain your reasoning step by step, using example phrases or words.
+Then provide the final answer.
+
+Your final answer should be either "0" or "1" or "2" or "1,2".
+
+Format your response as a JSON object literal with keys "reasoning" and "answer".
+The value of "reasoning" is your step by step reasoning, using phrases or words.
+The value of "answer" is the numerical score ("0", "1", "2", or "1,2") that you assign
+to the free response text.
+
+And example of a JSON object literal response is this:
+
+  {"reasoning": "The text shows many elements of a self motivation.",
+  "answer": "1"}
+
+Please make sure that there is an opening (left) and closing (right) curly brace in what you return.
+If not, this is not a proper JSON object literal.
+'
+
+client <- ellmer::chat_ollama(model = "llama3.3", system_prompt = instructions)
+results <- client$chat(free_text)
+```
+
+```{r}
+#| echo: false
+# six runs of the `speed_test.R on AMD Ryzen 9 7900X 12-Core Processor, 94GB RAM
+cpu_device <- c(60 + 35, 2*60 + 9, 60 + 54, 60 + 39, 2 * 60 + 5, 60 + 33)
+# six runs of `speed_test.R` on AMD Ryzen Threadripper PRO 3995WX 64-Cores, 512GB (64 x 8 DDR4), RTX A6000 (10752 CUDA cores; 10,752 CUDA cores, 48GB of GDDR6 VRAM, and a 768 GB/s memory bandwidth)
+gpu_device <- c(10.4, 7.0, 10.5, 8.0, 8.1, 7.9)
+# six runs of `speed_test.R` on the same Threadripper but now ollama-cuda was uninstalled (pacman -R ollama-cuda on Arch Linux) and so only the CPU was used
+gpu_device_cpu_only <- c(40.1, 38.3, 44.6, 48, 43.3, 53.2)
+
+# average comparison on Ryzen 9 with Threadripper using the GPU
+avg_ratio <- mean(cpu_device) / mean(gpu_device)
+# average ratio between any one run on the CPU only device and any one on the GPU only device
+N <- 1e4
+avg_ratio2 <- mean(sample(cpu_device, size = N, replace = TRUE) / sample(gpu_device, size = N, replace = TRUE))
+# average comparison on Threadripper with or without the GPU
+avg_ratio_thread <- mean(gpu_device_cpu_only) / mean(gpu_device)
+```
+
+This test code was run six times on Ryzen 9 device, six times on the Threadripper with the GPU disabled, and six times on the Threadripper with the GPU enabled.
+The wall clock times for each run, in seconds, are as follows:
+```{r}
+#| echo: false
+tibble(`Ryzen 9` = cpu_device, `Threadripper without GPU` = gpu_device_cpu_only, `Threadripper with GPU` = gpu_device) |> 
+    mutate(run = seq(n()), .before = everything()) |> 
+    knitr::kable(caption = 'Running time (seconds) of `speed_test.R`') 
+```
+
+The Ryzen 9 is on average `r round(mean(cpu_device)/mean(gpu_device_cpu_only), 1)` slower than the Threadripper using only the CPU.
+The Threadripper using only the CPU only is on average `r round(mean(gpu_device_cpu_only)/mean(gpu_device), 1)` slower than the Threadripper using the GPU.
+The Ryzen 9 is on average `r round(mean(cpu_device)/mean(gpu_device), 1)` slower than the Threadripper using the GPU.
+
+Although this is a very minimal investigation, I think it is still informative.
+In particular, it seems to tell us that high-end desktop devices alone are probably not sufficient for serious work with local LLMs, and high-end GPUs are probably necessary.
+
+If we treat the Ryzen 9 as a high-end desktop device (as of around 2024), this test shows that a high-end desktop is not sufficient for using local LLMs for serious work unless it is on a small scale.
+The task described in [Part II](part2.html) essentially involves running the `speed_test.R` code $4 \times 409 \times 10 = `r format(4 * 409 * 10, scientific=FALSE)`$ times (409 different texts; 4 separate ratings for each; 10 repetitions).
+This means that it will take approximately `r format(round(mean(cpu_device) * 4 * 409 * 10 / (60 * 60 * 24)), scientific=FALSE)` days to complete.
+That, I presume, would stretch anyone's patience, especially given that in any given analysis, we are likely to want to try multiple different prompts and other changes.
+By contrast to the Ryzen 9, the Threadripper using its GPU would take around `r format(round(mean(gpu_device) * 4 * 409 * 10 / (60 * 60)), scientific=FALSE)` hours to complete.
+That, of course, is still quite a lot of time, but not untypical for relatively high-end computational analyses, such as MCMC based Bayesian analyses, that are now quite commonplace in the social and behavioural sciences.
+
+On the other hand, the GPU seems to make a big difference.
+The Threadripper without the GPU would still require around `r format(round(mean(gpu_device_cpu_only) * 4 * 409 * 10 / (60 * 60)), scientific=FALSE)` hours, or around `r format(round(mean(gpu_device_cpu_only) * 4 * 409 * 10 / (60 * 60 * 24), 1), scientific=FALSE)` days, to complete.
+This is around `r round(mean(gpu_device_cpu_only)/mean(gpu_device), 1)` slower than when the GPU is used and only around `r round(mean(cpu_device)/mean(gpu_device_cpu_only), 1)` faster than the Ryzen 9 despite the fact that the Threadripper has around five times as many CPU cores^[Of course the comparison is not very straightforward because this particular Ryzen 9 model's cores are probably better than those of this particular Threadripper model.
+The [cpubenchmark](https://www.cpubenchmark.net/compare/5027vs3837/AMD-Ryzen-9-7900X-vs-AMD-Ryzen-Threadripper-PRO-3995WX) rating puts the Ryzen 9 7900X's single core rating at 4245 compared to 2600 for the Threadripper PRO 3995WX].
+
+Exactly what the best hardware for local LLMs, or rather the best bang-for-the-buck hardware, is not clear from this test.
+Would a high-end desktop plus a good GPU be sufficient for efficiently doing a task like the one described in [Part II](part2.html)?
+That probably depends largely on what we mean by a "good" GPU?
+The RTX A6000 is a relatively expensive GPU.
+For example, as of early 2025, retail for around £7500 in the UK.
+For that price at that time, you get 18176 CUDA cores and 48GB of ECC VRAM.
+Is it necessary to spend this amount or higher?
+A proper discussion of that is beyond what we cover here.
+
+# Extending the token memory of Ollama models
+
+One final practical matter is that by default Ollama models (all of them, I believe) have a default token memory of 8192 tokens.
+For the task described in [Part II](part2.html) this was sufficient, but when I experimented with similar analyses much larger texts and prompts, specifically texts with over 5000 words and prompts of approximately 1500 this lead to disastrous results.
+Only the final parts of the text and some parts (hard to say, but it seemed more like the start only) was being used.
+To solve this problem, you need to extend the token memory.
+This can not be done on the fly in `ellmer$chat_ollama`.
+Instead, you have to make a custom Ollama model.
+This is extremely easy to do, however.
+
+You create a text file like the following, which usually named `Modelfile` but it does not have to be:
+```bash
+FROM llama3.3:latest
+
+PARAMETER num_ctx 65536
+```
+Then, in the terminal do something like
+```bash
+ollama create llama3.3x -f Modelfile
+```
+where the `llama3.3x` is any name of your choice.
+This will almost instantaneously create a new LLM, based on Llama3.3, but with a token memory now of 65536 tokens.
+Then in R using `ellmer`, you would call this model with `chat_ollama(model = "llama3.3x")`.

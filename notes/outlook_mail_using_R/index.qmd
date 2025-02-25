@@ -13,7 +13,7 @@ description: |
 The R package [`Microsoft365R`](https://cran.r-project.org/package=Microsoft365R) makes it easy to send email via your personal or business (e.g., university) Outlook email from inside R.
 For example, to send an Outlook email from my university account using R, I would first do the following:
 ```{r}
-#| 
+#| eval: false
 library(Microsoft365R)
 
 outlook <- get_business_outlook() 
@@ -109,6 +109,7 @@ But because `mailmerge` has more variables than just these three, we need to add
 Nothing is done with these additional variables, but an error will be raised by `pwalk` if we don't have a function that captures them. 
 
 ```{r}
+#| eval: false
 #| echo: false
 #| results: hide
 
@@ -121,7 +122,7 @@ mailmerge_df <- dplyr::mutate(mailmerge_df, email = 'mark.andrews@ntu.ac.uk', fe
 
 Now we can send all the emails as follows:
 ```{r}
-#| eval: true
+#| eval: false
 library(purrr) 
 pwalk(mailmerge_df, send_email)
 ```

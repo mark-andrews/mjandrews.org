@@ -1,0 +1,34 @@
+---
+author: 'Mark Andrews'
+title: "Qualitative text analysis with local LLMs"
+date: 2025-01-28
+categories: ["llm", "R"]
+listing:
+  contents:
+    - "part1.qmd"
+    - "part2.qmd"
+    - "part3.qmd"
+  sort: "date desc"
+  fields: [date, title, description]
+  type: default
+  categories: false
+  sort-ui: false
+  filter-ui: false
+  date-format: 'Do MMMM, YYYY'
+  id: sample-listings
+title-block-banner: false
+citation: false
+license: ''
+description: |
+  A note on how to analyse text for themes and topics using local LLMs like Llama. 
+  This note is divided into three parts.
+  I cover how to install Ollama and use it in R, provide a worked example of qualitative text analysis using Llama, and then discuss the computational power requirements for using local LLMs for real-world analyses.
+---
+
+::: {#notes-listing-head}
+:::
+
+::: {#sample-listings}
+:::
+
+

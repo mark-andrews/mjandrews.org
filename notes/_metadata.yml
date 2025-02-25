@@ -8,4 +8,4 @@ toc-depth: 1
 format:
   html:
     css: 
-      - "../../assets/notes.css"
+      - "../assets/notes.css"
