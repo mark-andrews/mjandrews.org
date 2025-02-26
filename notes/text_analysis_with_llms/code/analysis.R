@@ -5,7 +5,7 @@ library(jsonlite)
 
 set.seed(1010101)
 
-fname <- "study_1_qualitative_coding_disc_con_xlsx"
+fname <- "study_1_qualitative_coding_disc_con_xlsx" # Get this from https://osf.io/w8vbz
 
 topics <- c("self-other", "harm", "stigma", "miss")
 

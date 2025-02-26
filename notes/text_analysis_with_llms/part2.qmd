@@ -11,7 +11,7 @@ description: |
     The example problem comes from a free-text rating problem in recently published Psychological Science paper.
 ---
 
-In [Part I](/notes/text_analysis_with_llms/part1) of this note, we introduced the topic of using local LLMs for qualitative text analysis. 
+In [Part I](/notes/text_analysis_with_llms/part1.html) of this note, we introduced the topic of using local LLMs for qualitative text analysis. 
 There, we also explained how to install a local LLM and use it with R using the `ellmer` package.
 In this part, we will use a local LLM to analyse and rate free-text survey responses.
 While this task is not as difficult as some other qualitative analysis, it is still a nontrivial problem and also allows us to compare the LLM performance to that of humans.
@@ -183,6 +183,7 @@ jsonlite::fromJSON(results)
 
 Also, for each free-text response, we can re-run the above commands multiple times to get multiple ratings.
 This way, we can find the most common numeric rating for each text and use this as the final rating.
+The code for this analysis can be found in this website's [GitHub repo]({{< var repo-url >}}/tree/main/notes/text_analysis_with_llms/code).
 
 # LLM Evaluation
 

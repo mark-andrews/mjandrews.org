@@ -143,7 +143,7 @@ cat(stringr::str_wrap(pedantic_reply, width=100))
 ```
 
 This concludes Part I of this note.
-In [Part II](part2), we will go into detail on how to use `ellmer` and its commands like `chat_ollama` to do a realistic qualitative text analysis problem.
+In [Part II](/notes/text_analysis_with_llms/part2.html), we will go into detail on how to use `ellmer` and its commands like `chat_ollama` to do a realistic qualitative text analysis problem.
 
 # Some relevant articles 
 
