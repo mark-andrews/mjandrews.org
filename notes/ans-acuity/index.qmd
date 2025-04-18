@@ -1,0 +1,239 @@
+---
+title: "Measuring Approximate Number Sense Acuity"
+author: "Mark Andrews"
+date: "2025, April, 18"
+format:
+  html:
+    css: style.css
+bibliography: references.bib
+description: |
+  Humans and many other animals have the ability to quickly estimate the number of items in a set.
+  This ability is known as the *approximate number system* (ANS).
+  The term ANS *acuity* refers to the precision or sensitivity of an individual's ANS ability.
+  Two widely used and related ways of defining and measuring ANS acuity are based on the concept of a *mental number line*.
+  Here, we describe how ANS acuity is defined and measured in these two models.
+---
+
+```{r}
+#| message: false
+#| echo: false
+library(tidyverse)
+library(patchwork)
+```
+
+Humans and many other animals have the ability to quickly estimate the number of items in a set.
+This ability is known as the *approximate number system* (ANS), see @dehaene2011number for a book length introduction to this general topic.
+
+As an example, most adults can quickly and accurately, though not always perfectly accurately, estimate which of the two dot displays shown in @fig-dot-displays has the larger number of dots.
+This can usually be done within hundreds of milliseconds and so does not involve explicit counting of the dots.
+
+::: {#fig-dot-displays layout-ncol=2}
+
+::: {.scaled-img}
+![](196d343_43.png)
+:::
+
+::: {.scaled-img}
+![](56c3146_55.png)
+:::
+
+A typical ANS task involves choosing which of two dot displays has the larger number of dots. Here, the display on the left has 43 dots, while the display on the right has 55.
+:::
+
+As with all cognitive abilities, there are individual differences in our ANS abilities.
+The term ANS *acuity* refers to the precision or sensitivity of an individual's ANS ability.
+For example, a person with higher ANS acuity can reliably tell the difference between 48 and 50 dots, whereas someone with lower acuity might only reliably distinguish 40 from 50.
+
+There are different ways to define and thus measure ANS acuity.
+Two widely used and related ways are both based on the concept of a *mental number line*.
+According to this mental number line idea, our mental representation of the number of elements in a set of size $n$ is a probability distribution centered at $n$ over a one dimensional continuum representing the natural numbers ($\mathbb{N}$, the counting numbers, starting at 0) as evenly spaced points.
+The narrower the probability distribution, the more precise the representation of the set's cardinality and so individuals with higher ANS acuity will generally have narrower probability distributions over the mental number line.
+
+There are two commonly used models of the distributions over the mental number line.
+Here, we will refer to these as the *normal model* and the *lognormal model*.
+However, these models sometimes go by other names.
+For example, in @feigenson2004core and elsewhere they are referred to, respectively as the *linear model with scalar variability* and the *logarithmic model with fixed variability*.
+
+We will now describe how ANS acuity is defined and measured in these two models.
+
+## Normal model ANS acuity
+
+According to normal mental number line model, if we perceive a set of $n$ elements, our mental representation of the cardinality of this set is a normal distribution with a mean of $n$ and standard deviation of $wn$, where $w$ is a fixed constant that is specific to each person.
+The larger the value of $w$, the lower a person's ANS acuity.
+This $w$ quantity is often also referred to the Weber fraction, but here, we will refer to it somewhat erroneously as the ANS acuity factor^[Technically, it would be more accurate to describe it as the *inverse* ANS acuity factor, or the ANS *inverse-acuity* factor, given that as $w$ increases, ANS acuity decreases.].
+
+In general, for any fixed value of $w$, the larger the set, the less precise our estimate of the number of elements in the set, as can be seen in the following plot:
+```{r}
+#| echo: false
+#| fig.cap: 'According to the normal mental number line model, our representation of a set of $n$ elements is a normal distribution centered at $n$ and whose standard deviation is proportional to $n$.'
+#| label: fig-mental-number-line
+
+w <- 0.1
+tibble(x = seq(60, 180), 
+       `80` = dnorm(x, mean = 80, sd = w*80), 
+       `100` = dnorm(x, mean = 100, sd = w*100),
+       `120` = dnorm(x, mean = 120, sd = w*120), 
+       `140` = dnorm(x, mean = 140, sd = w*140)) |> 
+  pivot_longer(cols = -x, names_to = 'n', values_to = 'y') |> 
+  mutate(n = factor(n, levels = as.character(c(80, 100, 120, 140)))) |> 
+  ggplot(aes(x,y, colour = n)) + geom_line() + geom_point() + theme_classic()  + theme(legend.position = 'bottom')
+```
+
+Across individuals, the lower their value of $w$, the more precise and accurate is their representation of the number of elements in the set.
+For example, if the acuity factor for one person is $w=0.1$ and they perceive a set of $n=100$ elements, their representation of the number of elements in this set is a normal distribution that is mostly roughly between 80 and 120^[Here, we use the general fact that roughly 95% of the area under the curve in a normal distribution lies between two standard deviations below the mean to two standard deviations above the mean].
+By contrast, for someone with an acuity factor of $w=0.05$, their representation is a normal distribution that is mostly roughly between 90 and 110.
+This second individual will in general be more precise and accurate in their estimation of the number of elements in a set.
+
+### Estimating the acuity factor $w$
+
+There is a deterministic relationship between the acuity factor $w$ and the probability of accurately determining which of two sets, with $n_1$ and $n_2$ elements respectively, has the larger number of elements.
+Specifically, the probability of accurately identifying the larger set is 
+$$
+\Phi\left(\frac{|n_1-n_2|}{\sqrt{w^2(n_1^2 + n_2^2)}}\right),
+$$
+where $\Phi$ is the cumulative distribution function of the standard normal distribution:
+$$
+\Phi(x) = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{x} e^{-\frac{t^2}{2}} \, dt.
+$$
+In the appendix, we derive this equation.
+
+::: {.hidden}
+$$
+\newcommand{\Prob}[1]{\mathrm{P}(#1)}
+\newcommand{\given}{\vert}
+$$
+:::
+
+
+
+Given a set of $N$ pairs of sets $\mathcal{S} = \{(n_1, n_2)_i\}_{i=1}^{i=N}$ and a corresponding set of response accuracies $\vec{y} = y_1, y_2 \ldots y_N$, where each $y_i \in \{0, 1\}$ represents whether the larger set of the $(n_1, n_2)_i$ pair was accurately identified ($y_i = 1$) or not ($y_i=0$), we can infer $w$ using Bayes's rule:
+$$
+\begin{aligned}
+\Prob{w \given \mathcal{S}, \vec{y}} &\propto \Prob{\vec{y}\given \mathcal{S}, w}\Prob{w},\\
+                                     &= \Prob{w}\prod_{i=1}^{N} p_i^{y_i} (1-p_i)^{(1-y_i)},
+\end{aligned}
+$$
+where
+$$
+p_i = \Phi\left(\frac{|n_1-n_2|}{\sqrt{w^2(n_1^2 + n_2^2)}}\right).
+$$
+
+## Lognormal model of ANS acuity
+
+This model proposes that our representation of the cardinality of a set of $n$ elements has a lognormal distribution with a location parameter at $\log(n)$ and a fixed scale parameter $w$.
+An alternative way of describing this model is that it posits that our mental representation of the cardinality of a set of $n$ elements is a *normal* distribution, centered at $\log(n)$ and with a standard deviation of $w$ over a *log-scale* mental number line.
+As with the normal model, $w$ is specific to each person and represents their (inverse) acuity factor.
+
+```{r}
+#| echo: false
+#| fig.cap: 'In the lognormal model of ANS acuity, our mental representation of the cardinality of a set of $n$ elements is a normal distribution over a logarithmic scale mental number line that is centered at $\log(n)$ and whose standard deviation is $w$.'
+#| label: fig-log-number-line
+
+w <- 0.1
+tibble(x = seq(log(60), log(250), length.out = 100), 
+       `80` = dnorm(x, mean = log(80), sd = w), 
+       `100` = dnorm(x, mean = log(100), sd = w),
+       `120` = dnorm(x, mean = log(120), sd = w), 
+       `140` = dnorm(x, mean = log(140), sd = w)) |> 
+  pivot_longer(cols = -x, names_to = 'n', values_to = 'y') |> 
+  mutate(n = factor(n, levels = as.character(c(80, 100, 120, 140)))) |> 
+  ggplot(aes(x,y, colour = n)) + geom_line() + geom_point() + theme_classic()  + theme(legend.position = 'bottom') +
+  scale_x_continuous(breaks = log(c(80, 100, 120, 140)), labels = c(80, 100, 120, 140))
+```
+
+On the original or linear scale mental number line, according to this lognormal model, the mental representation of the cardinality of a set of $n$ elements is a *lognormal* distribution with location $\log(n)$ and scale parameter $w$.
+
+```{r}
+#| echo: false
+#| fig.cap: 'In the lognormal model, our representation of cardinality on the original scale mental number line is a lognormal distribution whose location parameter is $\log(n)$ and whose scale parameter is $w$.'
+#| label: fig-log-number-line-original-scale
+
+w <- 0.1
+tibble(x = seq(60, 180, length.out = 100), 
+       `80` = dlnorm(x, mean = log(80), sd = w), 
+       `100` = dlnorm(x, mean = log(100), sd = w),
+       `120` = dlnorm(x, mean = log(120), sd = w), 
+       `140` = dlnorm(x, mean = log(140), sd = w)) |> 
+  pivot_longer(cols = -x, names_to = 'n', values_to = 'y') |> 
+  mutate(n = factor(n, levels = as.character(c(80, 100, 120, 140)))) |> 
+  ggplot(aes(x,y, colour = n)) + geom_line() + geom_point() + theme_classic()  + theme(legend.position = 'bottom') +
+  scale_x_continuous(breaks = c(80, 100, 120, 140), labels = c(80, 100, 120, 140))
+```
+
+
+### Estimating acuity factor $w$
+
+If $x_1$ and $x_2$ are random variables with log-normal distributions, with locations $\log(n_1)$ and $\log(n_2)$, respectively, and scale $w$, then
+$$
+\log(x_1) \sim \mathcal{N}(\log(n_1), w^2),\quad \log(x_2) \sim \mathcal{N}(\log(n_2), w^2).
+$$
+Given that 
+$$
+\Prob{x_2 > x_1} = \Prob{\log(x_2) > \log(x_1)} = \Prob{\log(x_2) - \log(x_1) > 0},
+$$
+for the same reasons as given below, the probability of correctly identifying the larger set is
+$$
+\Phi\left(\frac{\left\vert\log(n_1) - \log(n_2)\right\vert}{w}\right).
+$$
+Given a set of $N$ pairs of sets $\mathcal{S} = \{(n_1, n_2)_i\}_{i=1}^{i=N}$ and a corresponding set of response accuracies $\vec{y} = y_1, y_2 \ldots y_N$, where each $y_i \in \{0, 1\}$ represents whether the larger set of the $(n_1, n_2)_i$ pair was accurately identified ($y_i = 1$) or not ($y_i=0$), we can infer $w$ using Bayes's rule:
+$$
+\begin{aligned}
+\Prob{w \given \mathcal{S}, \vec{y}} &\propto \Prob{w}\prod_{i=1}^{N} p_i^{y_i} (1-p_i)^{(1-y_i)},
+\end{aligned}
+$$
+where
+$$
+p_i = \Phi\left(\frac{\left\vert\log(n_1) - \log(n_2)\right\vert}{w}\right).
+$$
+
+## Appendix
+
+Here, we derive the above equations for the probability of accurately identifying which of two sets has more elements.
+We will focus on the equation for the normal model, but the derivation for the lognormal model's equation follows the same reasoning.
+
+If we perceive two sets, with $n_1$ and $n_2$ elements respectively, according to the normal model of ANS acuity, we represent the cardinality of each set by normal distributions, with means $n_1$ and $n_2$ and standard deviations $wn_1$ and $wn_2$, respectively.
+If we denote these two distributions by the random variables $x_1$ and $x_2$, respectively, since $x_1$ and $x_2$ are independent normal variables, their difference $d = x_1 - x_2$ is also normally distributed, with mean $\langle d \rangle = n_1 - n_2$ and variance 
+$$
+V(d) = (wn_1)^2 + (wn_2)^2 = w^2 \left(n_1^2 + n_2^2\right).
+$$
+Thus, 
+$$
+d \sim \mathcal{N}\left(n_1 - n_2, w^2(n_1^2 + n_2^2)\right).
+$$
+
+The probability that we perceive $n_1$ as larger than $n_2$ is the probability that $d>0$. 
+If $n_1 > n_2$, the probability of correctly perceiving $n_1$ as larger than $n_2$ is the probability that $d>0$, where $d$ is as just defined.
+If $n_1 < n_2$, the probability of correctly perceiving $n_2$ as larger than $n_1$ is the probability that $d>0$, where $d$ is now a normally distributed random variable with mean $n_2 - n_1$ and standard deviation $\sqrt{w^2(n_1^2 + n_2^2)}$.
+Therefore, given two dot displays, with $n_1$ and $n_2$ dots each, the probability of *correctly* identifying the larger display is the probability that $d>0$, where $d$ is a normally distributed random variable with mean $|n_1 - n_2|$ and standard deviation $\sqrt{w^2(n_1^2 + n_2^2)}$.
+
+If $d$ is normally with mean $|n_1-n_2|$ and standard deviation $\sqrt{w^2(n_1^2 + n_2^2)}$, the probability that $d>0$ is 
+$$
+\Phi\left(\frac{|n_1-n_2|}{\sqrt{w^2(n_1^2 + n_2^2)}}\right).
+$$
+To see this, let $x \sim \mathcal{N}(\mu, s^2)$. 
+If we want to calculate $P(x > 0)$, first define a standard normal random variable $z$ as follows:
+$$
+z = \frac{x - \mu}{s} \sim N(0, 1).
+$$
+We can rewrite $P(x > 0)$ as 
+$$
+P\left(\frac{x - \mu}{s} > -\frac{\mu}{s}\right)
+$$
+by subtracting both sides of the inequality by $\mu$ and dividing both sides by $s$.
+Therefore, 
+$$
+P(x > 0) = P\left(z > -\frac{\mu}{s}\right).
+$$
+But for a standard normal random variable $z$,
+$$
+P(z > -a) = P(z < a) = \Phi(a),
+$$
+where $\Phi$ is the cumulative distribution function of the standard normal distribution:
+Hence,
+$$
+P(x > 0) = \Phi\left(\frac{\mu}{s}\right),
+$$
+and therefore
+$$
+P(d > 0) = \Phi\left(\frac{|n_1 - n_2|}{ \sqrt{w^2(n_1^2 + n_2^2)} }\right).
+$$

@@ -1,0 +1,6 @@
+.scaled-img img {
+    width: 70% !important;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
